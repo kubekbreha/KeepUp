@@ -9,10 +9,15 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
     }
 
 
@@ -20,5 +25,6 @@ public class MainActivity extends AppCompatActivity {
     public void onShowMapButton(View view){
         Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(myIntent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

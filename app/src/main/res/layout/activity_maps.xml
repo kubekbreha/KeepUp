@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundDark"
     tools:context="smart.tuke.sk.keepup.MainActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -14,14 +14,23 @@
         android:layout_height="300dp"
         tools:context="smart.tuke.sk.keepup.MapsActivity" />
 
-    <TextView
-        android:id="@+id/textView"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="32sp"
+        android:layout_height="200dp"
         android:layout_alignParentStart="true"
+        style="@style/MyCardViewStyle"
         android:layout_below="@+id/map"
-        android:text="This is Map!" />
+        android:layout_margin="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your actual stats"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>
