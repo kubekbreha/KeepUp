@@ -34,14 +34,13 @@ public class MainActivity extends AppCompatActivity implements
 
             Fragment selectedFragment = null;
 
-
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                    selectedFragment = FirstFragment.newInstance("Andy", "James");
+                    selectedFragment = new FirstFragment();
                     transaction.replace(R.id.content, selectedFragment);
                     transaction.commit();
                     return true;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements
                     FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
                     transaction2.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                    selectedFragment = SecondFragment.newInstance("Andy", "James");
+                    selectedFragment = new SecondFragment();
                     transaction2.replace(R.id.content, selectedFragment);
                     transaction2.commit();
                     return true;
@@ -63,10 +62,9 @@ public class MainActivity extends AppCompatActivity implements
                     FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
                     transaction3.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                    selectedFragment = ThirdFragment.newInstance("Andy", "James");
+                    selectedFragment = new ThirdFragment();
                     transaction3.replace(R.id.content, selectedFragment);
                     transaction3.commit();
-
                     return true;
             }
             return false;
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main_bottom);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, FirstFragment.newInstance("What", "Ever"));
+        transaction.replace(R.id.content, new FirstFragment());
         transaction.commit();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
