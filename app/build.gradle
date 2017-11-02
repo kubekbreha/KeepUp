@@ -41,7 +41,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.android.support:cardview-v7:26.1.0' // where X.X.X version
     compile 'com.github.karanchuri:PermissionManager:0.1.0'
-    //bottom nav
-    compile 'com.aurelhubert:ahbottomnavigation:2.0.4'
-
 }

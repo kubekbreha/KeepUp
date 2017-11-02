@@ -1,25 +1,27 @@
 package smart.tuke.sk.keepup;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import butterknife.OnClick;
+public class MainActivity extends AppCompatActivity implements
+        FirstFragment.OnFragmentInteractionListener,
+        SecondFragment.OnFragmentInteractionListener,
+        ThirdFragment.OnFragmentInteractionListener {
 
-public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentInteractionListener , SecondFragment.OnFragmentInteractionListener , ThirdFragment.OnFragmentInteractionListener {
-
-    private TextView mTextMessage;
 
     @Override
-    public void onFragmentInteraction(Uri uri){
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
@@ -37,23 +39,31 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
                 case R.id.navigation_home:
 
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    selectedFragment = FirstFragment.newInstance("Andy","James");
+                    transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+                    selectedFragment = FirstFragment.newInstance("Andy", "James");
                     transaction.replace(R.id.content, selectedFragment);
                     transaction.commit();
                     return true;
+
+
                 case R.id.navigation_dashboard:
 
                     FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
-                    selectedFragment = SecondFragment.newInstance("Andy","James");
+                    transaction2.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+                    selectedFragment = SecondFragment.newInstance("Andy", "James");
                     transaction2.replace(R.id.content, selectedFragment);
                     transaction2.commit();
-
-
                     return true;
+
+
                 case R.id.navigation_notifications:
 
                     FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
-                    selectedFragment = ThirdFragment.newInstance("Andy","James");
+                    transaction3.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+                    selectedFragment = ThirdFragment.newInstance("Andy", "James");
                     transaction3.replace(R.id.content, selectedFragment);
                     transaction3.commit();
 
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
         setContentView(R.layout.activity_main_bottom);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, FirstFragment.newInstance("What","Ever"));
+        transaction.replace(R.id.content, FirstFragment.newInstance("What", "Ever"));
         transaction.commit();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -79,6 +89,31 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
 
 
 
+    //-----------------------------------TOP RIGHT CORNER MENU--------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu, menu);
+        return true;
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_game:
+                Toast.makeText(MainActivity.this, "This is my Toast message!", Toast.LENGTH_LONG).show();
+                return true;
+
+            case R.id.help:
+                Toast.makeText(MainActivity.this, "This is my Toast message!", Toast.LENGTH_LONG).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    //----------------------------------------------------------------------------------------------
 
 }

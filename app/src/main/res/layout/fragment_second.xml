@@ -5,8 +5,22 @@
     tools:context="smart.tuke.sk.keepup.SecondFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Second fragment" />
-
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/show_map_button"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="130dp"
+        android:text=" @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_maps, container, false);
+        Button tab1=(Button) rootView.findViewById(R.id.show_map_button);
+        tab1.setOnClickListener(new View.OnClickListener() {
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                getActivity().startActivity(i);
+            }
+        });
+        return rootView;
+    }" />
 </FrameLayout>

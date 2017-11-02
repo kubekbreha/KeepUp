@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundDark"
     tools:context="smart.tuke.sk.keepup.MainActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your actual stats"
-            android:textColor="@color/cardview_light_background"
+            android:textColor="@color/common_google_signin_btn_text_light"
             android:textSize="24sp"
             android:textStyle="bold" />
 

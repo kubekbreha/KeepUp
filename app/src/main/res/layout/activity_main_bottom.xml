@@ -17,11 +17,12 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation"
-        style="@style/BottomNavigation"/>
+        android:background="@android:color/white"
+        app:elevation="16dp"
+        app:menu="@menu/navigation" />
+
 
 </RelativeLayout>
