@@ -1,9 +1,12 @@
 package smart.tuke.sk.keepup;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,28 +14,54 @@ import android.widget.TextView;
 
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentInteractionListener , SecondFragment.OnFragmentInteractionListener , ThirdFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
+
+    @Override
+    public void onFragmentInteraction(Uri uri){
+
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            Fragment selectedFragment = null;
+
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    selectedFragment = FirstFragment.newInstance("Andy","James");
+                    transaction.replace(R.id.content, selectedFragment);
+                    transaction.commit();
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+
+                    FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
+                    selectedFragment = SecondFragment.newInstance("Andy","James");
+                    transaction2.replace(R.id.content, selectedFragment);
+                    transaction2.commit();
+
+
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+
+                    FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
+                    selectedFragment = ThirdFragment.newInstance("Andy","James");
+                    transaction3.replace(R.id.content, selectedFragment);
+                    transaction3.commit();
+
                     return true;
             }
             return false;
         }
+
     };
 
     @Override
@@ -40,17 +69,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_bottom);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, FirstFragment.newInstance("What","Ever"));
+        transaction.commit();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
 
-    @OnClick(R.id.show_map_button)
-    public void onShowMapButton(View view){
-        Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivity(myIntent);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
+
+
 
 }

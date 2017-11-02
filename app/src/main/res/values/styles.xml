@@ -19,4 +19,13 @@
         <item name="cardBackgroundColor">@color/background</item>
     </style>
 
+
+    <style name="BottomNavigation">
+        <item name="android:background">@color/background</item>
+        <item name="itemIconTint">#ffffff</item>
+        <item name="itemTextColor">#ffffff</item>
+        <item name="paddingStart">@dimen/activity_vertical_margin</item>
+        <item name="paddingEnd">@dimen/activity_horizontal_margin</item>
+    </style>
+
 </resources>
