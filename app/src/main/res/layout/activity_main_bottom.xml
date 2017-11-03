@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="smart.tuke.sk.keepup.MainActivity">
+    android:id="@+id/container"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="smart.tuke.sk.keepup.MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:animateLayoutChanges="true">
-    </FrameLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+
+
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        app:elevation="16dp"
-        app:menu="@menu/navigation" />
-
+        app:bb_tabXmlResource="@xml/color_navbar"
+        app:bb_behavior="shifting|underNavbar" />
 
 </RelativeLayout>

@@ -44,4 +44,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.android.support:cardview-v7:26.1.0' // where X.X.X version
     compile 'com.github.karanchuri:PermissionManager:0.1.0'
+    compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
+
+    //navbar
+    compile 'com.roughike:bottom-bar:2.3.1'
+    compile 'com.ncapdevi:frag-nav:2.2.3'
 }
