@@ -9,21 +9,16 @@ public class TabMessage {
         String message = "Content for ";
 
         switch (menuItemId) {
-            case R.id.tab_recents:
-                message += "recents";
-                break;
-            case R.id.tab_favorites:
-                message += "favorites";
-                break;
-            case R.id.tab_nearby:
-                message += "nearby";
-                break;
             case R.id.tab_friends:
                 message += "friends";
                 break;
-            case R.id.tab_food:
-                message += "food";
+            case R.id.tab_history:
+                message += "history";
                 break;
+            case R.id.tab_run:
+                message += "run";
+                break;
+
         }
 
         if (isReselection) {

@@ -16,11 +16,9 @@ import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import smart.tuke.sk.keepup.fragments.BaseFragment;
-import smart.tuke.sk.keepup.fragments.FavoritesFragment;
-import smart.tuke.sk.keepup.fragments.FoodFragment;
 import smart.tuke.sk.keepup.fragments.FriendsFragment;
-import smart.tuke.sk.keepup.fragments.NearbyFragment;
-import smart.tuke.sk.keepup.fragments.RecentsFragment;
+import smart.tuke.sk.keepup.fragments.RunFragment;
+import smart.tuke.sk.keepup.fragments.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentNavigation,
         FragNavController.TransactionListener,
@@ -28,11 +26,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
 
     //Better convention to properly name the indices what they are in your app
-    private final int INDEX_RECENTS = FragNavController.TAB1;
-    private final int INDEX_FAVORITES = FragNavController.TAB2;
-    private final int INDEX_NEARBY = FragNavController.TAB3;
-    private final int INDEX_FRIENDS = FragNavController.TAB4;
-    private final int INDEX_FOOD = FragNavController.TAB5;
+    private final int INDEX_FRIENDS = FragNavController.TAB1;
+    private final int INDEX_HISTORY = FragNavController.TAB2;
+    private final int INDEX_RUN = FragNavController.TAB3;
+
     private BottomBar mBottomBar;
     private FragNavController mNavController;
 
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         setContentView(R.layout.activity_main_bottom);
 
         mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        mBottomBar.selectTabAtPosition(INDEX_NEARBY);
+        mBottomBar.selectTabAtPosition(INDEX_FRIENDS);
         mNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.container)
                 .transactionListener(this)
                 .rootFragmentListener(this, 5)
@@ -53,20 +50,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
-                    case R.id.tab_recents:
-                        mNavController.switchTab(INDEX_RECENTS);
-                        break;
-                    case R.id.tab_favorites:
-                        mNavController.switchTab(INDEX_FAVORITES);
-                        break;
-                    case R.id.tab_nearby:
-                        mNavController.switchTab(INDEX_NEARBY);
-                        break;
                     case R.id.tab_friends:
                         mNavController.switchTab(INDEX_FRIENDS);
                         break;
-                    case R.id.tab_food:
-                        mNavController.switchTab(INDEX_FOOD);
+                    case R.id.tab_history:
+                        mNavController.switchTab(INDEX_HISTORY);
+                        break;
+                    case R.id.tab_run:
+                        mNavController.switchTab(INDEX_RUN);
                         break;
                 }
             }
@@ -126,16 +117,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     public Fragment getRootFragment(int index) {
         switch (index) {
-            case INDEX_RECENTS:
-                return RecentsFragment.newInstance(0);
-            case INDEX_FAVORITES:
-                return FavoritesFragment.newInstance(0);
-            case INDEX_NEARBY:
-                return NearbyFragment.newInstance(0);
             case INDEX_FRIENDS:
                 return FriendsFragment.newInstance(0);
-            case INDEX_FOOD:
-                return FoodFragment.newInstance(0);
+            case INDEX_HISTORY:
+                return HistoryFragment.newInstance(0);
+            case INDEX_RUN:
+                return RunFragment.newInstance(0);
+
         }
         throw new IllegalStateException("Need to send an index that we know");
     }
@@ -168,71 +156,3 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_bottom);
-
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                Toast.makeText(getApplicationContext(), TabMessage.get(tabId, true), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
-            @Override
-            public void onTabReSelected(@IdRes int tabId) {
-                Toast.makeText(getApplicationContext(), TabMessage.get(tabId, true), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-
-    //-----------------------------------TOP RIGHT CORNER MENU--------------------------------------
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.new_game:
-                Toast.makeText(MainActivity.this, "This is my Toast message!", Toast.LENGTH_LONG).show();
-                return true;
-
-            case R.id.help:
-                Toast.makeText(MainActivity.this, "This is my Toast message!", Toast.LENGTH_LONG).show();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    //----------------------------------------------------------------------------------------------
-
-}
-*/

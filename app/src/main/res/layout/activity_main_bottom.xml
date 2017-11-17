@@ -7,9 +7,6 @@
     tools:context="smart.tuke.sk.keepup.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
-
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"

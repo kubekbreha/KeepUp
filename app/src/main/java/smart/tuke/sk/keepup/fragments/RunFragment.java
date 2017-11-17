@@ -4,16 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 
 
-public class RecentsFragment extends BaseFragment {
+public class RunFragment extends BaseFragment {
 
-    public static RecentsFragment  newInstance(int instance) {
+    public static RunFragment newInstance(int instance) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
-        RecentsFragment fragment = new RecentsFragment();
+        RunFragment fragment = new RunFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -21,7 +20,7 @@ public class RecentsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(RecentsFragment.newInstance(mInt+1));
+                    mFragmentNavigation.pushFragment(RunFragment.newInstance(mInt+1));
                 }
             }
         });

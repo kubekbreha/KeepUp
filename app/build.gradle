@@ -26,6 +26,9 @@ android {
 
 
 
+
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -49,4 +52,8 @@ dependencies {
     //navbar
     compile 'com.roughike:bottom-bar:2.3.1'
     compile 'com.ncapdevi:frag-nav:2.2.3'
+
+    //card list
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
 }
