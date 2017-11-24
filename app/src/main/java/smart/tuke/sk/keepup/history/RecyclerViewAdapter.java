@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.context = context;
     }
 
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //Inflate the layout, initialize the View Holder
@@ -36,14 +40,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerView
         holder.title.setText(list.get(position).title);
         holder.description.setText(list.get(position).description);
         holder.imageView.setImageResource(list.get(position).imageId);
-
-        //animate(holder);
-
     }
 
     @Override

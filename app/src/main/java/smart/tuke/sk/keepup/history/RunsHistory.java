@@ -1,5 +1,7 @@
 package smart.tuke.sk.keepup.history;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * Created by kubek on 11/17/2017.
  */

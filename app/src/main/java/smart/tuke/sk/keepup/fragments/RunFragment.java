@@ -1,7 +1,11 @@
 package smart.tuke.sk.keepup.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import smart.tuke.sk.keepup.MainActivity;
+import smart.tuke.sk.keepup.MapsActivity;
 
 
 public class RunFragment extends BaseFragment {
@@ -19,11 +23,10 @@ public class RunFragment extends BaseFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mFragmentNavigation != null) {
-                    mFragmentNavigation.pushFragment(RunFragment.newInstance(mInt+1));
-                }
+                Intent myIntent = new Intent( getActivity(),MapsActivity.class);
+                getActivity().startActivity(myIntent);
+                //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-        mButton.setText(getClass().getSimpleName() + " " + mInt);
     }
 }
