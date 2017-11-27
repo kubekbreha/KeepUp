@@ -1,25 +1,13 @@
 <resources>
-
-
-    <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
-        <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="contentPaddingBottom">24dp</item>
-        <item name="contentPaddingTop">24dp</item>
-        <item name="contentPaddingLeft">16dp</item>
-        <item name="contentPaddingRight">16dp</item>
-        <item name="cardBackgroundColor">#f7f7f7</item>
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Base application theme. -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <!-- Light Indigo -->
+        <item name="colorPrimaryDark">#757575</item>
+        <!-- Dark Indigo -->
+        <item name="colorAccent">#00C853</item>
+        <!-- Blue -->
     </style>
-
-
-    <style name="AppTheme.TransNav" parent="AppTheme"/>
-
+    <style name="AppTheme" parent="AppTheme.Base"></style>
 </resources>
