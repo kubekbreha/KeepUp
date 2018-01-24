@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_main"
+    tools:context="com.grizzly.chat.chat.ChatActivity">
+
+
+    <!--=========================================================================================-->
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/input_message_area"
+        android:minHeight="48dp">
+
+        <ImageButton
+            android:id="@+id/image_fab"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Upload file"
+            android:layout_gravity="bottom"/>
+
+        <EditText
+            android:id="@+id/input"
+            android:hint="Enter message"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:maxLines="6"/>
+
+        <Button
+            android:id="@+id/fab"
+            android:text="SEND"
+            android:textSize="14dp"
+            android:textColor="@drawable/selector_btn_send"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+
+    <!--=========================================================================================-->
+
+
+    <ListView
+        android:id="@+id/list_of_messages"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/input_message_area"
+        android:dividerHeight="16dp"
+        android:divider="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        <!--android:layout_marginBottom="16dp"-->
+
+</RelativeLayout>
