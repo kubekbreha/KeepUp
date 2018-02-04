@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_anim"
+    tools:context="com.grizzly.keepup.login.RegisterActivity"
+    android:id="@+id/register_gradient">
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_above="@+id/edit_email"
+        android:background="@drawable/rounded_input"
+        android:hint="Name"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="16dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#cecece" />
+
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_above="@+id/edit_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_input"
+        android:hint="Email"
+        android:paddingLeft="16dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#cecece" />
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_above="@+id/confirm_register_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_input"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="16dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#cecece"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="105dp" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/confirm_register_button"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="207dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:text="@string/register" />
+
+</RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_main"
-    tools:context="com.grizzly.chat.chat.ChatActivity">
+    tools:context="com.grizzly.keepup.chat.ChatActivity">
 
 
     <!--=========================================================================================-->

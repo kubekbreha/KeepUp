@@ -1,109 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@drawable/background_gradient_anim"
     android:gravity="center_horizontal"
-    tools:context="com.grizzly.chat.login.LoginActivity">
+    tools:context="com.grizzly.keepup.login.LoginActivity">
 
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_button"
-        style="@style/Widget.AppCompat.Button.Colored"
+    <RelativeLayout
+        android:id="@+id/login_to_be_replaced"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_above="@+id/register_button"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/headingColor"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:text="@string/login"
-        app:theme="@style/AppTheme.ButtonStyle"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="57dp" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/register_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_above="@+id/login_button_google"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="100dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/groupChatAdminText"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:text="@string/register"
-        app:theme="@style/AppTheme.ButtonStyle"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="57dp" />
+        android:layout_height="match_parent">
 
 
+    </RelativeLayout>
 
-
-
-
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_button_google"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_above="@+id/login_button_facebook"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/groupChatDateBackground"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:text="login with google"
-        app:theme="@style/AppTheme.ButtonStyle"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="57dp" />
-
-
-
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/login_button_facebook"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_above="@+id/text_login_versions"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="35dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@color/com_facebook_blue"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:text="login with facebook"
-        app:theme="@style/AppTheme.ButtonStyle"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="57dp" />
-
-
-
-    <TextView
-        android:id="@+id/text_login_versions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="26dp"
-        android:text="@string/welcome_to_my_chat_app"
-        android:textColor="#a0a0a0"
-        android:textSize="12sp" />
 
 </RelativeLayout>
 

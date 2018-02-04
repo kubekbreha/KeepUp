@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_anim"
+    android:gravity="center_horizontal"
+    tools:context="com.grizzly.keepup.login.LoginActivity">
+
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="112dp"
+        android:src="@drawable/logo" />
+
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_above="@+id/register_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:background="@drawable/rounded_input"
+        android:elevation="0dp"
+        android:text="@string/login"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_above="@+id/social_buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:text="@string/register" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/social_buttons"
+        android:layout_marginBottom="78dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:background="#ffffff"
+        android:clickable="false"
+        android:elevation="0dp" />
+
+
+    <RelativeLayout
+        android:id="@+id/social_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@id/text_login_versions"
+        android:layout_marginBottom="40dp">
+
+        <Button
+            android:id="@+id/login_button_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/button_background_facebook"
+            android:drawableStart="@drawable/fb_logo_xml"
+            android:elevation="0dp"
+            android:minWidth="120dp"
+            android:paddingEnd="8dp"
+            android:text="facebook"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/login_button_google"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="48dp"
+            android:background="@drawable/button_background_google"
+            android:drawableStart="@drawable/google_logo_xml"
+            android:elevation="0dp"
+            android:minWidth="120dp"
+            android:paddingEnd="8dp"
+            android:text="google"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_login_versions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="24dp"
+        android:text="@string/welcome_to_my_app"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>
+
+
+
+
+

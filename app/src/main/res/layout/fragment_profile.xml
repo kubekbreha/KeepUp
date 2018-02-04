@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.grizzly.chat.mainFragments.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.grizzly.keepup.mainFragments.ProfileFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,27 +23,73 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="120dp"
+            android:id="@+id/profile_picture">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/profile_fragment_image"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:src="@drawable/default_profile" />
+
+
+            <TextView
+                android:id="@+id/profile_fragment_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="23dp"
+                android:layout_toEndOf="@+id/profile_fragment_image"
+                android:text="TextView"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/profile_fragment_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/profile_fragment_name"
+                android:layout_below="@+id/profile_fragment_name"
+                android:layout_marginTop="12dp"
+                android:text="TextView" />
+
 
             <Button
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/button2"
-                android:layout_marginTop="59dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
                 android:text="Logout" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="143dp"
+                android:layout_alignStart="@+id/button1"
+                android:layout_alignTop="@+id/profile_fragment_mail"
                 android:text="Chat" />
+
         </RelativeLayout>
 
+        
+        <RelativeLayout
+            android:layout_marginTop="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary">
+
+
+
+
+
+
+
+        </RelativeLayout>
 
     </FrameLayout>
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient_anim"
+    android:id="@+id/splash_activity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo" />
+
+</RelativeLayout>
