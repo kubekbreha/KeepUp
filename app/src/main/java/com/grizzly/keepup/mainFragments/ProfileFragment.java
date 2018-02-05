@@ -3,6 +3,7 @@ package com.grizzly.keepup.mainFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.chat.ChatActivity;
 import com.grizzly.keepup.login.LoginActivity;
@@ -27,12 +46,24 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private Button button1;
     private Button button2;
+    private GoogleApiClient mGoogleApiClient;
 
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,20 +73,44 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextView userName;
+        final TextView userName;
         TextView userEmail;
-        ImageView userPhoto;
+        final ImageView userPhoto;
 
         userPhoto = view.findViewById(R.id.profile_fragment_image);
         userName = view.findViewById(R.id.profile_fragment_name);
         userEmail = view.findViewById(R.id.profile_fragment_mail);
 
-        //Picasso.with(getContext()).load(model.getSpecific_run_image()).into(imageUri);
-        Picasso.with(getContext()).load("http://i.imgur.com/DvpvklR.png").into(userPhoto);
 
-        userName.setText(mAuth.getCurrentUser().toString());
+        DatabaseReference refImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
+        refImage.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String uri = dataSnapshot.getValue(String.class);
+                Picasso.with(getContext()).load(uri).into(userPhoto);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference refName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
+        refName.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                userName.setText(name);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         userEmail.setText(mAuth.getCurrentUser().getEmail());
-
 
 
         Button buttonSignOut = (Button) view.findViewById(R.id.button1);
@@ -64,7 +119,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 mAuth.signOut();
                 LoginManager.getInstance().logOut();
-                updateUI();
+                revokeAccess();
             }
         });
 
@@ -91,6 +146,18 @@ public class ProfileFragment extends Fragment {
     private void openChat() {
         Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
         startActivity(chatIntent);
+    }
+
+    private void revokeAccess() {
+
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // ...
+                        updateUI();
+                    }
+                });
     }
 
 }

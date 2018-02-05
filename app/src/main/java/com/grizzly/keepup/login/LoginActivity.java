@@ -1,5 +1,7 @@
 package com.grizzly.keepup.login;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -30,4 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

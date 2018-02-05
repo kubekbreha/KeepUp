@@ -66,7 +66,7 @@ public class NewsFeedFragment extends Fragment {
                 imageUri = v.findViewById(R.id.news_post_image);
                 runTime = v.findViewById(R.id.news_post_date);
 
-                Picasso.with(getContext()).load(model.getSpecific_run_image()).into(imageUri);
+                Picasso.with(getContext()).load(model.getSpecific_run_image()).resize(100, 70).into(imageUri);
                 runTime.setText(DateFormat.format("HH:mm", model.getRun_date()));
 
             }

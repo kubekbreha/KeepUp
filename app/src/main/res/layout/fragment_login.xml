@@ -74,6 +74,7 @@
             android:elevation="0dp"
             android:minWidth="120dp"
             android:paddingEnd="8dp"
+            android:clickable="true"
             android:text="facebook"
             android:textColor="#ffffff"
             android:textSize="14sp" />

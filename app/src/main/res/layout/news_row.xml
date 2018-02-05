@@ -3,40 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true" >
+    android:clickable="true">
 
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_news"
-        style="@style/MyCardViewStyle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="8dp">
+        android:layout_height="320dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="80dp">
 
-            <ImageView
-                android:id="@+id/news_post_image"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:adjustViewBounds="true"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/news_profile_image"
+                android:layout_margin="10dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/default_profile" />
 
             <TextView
-                android:id="@+id/news_post_date"
+                android:id="@+id/news_profile_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="12:12"
-                android:textSize="24sp" />
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="80dp"
+                android:layout_alignTop="@+id/news_profile_image"
+                android:textColor="#000"
+                android:text="yor name"
+                android:textSize="16sp" />
 
-        </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_above="@+id/news_post_date"
+            android:id="@+id/news_post_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/default_profile" />
+
+        <TextView
+            android:id="@+id/news_post_date"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:padding="8dp"
+            android:text="12:12"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
 
