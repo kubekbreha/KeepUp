@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.grizzly.keepup.mainFragments.newsPage.NewsFeedFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="24dp"
@@ -21,12 +19,22 @@
         android:layout_height="match_parent"
         android:layout_marginTop="72dp">
 
-        <ListView
-            android:id="@+id/news_feed_list"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/news_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/news_feed_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:divider="@null"
+                android:dividerHeight="0dp" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 

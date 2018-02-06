@@ -28,6 +28,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:borderWidth="0dp"
         app:elevation="0dp">
+        <!--android:background="#ffffff"-->
 
 
         <android.support.design.widget.TabLayout

@@ -10,20 +10,22 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
     </com.google.android.gms.maps.MapView>
 
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_map"
-        style="@style/MyCardViewStyle"
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="16dp"
-        android:layout_alignBottom="@+id/new_run_button"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
+        app:cardCornerRadius="4dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp">
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.2">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,21 +35,24 @@
                 android:id="@+id/vertical_line_map"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="80dp"
-                android:background="#000000" />
+                android:layout_centerVertical="true"
+                android:background="#9E9E9E"
+                android:scaleType="centerCrop"/>
 
 
             <View
                 android:id="@+id/horizontal_line_map"
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="172dp"
-                android:background="#000000" />
+                android:layout_centerHorizontal="true"
+                android:background="#9E9E9E"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Distance"
+                android:layout_margin="8dp"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -56,10 +61,11 @@
                 android:id="@+id/map_meters_traveled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="8dp"
                 android:text="0"
-                android:textColor="#000000"
-                android:textSize="20sp"
+                android:textColor="#1d1d1d"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -67,26 +73,28 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:layout_marginLeft="188dp"
+                android:layout_marginTop="8dp"
                 android:layout_alignStart="@+id/vertical_line_map"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <Chronometer
                 android:id="@+id/map_time_traveled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/vertical_line_map"
-                android:layout_marginTop="32dp"
-                android:layout_marginLeft="188dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="188dp"
                 android:text="00:00"
-                android:textColor="#000000"
-                android:textSize="20sp"
+                android:textColor="#1d1d1d"
+                android:textSize="16sp"
                 android:textStyle="bold" />
-
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/new_run_button"

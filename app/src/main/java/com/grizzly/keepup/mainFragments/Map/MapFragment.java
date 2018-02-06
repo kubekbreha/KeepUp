@@ -3,10 +3,7 @@ package com.grizzly.keepup.mainFragments.Map;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -15,8 +12,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -67,7 +62,8 @@ public class MapFragment extends Fragment {
     private Marker mCurrLocationMarker;
     private LocationManager locationManager;
     private TextView distanceTextView;
-    private TextView timestampText;
+    private Chronometer mChronometer;
+
     //database vars
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -76,8 +72,8 @@ public class MapFragment extends Fragment {
     private ProgressDialog mProgress;
     private Boolean buttonStart = false;
 
-    private BoundService mBoundService;
-    boolean mServiceBound = false;
+    private boolean mServiceBound = false;
+    private long timeWhenStopped;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,56 +88,33 @@ public class MapFragment extends Fragment {
         mStorageImage = FirebaseStorage.getInstance().getReference().child("run_images");
 
         distanceTextView = view.findViewById(R.id.map_meters_traveled);
-        timestampText =  view.findViewById(R.id.map_time_traveled);
-        serviceButton =  view.findViewById(R.id.new_run_button);
 
+        mChronometer = view.findViewById(R.id.map_time_traveled);
+        //Button printTimestampButton =   view.findViewById(R.id.print_timestamp);
+        serviceButton = view.findViewById(R.id.new_run_button);
 
-
-        /*printTimestampButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mServiceBound) {
-                    timestampText.setText(mBoundService.getTimestamp());
-                }
-            }
-        });*/
-
-        timestampText =  view.findViewById(R.id.map_time_traveled);
-        if(buttonStart){
-            timestampText.setText(mBoundService.getTimestamp());
-        }
 
         serviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!buttonStart) {
+                    startChronometer();
                     buttonStart = true;
                     serviceButton.setText("stop");
-                    Intent intent = new Intent(getActivity(), BoundService.class);
-                    getActivity().startService(intent);
-                    getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+
                 } else {
+                    takeSnapshot();
+                    timeWhenStopped = 0;
+                    stopChronometer();
                     buttonStart = false;
                     serviceButton.setText("start");
-                    //takeSnapshot();
-
-                    if (mServiceBound) {
-                        getActivity().unbindService(mServiceConnection);
-                        mServiceBound = false;
-                    }
-                    Intent intent = new Intent(getActivity(),
-                            BoundService.class);
-                    getActivity().stopService(intent);
                 }
             }
         });
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (
-                Exception e)
-
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -203,53 +176,53 @@ public class MapFragment extends Fragment {
                                          }
                                      });
 
+        /*ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {
+            }
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == 0 ) {
+                    //Toast.makeText(getContext(), "map selected", Toast.LENGTH_LONG).show();
+                    if (buttonStart) {
+                        serviceButton.setText("stop");
+                        mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                        mChronometer.start();
+                    }
+                }
+            }
+
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    //Toast.makeText(getContext(), "map selected", Toast.LENGTH_LONG).show();
+                    if (buttonStart) {
+                        serviceButton.setText("stop");
+                        mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                        mChronometer.start();
+                    }
+                }
+            }
+        });*/
 
         return view;
-    }
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mServiceBound = false;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            BoundService.MyBinder myBinder = (BoundService.MyBinder) service;
-            mBoundService = myBinder.getService();
-            mServiceBound = true;
-        }
-    };
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-       /* Intent intent = new Intent(getActivity(), BoundService.class);
-        getActivity().startService(intent);
-        getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);*/
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mServiceBound) {
-            getActivity().unbindService(mServiceConnection);
-            mServiceBound = false;
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        if (buttonStart) {
+            serviceButton.setText("stop");
+            mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+            mChronometer.start();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        timeWhenStopped = mChronometer.getBase() - SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -281,6 +254,17 @@ public class MapFragment extends Fragment {
 
         // Get back the mutable Polyline
         Polyline polyline = mGoogleMap.addPolyline(rectOptions);
+    }
+
+
+    private void startChronometer() {
+        long systemCurrTime = SystemClock.elapsedRealtime();
+        mChronometer.setBase(systemCurrTime);
+        mChronometer.start();
+    }
+
+    private void stopChronometer() {
+        mChronometer.stop();
     }
 
 
@@ -335,28 +319,6 @@ public class MapFragment extends Fragment {
     }
 
     //-------------------------------------SCREENSHOT-----------------------------------------------
-    private void uploadRun(Uri mRunImageUri) {
-        if (mRunImageUri != null) {
-            mProgress.setMessage("Uploading");
-            mProgress.show();
-
-            StorageReference filepath = mStorageImage.child(mRunImageUri.getLastPathSegment());
-
-            filepath.putFile(mRunImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String downloadUri = taskSnapshot.getDownloadUrl().toString();
-
-                    FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
-                            .push().setValue(new NewsFeed(downloadUri));
-
-                    mProgress.dismiss();
-                }
-            });
-        }
-    }
-
-
     private void takeSnapshot() {
         if (mGoogleMap == null) {
             return;
@@ -366,11 +328,34 @@ public class MapFragment extends Fragment {
             public void onSnapshotReady(Bitmap snapshot) {
                 uploadRun(getImageUri(getContext(), snapshot));
                 // Callback is called from the main thread, so we can modify the ImageView safely.
-                //Toast.makeText(getContext(), getImageUri(getContext(), snapshot).toString(), Toast.LENGTH_LONG).show();
             }
         };
         mGoogleMap.snapshot(callback);
     }
+
+    private void uploadRun(Uri mRunImageUri) {
+        if (mRunImageUri != null) {
+            mProgress.setMessage("Uploading");
+            mProgress.show();
+
+            StorageReference filepath = mStorageImage.child(mRunImageUri.getLastPathSegment());
+            final int elapsedMillis = (int) (SystemClock.elapsedRealtime() - mChronometer.getBase());
+
+            filepath.putFile(mRunImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    String downloadUri = taskSnapshot.getDownloadUrl().toString();
+
+                    FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
+                            .push().setValue(new NewsFeed(downloadUri, distanceTextView.getText().toString(),
+                            elapsedMillis));
+
+                    mProgress.dismiss();
+                }
+            });
+        }
+    }
+
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

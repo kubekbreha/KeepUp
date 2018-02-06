@@ -23,7 +23,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="104dp"
             android:id="@+id/profile_picture">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/profile_fragment_image"
                 android:text="TextView"
                 android:textColor="@android:color/black"
@@ -58,27 +58,31 @@
                 android:text="TextView" />
 
 
-            <Button
+            <ImageButton
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
-                android:text="Logout" />
+                android:background="@null"
+                android:src="@drawable/ic_log_out_24dp"
+                />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/button1"
                 android:layout_alignTop="@+id/profile_fragment_mail"
-                android:text="Chat" />
+                android:src="@drawable/ic_message_24dp"
+                android:background="@null"
+                />
 
         </RelativeLayout>
 
         
         <RelativeLayout
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="104dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary">

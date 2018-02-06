@@ -10,14 +10,34 @@ public class NewsFeed {
 
     private Long run_date;
     private String specific_run_image;
+    private String distance;
+    private int time;
 
-    public NewsFeed(String specific_run_image) {
+    public NewsFeed(String specific_run_image, String distance, int time) {
         this.specific_run_image = specific_run_image;
+        this.distance = distance;
+        this.time = time;
         run_date = new Date().getTime();
     }
 
     public NewsFeed() {
 
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public int getTime() {
+        return time;
     }
 
     public Long getRun_date() {

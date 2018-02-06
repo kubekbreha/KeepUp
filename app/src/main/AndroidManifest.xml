@@ -26,7 +26,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Base">
+        android:theme="@style/AppTheme.Base"
+        android:screenOrientation="portrait">
 
 
         <activity
@@ -79,9 +80,6 @@
             android:name="com.grizzly.keepup.MainActivity"
             android:theme="@style/AppTheme.Base"
             android:launchMode="singleInstance"/>
-
-        <service android:name="com.grizzly.keepup.mainFragments.Map.BoundService">
-        </service>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

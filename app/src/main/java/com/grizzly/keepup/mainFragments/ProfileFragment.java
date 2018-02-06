@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.chat.ChatActivity;
 import com.grizzly.keepup.login.LoginActivity;
+import com.grizzly.keepup.login.SetupActivity;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -48,6 +50,12 @@ public class ProfileFragment extends Fragment {
     private Button button2;
     private GoogleApiClient mGoogleApiClient;
 
+
+    private TextView userName;
+    private TextView userEmail;
+    private ImageView userPhoto;
+    private ImageButton buttonSignOut;
+    private ImageButton buttonChat;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -73,14 +81,11 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        final TextView userName;
-        TextView userEmail;
-        final ImageView userPhoto;
-
         userPhoto = view.findViewById(R.id.profile_fragment_image);
         userName = view.findViewById(R.id.profile_fragment_name);
         userEmail = view.findViewById(R.id.profile_fragment_mail);
 
+        userEmail.setText(mAuth.getCurrentUser().getEmail());
 
         DatabaseReference refImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
         refImage.addValueEventListener(new ValueEventListener() {
@@ -110,10 +115,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        userEmail.setText(mAuth.getCurrentUser().getEmail());
-
-
-        Button buttonSignOut = (Button) view.findViewById(R.id.button1);
+        buttonSignOut = view.findViewById(R.id.button1);
         buttonSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,12 +125,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-        Button buttonOut = (Button) view.findViewById(R.id.button2);
-        buttonOut.setOnClickListener(new View.OnClickListener() {
+        buttonChat = view.findViewById(R.id.button2);
+        buttonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openChat();
+            }
+        });
+
+        userPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent setupIntent = new Intent(getActivity(), SetupActivity.class);
+                startActivity(setupIntent);
             }
         });
         return view;
@@ -149,7 +158,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void revokeAccess() {
-
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -159,5 +167,4 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-
 }
