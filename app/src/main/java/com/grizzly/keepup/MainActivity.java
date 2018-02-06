@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.grizzly.keepup.mainFragments.MapFragment;
+import com.grizzly.keepup.mainFragments.Map.MapFragment;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeedFragment;
 import com.grizzly.keepup.mainFragments.ProfileFragment;
 
