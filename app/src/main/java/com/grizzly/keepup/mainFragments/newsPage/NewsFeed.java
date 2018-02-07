@@ -9,6 +9,7 @@ import java.util.Date;
 public class NewsFeed {
 
     private Long run_date;
+    private Long reversed_timestamp;
     private String specific_run_image;
     private String distance;
     private int time;
@@ -18,10 +19,19 @@ public class NewsFeed {
         this.distance = distance;
         this.time = time;
         run_date = new Date().getTime();
+        reversed_timestamp = - new Date().getTime();
     }
 
     public NewsFeed() {
 
+    }
+
+    public Long getReversed_timestamp() {
+        return reversed_timestamp;
+    }
+
+    public void setReversed_timestamp(Long reversed_timestamp) {
+        this.reversed_timestamp = reversed_timestamp;
     }
 
     public void setDistance(String distance) {
