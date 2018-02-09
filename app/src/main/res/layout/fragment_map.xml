@@ -16,11 +16,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="260dp"
         android:layout_marginStart="16dp"
+        android:background="@color/mapTab"
         android:layout_marginEnd="8dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="48dp"
         app:cardCornerRadius="@dimen/corner_radius"
         android:layout_centerHorizontal="true"
         android:innerRadius="0dp"
@@ -29,31 +29,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/mapTab">
 
-            <View
-                android:id="@+id/vertical_line_map"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:background="#9E9E9E"
-                android:scaleType="centerCrop"/>
+            <!--<View-->
+                <!--android:id="@+id/vertical_line_map"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="#9E9E9E"-->
+                <!--android:scaleType="centerCrop"/>-->
 
 
-            <View
-                android:id="@+id/horizontal_line_map"
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_centerHorizontal="true"
-                android:background="#9E9E9E"
-                android:scaleType="centerCrop"/>
+            <!--<View-->
+                <!--android:id="@+id/horizontal_line_map"-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:background="#9E9E9E"-->
+                <!--android:scaleType="centerCrop"/>-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Distance"
                 android:layout_margin="8dp"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:textSize="@dimen/big_text_height"
                 android:textStyle="bold" />
 
@@ -74,8 +75,7 @@
                 android:text="Time"
                 android:layout_marginLeft="188dp"
                 android:layout_marginTop="8dp"
-                android:layout_alignStart="@+id/vertical_line_map"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:textSize="@dimen/big_text_height"
                 android:textStyle="bold" />
 
@@ -83,7 +83,6 @@
                 android:id="@+id/map_time_traveled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/vertical_line_map"
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="188dp"
                 android:text="00:00"

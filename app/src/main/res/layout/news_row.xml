@@ -19,8 +19,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#00c1ff">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="#62000000"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/news_profile_image"
@@ -38,7 +44,7 @@
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="@dimen/layout_padding"
                 android:text="name"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:textSize="@dimen/middle_text_height" />
 
             <ImageView
@@ -61,7 +67,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="8dp"
                 android:paddingTop="8dp"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:text="@string/profile_date"
                 android:textSize="@dimen/middle_text_height" />
 
@@ -70,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:layout_alignTop="@+id/news_post_image"
                 android:layout_marginTop="240dp"
                 android:padding="8dp"

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#774df2</color>
-    <color name="colorPrimaryDark">#512DA8</color>
-    <color name="colorAccent">#39474e</color>
+    <color name="colorPrimary">#232534</color>
+    <color name="colorPrimaryDark">#2F3045</color>
+    <color name="colorAccent">#00F0EF</color>
 
-    <color name="text_dark">#000000</color>
     <color name="text_light">#ffffff</color>
+    <color name="text_dark">#000000</color>
     <color name="text_gray">#cecece</color>
     <color name="text_dark_gray">#353535</color>
 
@@ -30,6 +30,18 @@
     <color name="groupChatDateBackground">#C0C0C0</color>
 
 
+
+
+    <color name="mapBackGround">#232534</color>
+    <color name="mapTab">#2F3045</color>
+    <color name="gradientStart">#00C0FE</color>
+    <color name="gradientEnd">#4073F3</color>
+    <color name="Text">#00F0EF</color>
+
+    <color name="gradient1">#FFA17C</color>
+    <color name="gradient2">#FFF6A7</color>
+    <color name="gradient3">#59DAC6</color>
+    <color name="purple">#B141FB</color>
 
 
 </resources>

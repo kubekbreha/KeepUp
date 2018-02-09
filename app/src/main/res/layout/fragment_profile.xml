@@ -13,7 +13,16 @@
     <FrameLayout
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/status_bar_height" />
+        android:layout_height="@dimen/status_bar_height"
+        android:background="@color/colorPrimary"
+        />
+
+    <FrameLayout
+        android:layout_marginTop="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notification_bar_height"
+        android:background="@color/colorPrimary" />
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -24,7 +33,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="104dp"
-            android:id="@+id/profile_picture">
+            android:id="@+id/profile_picture"
+            android:background="@color/colorPrimary">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_marginTop="0dp"
@@ -44,7 +54,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/profile_fragment_image"
                 android:text="TextView"
-                android:textColor="@color/text_dark"
+                android:textColor="@color/text_light"
                 android:textSize="@dimen/middle_text_height"
                 android:textStyle="bold" />
 
@@ -56,7 +66,8 @@
                 android:layout_alignStart="@+id/profile_fragment_name"
                 android:layout_below="@+id/profile_fragment_name"
                 android:layout_marginTop="12dp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/text_light"/>
 
 
             <ImageButton

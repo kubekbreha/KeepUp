@@ -5,7 +5,7 @@
     <dimen name="detail_photo_height">256dp</dimen>
     <dimen name="layout_padding">8dp</dimen>
 
-    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="corner_radius">6dp</dimen>
 
     <dimen name="middle_text_view_height">24dp</dimen>
     <dimen name="big_text_height">20dp</dimen>
