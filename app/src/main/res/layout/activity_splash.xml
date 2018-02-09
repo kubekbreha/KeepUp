@@ -6,8 +6,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView android:layout_width="120dp"
-        android:layout_height="120dp"
+    <ImageView android:layout_width="@dimen/big_logo"
+        android:layout_height="@dimen/big_logo"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo" />

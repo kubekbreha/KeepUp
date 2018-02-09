@@ -75,6 +75,9 @@ public class NewsFeedFragment extends Fragment {
         mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
         mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
 
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mAuth.getUid().toString()).child("runs");
+
         return view;
     }
 
@@ -98,16 +101,13 @@ public class NewsFeedFragment extends Fragment {
      * Populate viewHolder
      */
     private void loadNews() {
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth.getUid().toString()).child("runs");
-
         FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
                 (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
                         mDatabase.limitToFirst(mCurrentPage * TOTAL_ITEMS_TO_LOAD).orderByChild("reversed_timestamp")) {
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
-                viewHolder.setRunDate(model.getmRunDate());
-                viewHolder.setImage(getContext(), model.getmSpecificRunImage());
+                viewHolder.setRunDate(model.getRunDate());
+                viewHolder.setImage(getContext(), model.getSpecificRunImage());
                 viewHolder.setRunStats(model.getTime(), model.getDistance());
                 viewHolder.setProfileImage(getContext(), mRefProfileImage);
                 viewHolder.setProfileName(mRefProfileName);
@@ -127,8 +127,8 @@ public class NewsFeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                intent.putExtra("RUN_DATE", model.getmRunDate());
-                intent.putExtra("RUN_STATS_IMAGE", model.getmSpecificRunImage());
+                intent.putExtra("RUN_DATE", model.getRunDate());
+                intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
 
                 startActivity(intent);
             }

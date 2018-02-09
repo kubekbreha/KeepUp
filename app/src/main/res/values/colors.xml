@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#512DA8</color>
     <color name="colorAccent">#39474e</color>
 
+    <color name="text_dark">#000000</color>
+    <color name="text_light">#ffffff</color>
+    <color name="text_gray">#cecece</color>
+    <color name="text_dark_gray">#353535</color>
 
     <color name="btn_send">#774df2</color>
     <color name="btn_send_disabled">#8e8e8e</color>

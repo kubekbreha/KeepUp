@@ -10,8 +10,8 @@
 
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/big_logo"
+        android:layout_height="@dimen/big_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="112dp"
         android:src="@drawable/logo" />
@@ -20,28 +20,30 @@
     <Button
         android:id="@+id/login_button"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/button_height"
         android:layout_above="@+id/register_button"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="24dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
         android:background="@drawable/rounded_input"
         android:elevation="0dp"
+        android:textSize="@dimen/button_text_height"
         android:text="@string/login"
-        android:textColor="#ffffff" />
+        android:textColor="@color/text_light" />
 
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/button_height"
         android:layout_above="@+id/social_buttons"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
         android:background="@drawable/button_background"
         android:elevation="0dp"
+        android:textSize="@dimen/button_text_height"
         android:text="@string/register" />
 
     <Button
@@ -49,9 +51,9 @@
         android:layout_height="1dp"
         android:layout_alignBottom="@id/social_buttons"
         android:layout_marginBottom="78dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
-        android:background="#ffffff"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:background="@color/text_light"
         android:clickable="false"
         android:elevation="0dp" />
 
@@ -66,33 +68,33 @@
         <Button
             android:id="@+id/login_button_facebook"
             android:layout_width="wrap_content"
-            android:layout_height="54dp"
+            android:layout_height="@dimen/button_height"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="48dp"
+            android:layout_marginEnd="@dimen/button_margin"
             android:background="@drawable/button_background_facebook"
             android:drawableStart="@drawable/fb_logo_xml"
             android:elevation="0dp"
             android:minWidth="120dp"
-            android:paddingEnd="8dp"
+            android:paddingEnd="@dimen/button_padding"
             android:clickable="true"
             android:text="facebook"
             android:textColor="#ffffff"
-            android:textSize="14sp" />
+            android:textSize="@dimen/button_text_height" />
 
         <Button
             android:id="@+id/login_button_google"
             android:layout_width="wrap_content"
-            android:layout_height="54dp"
+            android:layout_height="@dimen/button_height"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="@dimen/button_margin"
             android:background="@drawable/button_background_google"
             android:drawableStart="@drawable/google_logo_xml"
             android:elevation="0dp"
             android:minWidth="120dp"
-            android:paddingEnd="8dp"
+            android:paddingEnd="@dimen/button_padding"
             android:text="google"
-            android:textColor="#ffffff"
-            android:textSize="14sp" />
+            android:textColor="@color/text_light"
+            android:textSize="@dimen/button_text_height" />
 
     </RelativeLayout>
 
@@ -105,7 +107,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="24dp"
         android:text="@string/welcome_to_my_app"
-        android:textColor="#ffffff"
+        android:textColor="@color/text_light"
         android:textSize="12sp" />
 
 

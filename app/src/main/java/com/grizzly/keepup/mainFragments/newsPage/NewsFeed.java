@@ -27,9 +27,9 @@ import java.util.Date;
  */
 public class NewsFeed {
 
-    private Long mRunDate;
-    private Long mReversedTimestamp;
-    private String mSpecificRunImage;
+    private Long runDate;
+    private Long reversedTimestamp;
+    private String specificRunImage;
     private String distance;
     private int time;
 
@@ -38,11 +38,11 @@ public class NewsFeed {
      * Constructor for setting.
      */
     public NewsFeed(String specificRunImage, String distance, int time) {
-        this.mSpecificRunImage = specificRunImage;
+        this.specificRunImage = specificRunImage;
         this.distance = distance;
         this.time = time;
-        mRunDate = new Date().getTime();
-        mReversedTimestamp = - new Date().getTime();
+        runDate = new Date().getTime();
+        reversedTimestamp = - new Date().getTime();
     }
 
     /**
@@ -55,12 +55,12 @@ public class NewsFeed {
     /**
      * Getters and setters for variables.
      */
-    public Long getmReversedTimestamp() {
-        return mReversedTimestamp;
+    public Long getReversedTimestamp() {
+        return reversedTimestamp;
     }
 
-    public void setmReversedTimestamp(Long reversedTimestamp) {
-        this.mReversedTimestamp = reversedTimestamp;
+    public void setReversedTimestamp(Long reversedTimestamp) {
+        this.reversedTimestamp = reversedTimestamp;
     }
 
     public void setDistance(String distance) {
@@ -79,19 +79,19 @@ public class NewsFeed {
         return time;
     }
 
-    public Long getmRunDate() {
-        return mRunDate;
+    public Long getRunDate() {
+        return runDate;
     }
 
-    public String getmSpecificRunImage() {
-        return mSpecificRunImage;
+    public String getSpecificRunImage() {
+        return specificRunImage;
     }
 
-    public void setmRunDate(Long mRunDate) {
-        this.mRunDate = mRunDate;
+    public void setRunDate(Long runDate) {
+        this.runDate = runDate;
     }
 
-    public void setmSpecificRunImage(String mSpecificRunImage) {
-        this.mSpecificRunImage = mSpecificRunImage;
+    public void setSpecificRunImage(String specificRunImage) {
+        this.specificRunImage = specificRunImage;
     }
 }

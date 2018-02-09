@@ -7,13 +7,13 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="24dp"
+        android:layout_height="@dimen/notification_bar_height"
         android:background="@color/colorPrimary" />
 
     <FrameLayout
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
-        android:layout_height="64sp" />
+        android:layout_height="@dimen/status_bar_height" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -44,14 +44,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/profile_fragment_image"
                 android:text="TextView"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/middle_text_height"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/profile_fragment_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/small_text_height"
                 android:layout_alignStart="@+id/profile_fragment_name"
                 android:layout_below="@+id/profile_fragment_name"
                 android:layout_marginTop="12dp"

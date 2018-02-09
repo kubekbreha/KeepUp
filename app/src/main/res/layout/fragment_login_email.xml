@@ -6,52 +6,52 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_anim"
     android:id="@+id/email_login_gradient"
-    tools:context="com.grizzly.keepup.login.RegisterActivity">
+    tools:context="com.grizzly.keepup.login.fragment.RegisterFragment">
 
 
     <EditText
         android:id="@+id/login_email"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/button_height"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="120dp"
         android:background="@drawable/rounded_input"
         android:hint="Email"
-        android:paddingLeft="16dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
-        android:textColor="#ffffff"
-        android:textColorHint="#cecece"
+        android:paddingLeft="@dimen/button_padding"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray"
         tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/login_password"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/button_height"
         android:layout_below="@+id/login_email"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_input"
         android:hint="Password"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
         android:inputType="textPassword"
-        android:paddingLeft="16dp"
-        android:textColor="#ffffff"
-        android:textColorHint="#cecece" />
+        android:paddingLeft="@dimen/button_padding"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray" />
 
     <Button
         android:id="@+id/login_email_button"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="40dp"
         android:layout_below="@+id/login_password"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_background"
         android:elevation="0dp"
         android:stateListAnimator="@null"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
         android:text="@string/login" />
 
     <TextView
@@ -62,5 +62,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:text="Forgot password ?"
-        android:textColor="#ffffff"/>
+        android:textColor="@color/text_light"/>
 </RelativeLayout>

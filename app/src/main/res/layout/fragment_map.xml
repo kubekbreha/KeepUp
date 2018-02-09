@@ -21,7 +21,7 @@
         android:layout_marginEnd="8dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="48dp"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="@dimen/corner_radius"
         android:layout_centerHorizontal="true"
         android:innerRadius="0dp"
         android:shape="ring"
@@ -53,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:text="Distance"
                 android:layout_margin="8dp"
-                android:textColor="#000000"
-                android:textSize="20sp"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/big_text_height"
                 android:textStyle="bold" />
 
             <TextView
@@ -64,8 +64,8 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="8dp"
                 android:text="0"
-                android:textColor="#1d1d1d"
-                android:textSize="16sp"
+                android:textColor="@color/text_dark_gray"
+                android:textSize="@dimen/middle_text_height"
                 android:textStyle="bold" />
 
             <TextView
@@ -75,8 +75,8 @@
                 android:layout_marginLeft="188dp"
                 android:layout_marginTop="8dp"
                 android:layout_alignStart="@+id/vertical_line_map"
-                android:textColor="#000000"
-                android:textSize="20sp"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/big_text_height"
                 android:textStyle="bold" />
 
             <Chronometer
@@ -87,19 +87,18 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="188dp"
                 android:text="00:00"
-                android:textColor="#1d1d1d"
-                android:textSize="16sp"
+                android:textColor="@color/text_dark_gray"
+                android:textSize="@dimen/middle_text_height"
                 android:textStyle="bold" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 
-
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/new_run_button"
         android:layout_width="160dp"
-        android:layout_height="59dp"
+        android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
@@ -108,8 +107,8 @@
         android:clickable="true"
         android:focusable="true"
         android:text="Start"
-        android:textColor="#ffff"
-        android:textSize="16sp"
+        android:textColor="@color/text_light"
+        android:textSize="@dimen/middle_text_height"
         android:textStyle="bold" />
 
 

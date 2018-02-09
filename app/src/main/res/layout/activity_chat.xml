@@ -51,8 +51,6 @@
             android:layout_gravity="bottom" />
     </LinearLayout>
 
-    <!--=========================================================================================-->
-
 
     <ListView
         android:id="@+id/list_of_messages"
