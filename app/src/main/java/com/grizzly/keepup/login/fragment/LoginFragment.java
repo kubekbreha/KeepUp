@@ -20,18 +20,13 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,17 +46,19 @@ import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.login.SetupActivity;
 
-import java.util.Arrays;
+/**
+ * Created by kubek on 1/21/18.
+ */
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends Fragment {
 
-    private static final String TAG = "LOGINFRAGMENT";
+    private static final String TAG = "LOGIN_FRAGMENT";
 
-    private final int GOOGLE_SIGN_IN_REQUEST_CODE = 0;
-    private final int FACEBOOK_LOG_IN_REQUEST_CODE = 64206;
+    private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 0;
+    private static final int FACEBOOK_LOG_IN_REQUEST_CODE = 64206;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -75,8 +72,8 @@ public class LoginFragment extends Fragment {
     //SignIn buttons
     private Button mFacebookButton;
     private Button mGoogleButton;
-    private Button registerButton;
-    private Button loginButton;
+    private Button mRegisterButton;
+    private Button mLoginButton;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -100,16 +97,16 @@ public class LoginFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
 
-        registerButton = v.findViewById(R.id.register_button);
-        loginButton = v.findViewById(R.id.login_button);
-        mGoogleButton = v.findViewById(R.id.login_button_google);
+        mRegisterButton = view.findViewById(R.id.register_button);
+        mLoginButton = view.findViewById(R.id.login_button);
+        mGoogleButton = view.findViewById(R.id.login_button_google);
 
-        mFacebookButton = v.findViewById(R.id.login_button_facebook);
+        mFacebookButton = view.findViewById(R.id.login_button_facebook);
         mFacebookCallbackManager = CallbackManager.Factory.create();
         mFacebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,12 +116,11 @@ public class LoginFragment extends Fragment {
         });
 
         //gradient
-        mRelativeLayout = v.findViewById(R.id.layout_login);
+        mRelativeLayout = view.findViewById(R.id.layout_login);
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
         mAnimationDrawable.setEnterFadeDuration(4500);
         mAnimationDrawable.setExitFadeDuration(4500);
         mAnimationDrawable.start();
-
 
         mGoogleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +129,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -145,7 +141,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -156,7 +152,7 @@ public class LoginFragment extends Fragment {
                         .commit();
             }
         });
-        return v;
+        return view;
     }
 
     @Override
@@ -176,7 +172,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-    //----------------------------------------------------------------------------------------------
     private void initFBAuthentication() {
         mAuth = FirebaseAuth.getInstance();
     }
@@ -198,7 +193,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-    //----------------------------------------------------------------------------------------------
     /**
      * Check if I'm already signed in.
      */
@@ -220,7 +214,6 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    //------------------------------------------FACEBOOK--------------------------------------------
     private void initFBFacebookLogIn() {
         Toast.makeText(getActivity(), "facebook login", Toast.LENGTH_SHORT).show();
 
@@ -272,15 +265,7 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void logOutWithFacebook() {
-        if (mAuth != null) {
-            LoginManager.getInstance().logOut();
-            signOut();
-            Log.d(TAG, "facebook log out");
-        }
-    }
 
-    //------------------------------------------GOOGLE----------------------------------------------
     private void signInWithGoogleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
@@ -332,11 +317,11 @@ public class LoginFragment extends Fragment {
     //----------------------------------------------------------------------------------------------
     private void checkUserExist() {
         if (mAuth.getCurrentUser() != null) {
-            final String user_id = mAuth.getCurrentUser().getUid();
+            final String userId = mAuth.getCurrentUser().getUid();
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChild(user_id)) {
+                    if (dataSnapshot.hasChild(userId)) {
                         updateUI();
                     } else {
                         Toast.makeText(getActivity(), "You need to set up your acount ", Toast.LENGTH_SHORT).show();
@@ -363,9 +348,4 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void signOut() {
-        if (mAuth != null) {
-            mAuth.signOut();
-        }
-    }
 }

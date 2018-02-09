@@ -49,6 +49,10 @@ import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import java.io.ByteArrayOutputStream;
 
 /**
+ * Created by kubek on 1/21/18.
+ */
+
+/**
  * A simple {@link Fragment} subclass.
  */
 public class MapFragment extends Fragment {
@@ -70,16 +74,16 @@ public class MapFragment extends Fragment {
     private StorageReference mStorageImage;
 
     private ProgressDialog mProgress;
-    private Boolean buttonStart = false;
+    private Boolean mButtonStart = false;
 
     private boolean mServiceBound = false;
-    private long timeWhenStopped;
+    private long mTimeWhenStopped;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mMapView = (MapView) view.findViewById(R.id.mapView);
+        mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
@@ -90,23 +94,21 @@ public class MapFragment extends Fragment {
         distanceTextView = view.findViewById(R.id.map_meters_traveled);
 
         mChronometer = view.findViewById(R.id.map_time_traveled);
-        //Button printTimestampButton =   view.findViewById(R.id.print_timestamp);
         serviceButton = view.findViewById(R.id.new_run_button);
-
 
         serviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!buttonStart) {
+                if (!mButtonStart) {
                     startChronometer();
-                    buttonStart = true;
+                    mButtonStart = true;
                     serviceButton.setText("stop");
 
                 } else {
                     takeSnapshot();
-                    timeWhenStopped = 0;
+                    mTimeWhenStopped = 0;
                     stopChronometer();
-                    buttonStart = false;
+                    mButtonStart = false;
                     serviceButton.setText("start");
                 }
             }
@@ -117,7 +119,6 @@ public class MapFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         mMapView.getMapAsync(new
 
@@ -164,8 +165,9 @@ public class MapFragment extends Fragment {
                                                      LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                                      mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
-                                                     if (buttonStart) {
-                                                         LatLng latLngNew = new LatLng(location.getLatitude() + 0.02, location.getLongitude() + 0.02);
+                                                     if (mButtonStart) {
+                                                         LatLng latLngNew = new LatLng(location.getLatitude() + 0.02,
+                                                                 location.getLongitude() + 0.02);
                                                          addPolyline(latLng, latLngNew);
                                                          float[] distance = getMeters(latLng, latLngNew);
                                                          //distanceTextView.setText((int) distance[0]);
@@ -175,35 +177,6 @@ public class MapFragment extends Fragment {
                                              });
                                          }
                                      });
-
-        /*ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {
-            }
-
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 0 ) {
-                    //Toast.makeText(getContext(), "map selected", Toast.LENGTH_LONG).show();
-                    if (buttonStart) {
-                        serviceButton.setText("stop");
-                        mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                        mChronometer.start();
-                    }
-                }
-            }
-
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    //Toast.makeText(getContext(), "map selected", Toast.LENGTH_LONG).show();
-                    if (buttonStart) {
-                        serviceButton.setText("stop");
-                        mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                        mChronometer.start();
-                    }
-                }
-            }
-        });*/
-
         return view;
     }
 
@@ -211,9 +184,9 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        if (buttonStart) {
+        if (mButtonStart) {
             serviceButton.setText("stop");
-            mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+            mChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
             mChronometer.start();
         }
     }
@@ -222,7 +195,7 @@ public class MapFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        timeWhenStopped = mChronometer.getBase() - SystemClock.elapsedRealtime();
+        mTimeWhenStopped = mChronometer.getBase() - SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -305,17 +278,13 @@ public class MapFragment extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    if (checkPermission())
-                        mGoogleMap.setMyLocationEnabled(true);
-
+                    if (checkPermission())  mGoogleMap.setMyLocationEnabled(true);
                 } else {
                     // Permission denied
-
                 }
                 break;
             }
         }
-
     }
 
     //-------------------------------------SCREENSHOT-----------------------------------------------
@@ -327,7 +296,6 @@ public class MapFragment extends Fragment {
             @Override
             public void onSnapshotReady(Bitmap snapshot) {
                 uploadRun(getImageUri(getContext(), snapshot));
-                // Callback is called from the main thread, so we can modify the ImageView safely.
             }
         };
         mGoogleMap.snapshot(callback);

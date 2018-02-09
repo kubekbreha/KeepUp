@@ -38,9 +38,9 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     public void setRunDate(Long time) {
         TextView runDate = mView.findViewById(R.id.news_post_date);
-        Date date=new Date(time);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        String dateText = df2.format(date);
+        Date date = new Date(time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        String dateText = dateFormat.format(date);
         runDate.setText(dateText);
     }
 
@@ -51,11 +51,10 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     public void setImage(Context context, String image) {
         ImageView imageView = mView.findViewById(R.id.news_post_image);
-        Picasso.with(context).load(image).resize(100, 70).into(imageView);
-
+        Picasso.with(context).load(image).into(imageView);
     }
 
-    public void setProfileImage(final Context context, DatabaseReference database){
+    public void setProfileImage(final Context context, DatabaseReference database) {
         final ImageView profileImageView = mView.findViewById(R.id.news_profile_image);
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,7 +71,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setProfileName(DatabaseReference database){
+    public void setProfileName(DatabaseReference database) {
         final TextView profileName = mView.findViewById(R.id.news_profile_name);
         database.addValueEventListener(new ValueEventListener() {
             @Override

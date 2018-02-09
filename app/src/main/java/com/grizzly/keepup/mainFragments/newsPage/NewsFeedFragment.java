@@ -1,49 +1,30 @@
 package com.grizzly.keepup.mainFragments.newsPage;
 
 
-import android.content.Context;
-import android.icu.text.SimpleDateFormat;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.R;
-import com.squareup.picasso.Picasso;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+/**
+ * Created by kubek on 1/31/18.
+ */
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFeedFragment extends Fragment{
+public class NewsFeedFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
@@ -56,7 +37,6 @@ public class NewsFeedFragment extends Fragment{
 
     private static int TOTAL_ITEMS_TO_LOAD = 2;
     private int mCurrentPage = 1;
-
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -80,9 +60,6 @@ public class NewsFeedFragment extends Fragment{
         refProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
         refProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
 
-        mDatabase = (DatabaseReference) FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth.getUid().toString()).child("runs");
-
         return view;
     }
 
@@ -102,21 +79,36 @@ public class NewsFeedFragment extends Fragment{
         });
     }
 
-    private void loadNews(){
+    private void loadNews() {
+        mDatabase = (DatabaseReference) FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mAuth.getUid().toString()).child("runs");
+
         FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
-                (NewsFeed.class,  R.layout.news_row, NewsViewHolder.class,
+                (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
                         mDatabase.limitToFirst(mCurrentPage * TOTAL_ITEMS_TO_LOAD).orderByChild("reversed_timestamp")) {
             @Override
-            protected void populateViewHolder(NewsViewHolder viewHolder, NewsFeed model, int position) {
-                viewHolder.setRunDate(model.getRun_date());
-                viewHolder.setImage(getContext(), model.getSpecific_run_image());
-                viewHolder.setRunStats(model.getTime(), model.getDistance() );
+            protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
+                viewHolder.setRunDate(model.getmRunDate());
+                viewHolder.setImage(getContext(), model.getmSpecificRunImage());
+                viewHolder.setRunStats(model.getTime(), model.getDistance());
                 viewHolder.setProfileImage(getContext(), refProfileImage);
                 viewHolder.setProfileName(refProfileName);
+
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                        intent.putExtra("RUN_DATE", model.getmRunDate());
+                        intent.putExtra("RUN_STATS_IMAGE", model.getmSpecificRunImage());
+
+                        startActivity(intent);
+                    }
+                });
+
             }
         };
         mRefreshLayout.setRefreshing(false);
         newsList.setAdapter(firebaseRecyclerAdapter);
     }
-
 }

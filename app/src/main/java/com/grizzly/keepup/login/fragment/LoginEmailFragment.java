@@ -29,6 +29,10 @@ import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 
 /**
+ * Created by kubek on 1/21/18.
+ */
+
+/**
  * A simple {@link Fragment} subclass.
  */
 public class LoginEmailFragment extends Fragment {
@@ -44,23 +48,21 @@ public class LoginEmailFragment extends Fragment {
     private AnimationDrawable mAnimationDrawable;
     private RelativeLayout mRelativeLayout;
 
-
     public LoginEmailFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
-        View v = inflater.inflate(R.layout.fragment_login_email, container, false);
+        View view = inflater.inflate(R.layout.fragment_login_email, container, false);
 
-        mRelativeLayout = v.findViewById(R.id.email_login_gradient);
+        mRelativeLayout = view.findViewById(R.id.email_login_gradient);
 
-        mLoginButton = v.findViewById(R.id.login_email_button);
-        mLoginEmailField = v.findViewById(R.id.login_email);
-        mLoginPasswordField = v.findViewById(R.id.login_password);
+        mLoginButton = view.findViewById(R.id.login_email_button);
+        mLoginEmailField = view.findViewById(R.id.login_email);
+        mLoginPasswordField = view.findViewById(R.id.login_password);
 
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
         mAnimationDrawable.setEnterFadeDuration(4500);
@@ -78,7 +80,8 @@ public class LoginEmailFragment extends Fragment {
             }
 
         });
-        return v;
+
+        return view;
     }
 
     private void checkLogin() {
@@ -86,10 +89,8 @@ public class LoginEmailFragment extends Fragment {
         String password = mLoginPasswordField.getText().toString().trim();
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-
             mProgres.setMessage("Checking Login");
             mProgres.show();
-
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -106,11 +107,11 @@ public class LoginEmailFragment extends Fragment {
     }
 
     private void checkUserExist() {
-        final String user_id = mAuth.getCurrentUser().getUid();
+        final String userId = mAuth.getCurrentUser().getUid();
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(user_id)) {
+                if (dataSnapshot.hasChild(userId)) {
                     updateUI();
                 } else {
                     Toast.makeText(getActivity(), "You need to set up your acount ", Toast.LENGTH_SHORT).show();
@@ -121,11 +122,8 @@ public class LoginEmailFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
-
     }
-
 
     private void updateUI() {
         Intent accountIntent = new Intent(getActivity(), MainActivity.class);

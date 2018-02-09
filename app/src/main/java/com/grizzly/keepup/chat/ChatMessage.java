@@ -8,40 +8,40 @@ import java.util.Date;
 
 public class ChatMessage {
 
-    private String messageText;
-    private String messageUser;
-    private Long messageTime;
+    private String mMessageText;
+    private String mMessageUser;
+    private Long mMessageTime;
 
     public ChatMessage(String messageText, String messageUser) {
-        this.messageText = messageText;
-        this.messageUser = messageUser;
-        messageTime = new Date().getTime();
+        this.mMessageText = messageText;
+        this.mMessageUser = messageUser;
+        mMessageTime = new Date().getTime();
     }
 
     public ChatMessage() {
     }
 
-    public String getMessageText() {
-        return messageText;
+    public String getmMessageText() {
+        return mMessageText;
     }
 
-    public String getMessageUser() {
-        return messageUser;
+    public String getmMessageUser() {
+        return mMessageUser;
     }
 
-    public Long getMessageTime() {
-        return messageTime;
+    public Long getmMessageTime() {
+        return mMessageTime;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
+    public void setmMessageText(String messageText) {
+        this.mMessageText = messageText;
     }
 
-    public void setMessageUser(String messageUser) {
-        this.messageUser = messageUser;
+    public void setmMessageUser(String messageUser) {
+        this.mMessageUser = messageUser;
     }
 
-    public void setMessageTime(Long messageTime) {
-        this.messageTime = messageTime;
+    public void setmMessageTime(Long messageTime) {
+        this.mMessageTime = messageTime;
     }
 }

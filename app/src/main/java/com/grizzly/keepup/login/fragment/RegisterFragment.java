@@ -28,6 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 
+/**
+ * Created by kubek on 1/21/18.
+ */
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +49,6 @@ public class RegisterFragment extends Fragment {
     private AnimationDrawable mAnimationDrawable;
     private RelativeLayout mRelativeLayout;
 
-
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -54,13 +56,13 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_register, container, false);
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        mRelativeLayout = (RelativeLayout) v.findViewById(R.id.register_gradient);
-        mNameField = v.findViewById(R.id.edit_name);
-        mEmailField = v.findViewById(R.id.edit_email);
-        mPasswordField = v.findViewById(R.id.edit_password);
-        mRegisterButton = v.findViewById(R.id.confirm_register_button);
+        mRelativeLayout = view.findViewById(R.id.register_gradient);
+        mNameField = view.findViewById(R.id.edit_name);
+        mEmailField = view.findViewById(R.id.edit_email);
+        mPasswordField = view.findViewById(R.id.edit_password);
+        mRegisterButton = view.findViewById(R.id.confirm_register_button);
 
         // Inflate the layout for this fragment
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
@@ -83,7 +85,7 @@ public class RegisterFragment extends Fragment {
                 doRegister();
             }
         });
-        return v;
+        return view;
     }
 
 

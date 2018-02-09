@@ -32,6 +32,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Created by kubek on 1/21/18.
+ */
+
 public class SetupActivity extends AppCompatActivity {
 
     @BindView(R.id.profile_image_button)
@@ -67,6 +71,7 @@ public class SetupActivity extends AppCompatActivity {
         mAnimationDrawable.setEnterFadeDuration(4500);
         mAnimationDrawable.setExitFadeDuration(4500);
         mAnimationDrawable.start();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -76,7 +81,6 @@ public class SetupActivity extends AppCompatActivity {
 
         mProgress = new ProgressDialog(this);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-
         mStorageImage = FirebaseStorage.getInstance().getReference().child("profile_images");
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +90,6 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-
         mSetupImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +98,6 @@ public class SetupActivity extends AppCompatActivity {
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, GALLERY_REQUEST);
-
 
             }
         });
@@ -133,8 +135,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private void startSetupAccount() {
         final String name = mNameField.getText().toString().trim();
-        final String user_id = mAuth.getCurrentUser().getUid();
-
+        final String userId = mAuth.getCurrentUser().getUid();
 
         if (!TextUtils.isEmpty(name) && mImageUri != null) {
 
@@ -149,8 +150,8 @@ public class SetupActivity extends AppCompatActivity {
 
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
-                    mDatabase.child(user_id).child("name").setValue(name);
-                    mDatabase.child(user_id).child("image").setValue(downloadUri);
+                    mDatabase.child(userId).child("name").setValue(name);
+                    mDatabase.child(userId).child("image").setValue(downloadUri);
 
                     mProgress.dismiss();
 
@@ -162,7 +163,6 @@ public class SetupActivity extends AppCompatActivity {
             });
         }
     }
-
 }
 
 

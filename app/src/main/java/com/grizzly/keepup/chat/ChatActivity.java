@@ -19,14 +19,18 @@ import com.grizzly.keepup.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by kubek on 1/17/18.
+ */
+
 public class ChatActivity extends AppCompatActivity {
 
-    private FirebaseListAdapter<ChatMessage> adapter;
+    private FirebaseListAdapter<ChatMessage> mAdapter;
 
     @BindView(R.id.activity_main)
-    RelativeLayout acticity_main;
+    RelativeLayout mActicityMain;
     @BindView(R.id.fab)
-    Button fab;
+    Button mFab;
 
 
     @Override
@@ -35,50 +39,45 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText) findViewById(R.id.input);
-                FirebaseDatabase.getInstance().getReference().child("messages").push().setValue(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+                EditText input = findViewById(R.id.input);
+                FirebaseDatabase.getInstance().getReference().child("messages").push()
+                        .setValue(new ChatMessage(input.getText().toString(),
+                                FirebaseAuth.getInstance().getCurrentUser().getEmail()));
                 input.setText("");
             }
         });
 
-
         //check if not sign in then navidate to sign in
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(ChatActivity.this, "no user", Toast.LENGTH_LONG).show();
-            //basic firebase login dont needed now
-            //startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(), SIGN_IN_REQUEST_CODE);
         } else {
-            Toast.makeText(ChatActivity.this, "welcome " + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
-            //Snackbar.make(acticity_main, "welcome " + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "welcome " + FirebaseAuth.getInstance()
+                    .getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
             displayChatMessage();
         }
 
     }
 
     private void displayChatMessage() {
-        ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
+        ListView listOfMessages = findViewById(R.id.list_of_messages);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.chat_message_me,
+        mAdapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.chat_message_me,
                 FirebaseDatabase.getInstance().getReference().child("messages")) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 //get reference to to the value og list_item.xml
-                TextView messageText, messageUser, messageTime;
-                messageText = (TextView) v.findViewById(R.id.message_text);
-                //messageUser = (TextView)v.findViewById(R.id.message_user);
-                messageTime = (TextView) v.findViewById(R.id.message_time);
+                TextView messageText, messageTime;
+                messageText = v.findViewById(R.id.message_text);
+                messageTime = v.findViewById(R.id.message_time);
 
-                messageText.setText(model.getMessageText());
-                //messageUser.setText(model.getMessageUser());
-                messageTime.setText(DateFormat.format("HH:mm", model.getMessageTime()));
+                messageText.setText(model.getmMessageText());
+                messageTime.setText(DateFormat.format("HH:mm", model.getmMessageTime()));
             }
         };
-        listOfMessages.setAdapter(adapter);
+        listOfMessages.setAdapter(mAdapter);
     }
 
     @Override

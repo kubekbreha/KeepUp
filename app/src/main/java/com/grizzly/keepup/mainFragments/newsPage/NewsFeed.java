@@ -8,30 +8,30 @@ import java.util.Date;
 
 public class NewsFeed {
 
-    private Long run_date;
-    private Long reversed_timestamp;
-    private String specific_run_image;
+    private Long mRunDate;
+    private Long mReversedTimestamp;
+    private String mSpecificRunImage;
     private String distance;
     private int time;
 
-    public NewsFeed(String specific_run_image, String distance, int time) {
-        this.specific_run_image = specific_run_image;
+    public NewsFeed(String specificRunImage, String distance, int time) {
+        this.mSpecificRunImage = specificRunImage;
         this.distance = distance;
         this.time = time;
-        run_date = new Date().getTime();
-        reversed_timestamp = - new Date().getTime();
+        mRunDate = new Date().getTime();
+        mReversedTimestamp = - new Date().getTime();
     }
 
     public NewsFeed() {
 
     }
 
-    public Long getReversed_timestamp() {
-        return reversed_timestamp;
+    public Long getmReversedTimestamp() {
+        return mReversedTimestamp;
     }
 
-    public void setReversed_timestamp(Long reversed_timestamp) {
-        this.reversed_timestamp = reversed_timestamp;
+    public void setmReversedTimestamp(Long reversedTimestamp) {
+        this.mReversedTimestamp = reversedTimestamp;
     }
 
     public void setDistance(String distance) {
@@ -50,19 +50,19 @@ public class NewsFeed {
         return time;
     }
 
-    public Long getRun_date() {
-        return run_date;
+    public Long getmRunDate() {
+        return mRunDate;
     }
 
-    public String getSpecific_run_image() {
-        return specific_run_image;
+    public String getmSpecificRunImage() {
+        return mSpecificRunImage;
     }
 
-    public void setRun_date(Long run_date) {
-        this.run_date = run_date;
+    public void setmRunDate(Long mRunDate) {
+        this.mRunDate = mRunDate;
     }
 
-    public void setSpecific_run_image(String specific_run_image) {
-        this.specific_run_image = specific_run_image;
+    public void setmSpecificRunImage(String mSpecificRunImage) {
+        this.mSpecificRunImage = mSpecificRunImage;
     }
 }

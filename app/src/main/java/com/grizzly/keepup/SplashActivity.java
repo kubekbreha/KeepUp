@@ -36,8 +36,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
-
         mRelativeLayout = findViewById(R.id.splash_activity);
 
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
@@ -50,30 +48,26 @@ public class SplashActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
-
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             checkUserExist();
         }else{
             goToLogin();
         }
-
     }
 
 
     private void checkUserExist() {
         if (mAuth.getCurrentUser() != null) {
-            final String user_id = mAuth.getCurrentUser().getUid();
+            final String userId = mAuth.getCurrentUser().getUid();
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChild(user_id)) {
+                    if (dataSnapshot.hasChild(userId)) {
                         updateUI();
                     } else {
-                        //Toast.makeText(LoginActivity.this, "You need to set up your acount ", Toast.LENGTH_SHORT).show();
                         goToSetupActivity();
                     }
                 }
@@ -91,16 +85,12 @@ public class SplashActivity extends AppCompatActivity {
      * This will switch activities. Used only after success login.
      */
     private void updateUI() {
-        //Toast.makeText(LoginActivity.this, "logged in", Toast.LENGTH_SHORT).show();
-
         Intent accountIntent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(accountIntent);
         finish();
     }
 
     private void goToLogin() {
-        //Toast.makeText(LoginActivity.this, "logged in", Toast.LENGTH_SHORT).show();
-
         Intent accountIntent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(accountIntent);
         finish();

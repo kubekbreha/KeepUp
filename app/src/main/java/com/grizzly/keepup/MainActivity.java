@@ -17,15 +17,17 @@ import com.grizzly.keepup.mainFragments.Map.MapFragment;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeedFragment;
 import com.grizzly.keepup.mainFragments.ProfileFragment;
 
+/**
+ * Created by kubek on 1/31/18.
+ */
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Location";
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
     private FirebaseAuth mAuth;
-    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +38,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
-
         mAuth = FirebaseAuth.getInstance();
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        mViewPager = findViewById(R.id.viewpager);
+        setupViewPager(mViewPager);
 
         //ask to turn on location
         CheckEnableGPS();
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout = findViewById(R.id.tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
             }
@@ -100,6 +101,4 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.show();
         }
     }
-
-
 }
