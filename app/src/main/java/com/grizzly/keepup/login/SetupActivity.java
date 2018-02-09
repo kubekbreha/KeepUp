@@ -52,6 +52,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by kubek on 1/21/18.
  */
 
+/**
+ * Activity where profile picture and name is set.
+ */
 public class SetupActivity extends AppCompatActivity {
 
     @BindView(R.id.profile_image_button)
@@ -61,6 +64,8 @@ public class SetupActivity extends AppCompatActivity {
     @BindView(R.id.submit_setup)
     Button mSubmitButton;
 
+    private static final int GALLERY_REQUEST = 1;
+
     private Uri mImageUri;
     private ProgressDialog mProgress;
     private DatabaseReference mDatabase;
@@ -69,8 +74,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private AnimationDrawable mAnimationDrawable;
     private RelativeLayout mRelativeLayout;
-
-    private static final int GALLERY_REQUEST = 1;
 
     public SetupActivity() {
     }
@@ -99,27 +102,45 @@ public class SetupActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mStorageImage = FirebaseStorage.getInstance().getReference().child("profile_images");
 
+        setUpName();
+        setUpImage();
+    }
+
+    /**
+     * Listener on mSubmitButton.
+     * Confirm setup onClick.
+     */
+    private void setUpName() {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSetupAccount();
             }
         });
+    }
 
+    /**
+     * Listener on mSetupImageButton.
+     * Set image on click.
+     * Open gallery.
+     */
+    private void setUpImage() {
         mSetupImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, GALLERY_REQUEST);
-
             }
         });
+
     }
 
 
+    /**
+     * Load image to imageView.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -148,7 +169,10 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Setup account.
+     * Sending data to database.
+     */
     private void startSetupAccount() {
         final String name = mNameField.getText().toString().trim();
         final String userId = mAuth.getCurrentUser().getUid();
@@ -180,15 +204,3 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

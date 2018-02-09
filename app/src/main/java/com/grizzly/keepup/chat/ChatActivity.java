@@ -39,6 +39,9 @@ import butterknife.ButterKnife;
  * Created by kubek on 1/17/18.
  */
 
+/**
+ * Main chat activity, connecting to database and sending messages
+ */
 public class ChatActivity extends AppCompatActivity {
 
     private FirebaseListAdapter<ChatMessage> mAdapter;
@@ -77,6 +80,9 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Show chat message in ListView
+     */
     private void displayChatMessage() {
         ListView listOfMessages = findViewById(R.id.list_of_messages);
 

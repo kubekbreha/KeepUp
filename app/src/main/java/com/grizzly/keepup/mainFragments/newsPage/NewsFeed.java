@@ -22,6 +22,9 @@ import java.util.Date;
  * Created by kubek on 1/27/2018.
  */
 
+/**
+ * News feed adapter.
+ */
 public class NewsFeed {
 
     private Long mRunDate;
@@ -30,6 +33,10 @@ public class NewsFeed {
     private String distance;
     private int time;
 
+
+    /**
+     * Constructor for setting.
+     */
     public NewsFeed(String specificRunImage, String distance, int time) {
         this.mSpecificRunImage = specificRunImage;
         this.distance = distance;
@@ -38,10 +45,16 @@ public class NewsFeed {
         mReversedTimestamp = - new Date().getTime();
     }
 
+    /**
+     * Constructor for getting.
+     */
     public NewsFeed() {
-
     }
 
+
+    /**
+     * Getters and setters for variables.
+     */
     public Long getmReversedTimestamp() {
         return mReversedTimestamp;
     }

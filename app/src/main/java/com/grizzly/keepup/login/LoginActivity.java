@@ -30,6 +30,12 @@ import com.grizzly.keepup.login.fragment.LoginFragment;
  * Created by kubek on 1/21/18.
  */
 
+
+/**
+ * Activity which handle loginFragments.
+ * Add loginFragment.
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -48,8 +54,5 @@ public class LoginActivity extends AppCompatActivity {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
     }
-
-
 }

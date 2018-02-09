@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,16 +95,29 @@ public class RegisterFragment extends Fragment {
         mProgress = new ProgressDialog(getContext());
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
+        registerButtonListener();
+
+        return view;
+    }
+
+    /**
+     * Listener on mRegisterButton.
+     * On click confirm registration.
+     */
+    private void registerButtonListener(){
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doRegister();
             }
         });
-        return view;
     }
 
 
+
+    /**
+     * Register new user using email.
+     */
     private void doRegister() {
         final String name = mNameField.getText().toString().trim();
         String email = mEmailField.getText().toString().trim();
@@ -135,9 +149,9 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-
     /**
-     * This will switch activities. Used only after success login.
+     * Open MainActivity.
+     * Called when user is authenticated.
      */
     private void updateUI() {
         Toast.makeText(getActivity(), "registered", Toast.LENGTH_SHORT).show();

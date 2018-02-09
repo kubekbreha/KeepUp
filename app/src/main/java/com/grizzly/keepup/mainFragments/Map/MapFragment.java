@@ -72,15 +72,16 @@ import java.io.ByteArrayOutputStream;
  */
 public class MapFragment extends Fragment {
 
-    private Button serviceButton;
+    private static final int REQ_PERMISSION = 99;
+    private static final String TAG = "MapFragment";
+    private Button mStartButton;
 
-    private static final String TAG = "MapTAG";
     private MapView mMapView;
     private GoogleMap mGoogleMap;
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
-    private LocationManager locationManager;
-    private TextView distanceTextView;
+    private LocationManager mLocationManager;
+    private TextView mDistanceTextView;
     private Chronometer mChronometer;
 
     //database vars
@@ -89,8 +90,8 @@ public class MapFragment extends Fragment {
     private StorageReference mStorageImage;
 
     private ProgressDialog mProgress;
-    private Boolean mButtonStart = false;
 
+    private Boolean mButtonStart = false;
     private boolean mServiceBound = false;
     private long mTimeWhenStopped;
 
@@ -106,35 +107,27 @@ public class MapFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs");
         mStorageImage = FirebaseStorage.getInstance().getReference().child("run_images");
 
-        distanceTextView = view.findViewById(R.id.map_meters_traveled);
+        mDistanceTextView = view.findViewById(R.id.map_meters_traveled);
 
         mChronometer = view.findViewById(R.id.map_time_traveled);
-        serviceButton = view.findViewById(R.id.new_run_button);
+        mStartButton = view.findViewById(R.id.new_run_button);
 
-        serviceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mButtonStart) {
-                    startChronometer();
-                    mButtonStart = true;
-                    serviceButton.setText("stop");
+        startButtonListener();
+        showMap();
 
-                } else {
-                    takeSnapshot();
-                    mTimeWhenStopped = 0;
-                    stopChronometer();
-                    mButtonStart = false;
-                    serviceButton.setText("start");
-                }
-            }
-        });
+        return view;
+    }
 
+    /**
+     * Show map.
+     * Called in onCreateView.
+     */
+    private void showMap(){
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mMapView.getMapAsync(new
 
                                      OnMapReadyCallback() {
@@ -185,14 +178,38 @@ public class MapFragment extends Fragment {
                                                                  location.getLongitude() + 0.02);
                                                          addPolyline(latLng, latLngNew);
                                                          float[] distance = getMeters(latLng, latLngNew);
-                                                         //distanceTextView.setText((int) distance[0]);
+                                                         //mDistanceTextView.setText((int) distance[0]);
                                                      }
                                                  }
 
                                              });
                                          }
                                      });
-        return view;
+    }
+
+    /**
+     * Listener on startRun button.
+     * Start run (chronometer).
+     * On Stop takeSnapshot().
+     */
+    private void startButtonListener(){
+        mStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mButtonStart) {
+                    startChronometer();
+                    mButtonStart = true;
+                    mStartButton.setText("stop");
+
+                } else {
+                    takeSnapshot();
+                    mTimeWhenStopped = 0;
+                    stopChronometer();
+                    mButtonStart = false;
+                    mStartButton.setText("start");
+                }
+            }
+        });
     }
 
     @Override
@@ -200,7 +217,7 @@ public class MapFragment extends Fragment {
         super.onResume();
         mMapView.onResume();
         if (mButtonStart) {
-            serviceButton.setText("stop");
+            mStartButton.setText("stop");
             mChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
             mChronometer.start();
         }
@@ -226,6 +243,9 @@ public class MapFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
+    /**
+     * Get meters from start and end LatLng.
+     */
     private float[] getMeters(LatLng start, LatLng end) {
         float[] results = new float[1];
         Location.distanceBetween(start.latitude, start.longitude,
@@ -233,6 +253,9 @@ public class MapFragment extends Fragment {
         return results;
     }
 
+    /**
+     * Add polyline to map.
+     */
     private void addPolyline(LatLng start, LatLng end) {
         PolylineOptions rectOptions = new PolylineOptions()
                 .add(new LatLng(start.latitude, start.longitude))
@@ -244,20 +267,25 @@ public class MapFragment extends Fragment {
         Polyline polyline = mGoogleMap.addPolyline(rectOptions);
     }
 
-
+    /**
+     * Start chronometer.
+     */
     private void startChronometer() {
         long systemCurrTime = SystemClock.elapsedRealtime();
         mChronometer.setBase(systemCurrTime);
         mChronometer.start();
     }
 
+    /**
+     * Stop chronometer.
+     */
     private void stopChronometer() {
         mChronometer.stop();
     }
 
-
-    //--------------------------------------PERMISIONS----------------------------------------------
-    // Check for permission to access Location
+    /**
+     * Check if permissions granted for Location and Storage.
+     */
     private boolean checkPermission() {
         Log.d(TAG, "checkPermission()");
         // Ask for permission if it wasn't granted yet
@@ -269,9 +297,10 @@ public class MapFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED);
     }
 
-    private static final int REQ_PERMISSION = 99;
 
-    // Asks for permission
+    /**
+     * Ask permisions for Location and Storage.
+     */
     private void askPermission() {
         Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
@@ -302,7 +331,9 @@ public class MapFragment extends Fragment {
         }
     }
 
-    //-------------------------------------SCREENSHOT-----------------------------------------------
+    /**
+     * Take snapshot of map.
+     */
     private void takeSnapshot() {
         if (mGoogleMap == null) {
             return;
@@ -316,6 +347,9 @@ public class MapFragment extends Fragment {
         mGoogleMap.snapshot(callback);
     }
 
+    /**
+     * Upload run to Firebase.
+     */
     private void uploadRun(Uri mRunImageUri) {
         if (mRunImageUri != null) {
             mProgress.setMessage("Uploading");
@@ -330,7 +364,7 @@ public class MapFragment extends Fragment {
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
-                            .push().setValue(new NewsFeed(downloadUri, distanceTextView.getText().toString(),
+                            .push().setValue(new NewsFeed(downloadUri, mDistanceTextView.getText().toString(),
                             elapsedMillis));
 
                     mProgress.dismiss();
@@ -339,7 +373,9 @@ public class MapFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Get image uri from Bitmap.
+     */
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

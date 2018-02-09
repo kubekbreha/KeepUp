@@ -39,6 +39,9 @@ import com.grizzly.keepup.login.SetupActivity;
  * Created by kubek on 1/30/18.
  */
 
+/**
+ * Splash activity in app start.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -67,6 +70,13 @@ public class SplashActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
 
+        userLogged();
+    }
+
+    /**
+     * Check if user loggedIn.
+     */
+    private void userLogged(){
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             checkUserExist();
         }else{
@@ -74,7 +84,9 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Check if user have setUp profile
+     */
     private void checkUserExist() {
         if (mAuth.getCurrentUser() != null) {
             final String userId = mAuth.getCurrentUser().getUid();
@@ -106,12 +118,18 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Change activity to loginActivity.
+     */
     private void goToLogin() {
         Intent accountIntent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(accountIntent);
         finish();
     }
 
+    /**
+     * Change activity to setupActivity.
+     */
     private void goToSetupActivity() {
         Intent accountIntent = new Intent(SplashActivity.this, SetupActivity.class);
         startActivity(accountIntent);

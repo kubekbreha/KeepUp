@@ -43,12 +43,12 @@ public class NewsFeedFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
-    private RecyclerView newsList;
+    private RecyclerView mNewsList;
     private DatabaseReference mDatabase;
-    private DatabaseReference refProfileImage;
-    private DatabaseReference refProfileName;
+    private DatabaseReference mRefProfileImage;
+    private DatabaseReference mRefProfileName;
     private SwipeRefreshLayout mRefreshLayout;
-    private LinearLayoutManager layoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     private static int TOTAL_ITEMS_TO_LOAD = 2;
     private int mCurrentPage = 1;
@@ -65,15 +65,15 @@ public class NewsFeedFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        newsList = view.findViewById(R.id.news_feed_list);
-        newsList.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
-        newsList.setLayoutManager(layoutManager);
+        mNewsList = view.findViewById(R.id.news_feed_list);
+        mNewsList.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mNewsList.setLayoutManager(mLayoutManager);
 
         mRefreshLayout = view.findViewById(R.id.news_swipe_load);
 
-        refProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
-        refProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
+        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
+        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
 
         return view;
     }
@@ -82,9 +82,7 @@ public class NewsFeedFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         loadNews();
-
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -94,8 +92,13 @@ public class NewsFeedFragment extends Fragment {
         });
     }
 
+
+    /**
+     * Load news feeds form database.
+     * Populate viewHolder
+     */
     private void loadNews() {
-        mDatabase = (DatabaseReference) FirebaseDatabase.getInstance().getReference()
+        mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mAuth.getUid().toString()).child("runs");
 
         FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
@@ -106,24 +109,29 @@ public class NewsFeedFragment extends Fragment {
                 viewHolder.setRunDate(model.getmRunDate());
                 viewHolder.setImage(getContext(), model.getmSpecificRunImage());
                 viewHolder.setRunStats(model.getTime(), model.getDistance());
-                viewHolder.setProfileImage(getContext(), refProfileImage);
-                viewHolder.setProfileName(refProfileName);
+                viewHolder.setProfileImage(getContext(), mRefProfileImage);
+                viewHolder.setProfileName(mRefProfileName);
 
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                        intent.putExtra("RUN_DATE", model.getmRunDate());
-                        intent.putExtra("RUN_STATS_IMAGE", model.getmSpecificRunImage());
-
-                        startActivity(intent);
-                    }
-                });
-
+                openDialogActivity(viewHolder, model);
             }
         };
         mRefreshLayout.setRefreshing(false);
-        newsList.setAdapter(firebaseRecyclerAdapter);
+        mNewsList.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    /**
+     * Open dialog window in RecyclerView.
+     */
+    private void openDialogActivity(NewsViewHolder viewHolder, final NewsFeed model){
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+                intent.putExtra("RUN_DATE", model.getmRunDate());
+                intent.putExtra("RUN_STATS_IMAGE", model.getmSpecificRunImage());
+
+                startActivity(intent);
+            }
+        });
     }
 }

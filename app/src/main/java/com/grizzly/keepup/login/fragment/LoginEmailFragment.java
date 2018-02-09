@@ -42,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
+import com.grizzly.keepup.login.SetupActivity;
 
 /**
  * Created by kubek on 1/21/18.
@@ -99,6 +100,9 @@ public class LoginEmailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Login via email, and get result if succeed or failed.
+     */
     private void checkLogin() {
         String email = mLoginEmailField.getText().toString().trim();
         String password = mLoginPasswordField.getText().toString().trim();
@@ -121,6 +125,10 @@ public class LoginEmailFragment extends Fragment {
         }
     }
 
+    /**
+     * Checking if user already exist in database.
+     * If not send user to SetupActivity.
+     */
     private void checkUserExist() {
         final String userId = mAuth.getCurrentUser().getUid();
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -129,7 +137,7 @@ public class LoginEmailFragment extends Fragment {
                 if (dataSnapshot.hasChild(userId)) {
                     updateUI();
                 } else {
-                    Toast.makeText(getActivity(), "You need to set up your acount ", Toast.LENGTH_SHORT).show();
+                    goToSetupActivity();
                 }
             }
 
@@ -140,8 +148,22 @@ public class LoginEmailFragment extends Fragment {
         });
     }
 
+    /**
+     * Open MainActivity.
+     * Called when user is authenticated.
+     */
     private void updateUI() {
         Intent accountIntent = new Intent(getActivity(), MainActivity.class);
+        startActivity(accountIntent);
+        getActivity().finish();
+    }
+
+    /**
+     * Open SetupActivity.
+     * Called when user is logged for first time and don't have set profile picture and name.
+     */
+    private void goToSetupActivity() {
+        Intent accountIntent = new Intent(getActivity(), SetupActivity.class);
         startActivity(accountIntent);
         getActivity().finish();
     }

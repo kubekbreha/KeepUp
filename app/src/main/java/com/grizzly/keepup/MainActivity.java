@@ -37,6 +37,9 @@ import com.grizzly.keepup.mainFragments.ProfileFragment;
  * Created by kubek on 1/31/18.
  */
 
+/**
+ * Main activity of application.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Main Location";
@@ -60,8 +63,14 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         //ask to turn on location
-        CheckEnableGPS();
+        enableGPS();
+        setupTabLayout();
+    }
 
+    /**
+     * Setup tab layout.
+     */
+    private void setupTabLayout(){
         mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -79,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Setup tabs names and fragments which represent them.
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MapFragment(), "RUN");
@@ -87,15 +99,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         moveTaskToBack(false);
     }
 
-
-    private void CheckEnableGPS() {
+    /**
+     * Ask to turn on Location Services if turned off.
+     */
+    private void enableGPS() {
         String provider = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         if (!provider.equals("")) {

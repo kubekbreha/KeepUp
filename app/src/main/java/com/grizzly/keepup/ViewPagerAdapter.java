@@ -27,6 +27,9 @@ import java.util.List;
  * Created by kubek on 1/20/18.
  */
 
+/**
+ * View pager adapter with fragments for main tabLayout.
+ */
 class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -45,6 +48,9 @@ class ViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.size();
     }
 
+    /**
+     * Ad fragment with fragment and title name.
+     */
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);

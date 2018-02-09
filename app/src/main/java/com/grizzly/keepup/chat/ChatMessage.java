@@ -22,6 +22,9 @@ import java.util.Date;
  * Created by kubek on 1/17/18.
  */
 
+/**
+ * Chat message adapter
+ */
 public class ChatMessage {
 
     private String mMessageText;

@@ -41,6 +41,10 @@ import java.util.Date;
  * Created by kubek on 2/7/2018.
  */
 
+
+/**
+ * ViewHolder for newsFragment.
+ */
 public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     private View mView;
@@ -52,6 +56,9 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Set run date.
+     */
     public void setRunDate(Long time) {
         TextView runDate = mView.findViewById(R.id.news_post_date);
         Date date = new Date(time);
@@ -60,16 +67,25 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
         runDate.setText(dateText);
     }
 
+    /**
+     * Set run statistics.
+     */
     public void setRunStats(int time, String distance) {
         TextView runStats = mView.findViewById(R.id.news_post_run_time_and_distance);
         runStats.setText("I runned " + distance + " in " + getTimeFromMilis(time));
     }
 
+    /**
+     * Set map image.
+     */
     public void setImage(Context context, String image) {
         ImageView imageView = mView.findViewById(R.id.news_post_image);
         Picasso.with(context).load(image).into(imageView);
     }
 
+    /**
+     * Set user profile image.
+     */
     public void setProfileImage(final Context context, DatabaseReference database) {
         final ImageView profileImageView = mView.findViewById(R.id.news_profile_image);
         database.addValueEventListener(new ValueEventListener() {
@@ -86,7 +102,9 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-
+    /**
+     * Set set user profile name.
+     */
     public void setProfileName(DatabaseReference database) {
         final TextView profileName = mView.findViewById(R.id.news_profile_name);
         database.addValueEventListener(new ValueEventListener() {
@@ -103,12 +121,14 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    //----------------------------------------------------------------------------------------------
-    private String getTimeFromMilis(int milis) {
-        long second = (milis / 1000) % 60;
-        long minute = (milis / (1000 * 60)) % 60;
-        long hour = (milis / (1000 * 60 * 60)) % 24;
-        return String.format("%02d:%02d:%02d:%d", hour, minute, second, milis);
+    /**
+     * Get time form milliseconds.
+     */
+    private String getTimeFromMilis(int millis) {
+        long second = (millis / 1000) % 60;
+        long minute = (millis / (1000 * 60)) % 60;
+        long hour = (millis / (1000 * 60 * 60)) % 24;
+        return String.format("%02d:%02d:%02d:%d", hour, minute, second, millis);
     }
 
 

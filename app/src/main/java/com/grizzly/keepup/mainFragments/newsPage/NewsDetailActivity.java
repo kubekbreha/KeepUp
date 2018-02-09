@@ -16,10 +16,6 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
-/**
- * Created by kubek on 2/8/2018.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +36,13 @@ import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.squareup.picasso.Picasso;
 
+/**
+ * Created by kubek on 2/8/2018.
+ */
+
+/**
+ * Detail activity of newsFeed.
+ */
 public class NewsDetailActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -79,7 +82,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         //BIND DATA
         setProfileImage(getApplicationContext(), mRefProfileImage);
-        setProfileName(getApplicationContext(), mRefProfileName);
+        setProfileName(mRefProfileName);
         mPostDate.setText(dateRun);
         Picasso.with(getApplicationContext()).load(image).into(mRunImage);
     }
@@ -99,6 +102,10 @@ public class NewsDetailActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Set profile image in detail activity.
+     */
     public void setProfileImage(final Context context, DatabaseReference database){
         final ImageView profileImageView = findViewById(R.id.news_detail_profile_image);
         database.addValueEventListener(new ValueEventListener() {
@@ -116,7 +123,10 @@ public class NewsDetailActivity extends AppCompatActivity {
     }
 
 
-    public void setProfileName(Context applicationContext, DatabaseReference database){
+    /**
+     * Set profile name in detail activity.
+     */
+    public void setProfileName(DatabaseReference database){
         final TextView profileName = findViewById(R.id.news_detail_profile_name);
         database.addValueEventListener(new ValueEventListener() {
             @Override

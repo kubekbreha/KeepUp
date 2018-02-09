@@ -94,6 +94,9 @@ public class LoginFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Create instance of fragment.
+     */
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         return fragment;
@@ -111,7 +114,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
@@ -144,18 +146,17 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                RegisterFragment fragment = new RegisterFragment();
-                fm.beginTransaction()
-                        .replace(R.id.login_to_be_replaced, fragment)
-                        .addToBackStack(null)   // add to manager " will remember this fragment  - for navigation purpose"
-                        .commit();
-            }
-        });
+        registerButtonListener();
+        loginButtonListener();
 
+        return view;
+    }
+
+    /**
+     * Listener on mLoginButton.
+     * On click send to LoginFragment.
+     */
+    private void loginButtonListener(){
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +168,24 @@ public class LoginFragment extends Fragment {
                         .commit();
             }
         });
-        return view;
+    }
+
+    /**
+     * Listener on mRegisterButton.
+     * On click send to RegisterFragment.
+     */
+    private void registerButtonListener(){
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                RegisterFragment fragment = new RegisterFragment();
+                fm.beginTransaction()
+                        .replace(R.id.login_to_be_replaced, fragment)
+                        .addToBackStack(null)   // add to manager " will remember this fragment  - for navigation purpose"
+                        .commit();
+            }
+        });
     }
 
     @Override
@@ -187,10 +205,17 @@ public class LoginFragment extends Fragment {
     }
 
 
+    //TODO: Is mAuth there enought ?
+    /**
+     * Initialize facebook variable.
+     */
     private void initFBAuthentication() {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Get state of facebook authentication.
+     */
     private void initFBAuthState() {
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -229,13 +254,16 @@ public class LoginFragment extends Fragment {
         }
     }
 
+    /**
+     * Init google logIn page.
+     */
     private void initFBFacebookLogIn() {
         Toast.makeText(getActivity(), "facebook login", Toast.LENGTH_SHORT).show();
 
         LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG,"onSuccess");
+                Log.d(TAG, "onSuccess");
                 Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
@@ -243,18 +271,24 @@ public class LoginFragment extends Fragment {
             @Override
             public void onCancel() {
                 Toast.makeText(getActivity(), "onCancel", Toast.LENGTH_SHORT).show();
-                Log.d(TAG,"onCancel");
+                Log.d(TAG, "onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
                 Toast.makeText(getActivity(), "onError", Toast.LENGTH_SHORT).show();
-                Log.d(TAG,"error : " + error.getMessage());
+                Log.d(TAG, "error : " + error.getMessage());
             }
 
         });
     }
 
+    //TODO : Fix facebook logIn!
+
+    /**
+     * This take care of facebook logIn.
+     * If succeed send to checkUserExist() method.
+     */
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -279,12 +313,18 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-
+    /**
+     * Intent google logIn.
+     */
     private void signInWithGoogleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
     }
 
+
+    /**
+     * Initialize variables need for google signIn.
+     */
     private void initFBGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -301,6 +341,10 @@ public class LoginFragment extends Fragment {
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
     }
 
+    /**
+     * This take care of google logIn.
+     * If succeed send to checkUserExist() method.
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -313,7 +357,7 @@ public class LoginFragment extends Fragment {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             checkUserExist();
-                        } else{
+                        } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getActivity(), "Authentication Failed.", Toast.LENGTH_SHORT).show();
@@ -327,8 +371,10 @@ public class LoginFragment extends Fragment {
         });
     }
 
-
-    //----------------------------------------------------------------------------------------------
+    /**
+     * Checking if user already exist in database.
+     * If not send user to SetupActivity.
+     */
     private void checkUserExist() {
         if (mAuth.getCurrentUser() != null) {
             final String userId = mAuth.getCurrentUser().getUid();
@@ -342,20 +388,28 @@ public class LoginFragment extends Fragment {
                         goToSetupActivity();
                     }
                 }
+
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(DatabaseError databaseError) {
+                }
             });
         }
     }
 
+    /**
+     * Open MainActivity.
+     * Called when user is authenticated.
+     */
     private void updateUI() {
-        Toast.makeText(getActivity(), "logged in", Toast.LENGTH_SHORT).show();
-
         Intent accountIntent = new Intent(getActivity(), MainActivity.class);
         startActivity(accountIntent);
         getActivity().finish();
     }
 
+    /**
+     * Open SetupActivity.
+     * Called when user is logged for first time and don't have set profile picture and name.
+     */
     private void goToSetupActivity() {
         Intent accountIntent = new Intent(getActivity(), SetupActivity.class);
         startActivity(accountIntent);

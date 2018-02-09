@@ -59,13 +59,12 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
 
-
     private TextView mUserName;
     private TextView mUserEmail;
     private ImageView mUserPhoto;
     private ImageButton mButtonSignOut;
     private ImageButton mButtonChat;
-    private View view;
+    private View mView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -73,43 +72,55 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onStart() {
+        initializeGoogle();
+        super.onStart();
+    }
+
+    /**
+     * Initialize google API.
+     */
+    private void initializeGoogle(){
         GoogleSignInOptions googleSignInOpt = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOpt)
                 .build();
+
         mGoogleApiClient.connect();
-        super.onStart();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+        mView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        mUserPhoto = view.findViewById(R.id.profile_fragment_image);
-        mUserName = view.findViewById(R.id.profile_fragment_name);
-        mUserEmail = view.findViewById(R.id.profile_fragment_mail);
+        mUserPhoto = mView.findViewById(R.id.profile_fragment_image);
+        mUserName = mView.findViewById(R.id.profile_fragment_name);
+        mUserEmail = mView.findViewById(R.id.profile_fragment_mail);
         mUserEmail.setText(mAuth.getCurrentUser().getEmail());
+        mButtonChat = mView.findViewById(R.id.button2);
+        mButtonSignOut = mView.findViewById(R.id.button1);
 
         DatabaseReference refImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
-        refImage.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String uri = dataSnapshot.getValue(String.class);
-                Picasso.with(getContext()).load(uri).into(mUserPhoto);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         DatabaseReference refName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
-        refName.addValueEventListener(new ValueEventListener() {
+        getImageRef(refImage);
+        getNameRef(refName);
+
+        buttonSignOut();
+        buttonOpenChat();
+        buttonSetUpProfile();
+
+        return mView;
+    }
+
+    /**
+     * Set listener on profile name.
+     */
+    private void getNameRef(DatabaseReference reference){
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
@@ -121,8 +132,30 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
 
-        mButtonSignOut = view.findViewById(R.id.button1);
+    /**
+     * Set listener on profile image.
+     */
+    private void getImageRef(DatabaseReference reference){
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String uri = dataSnapshot.getValue(String.class);
+                Picasso.with(getContext()).load(uri).into(mUserPhoto);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * Set listener on signOut button.
+     */
+    private void buttonSignOut(){
         mButtonSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,15 +164,12 @@ public class ProfileFragment extends Fragment {
                 revokeAccess();
             }
         });
+    }
 
-        mButtonChat = view.findViewById(R.id.button2);
-        mButtonChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openChat();
-            }
-        });
-
+    /**
+     * Set listener on profile setUp.
+     */
+    private void buttonSetUpProfile(){
         mUserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,10 +177,23 @@ public class ProfileFragment extends Fragment {
                 startActivity(setupIntent);
             }
         });
-        return view;
     }
 
+    /**
+     * Set listener on chat.
+     */
+    private void buttonOpenChat(){
+        mButtonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChat();
+            }
+        });
+    }
 
+    /**
+     * Send user form MainActivity to MainActivity.
+     */
     private void updateUI() {
         Toast.makeText(getActivity(), "You have been logged out", Toast.LENGTH_SHORT).show();
         Intent accountIntent = new Intent(getActivity(), LoginActivity.class);
@@ -158,12 +201,17 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
     }
 
-
+    /**
+     * Open chat activity.
+     */
     private void openChat() {
         Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
         startActivity(chatIntent);
     }
 
+    /**
+     * Log out googleUser.
+     */
     private void revokeAccess() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
