@@ -12,12 +12,31 @@
     <FrameLayout
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/status_bar_height" />
+        android:layout_height="104dp"
+        android:background="@color/colorPrimary"/>
+
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_above="@+id/confirm_register_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_input"
+        android:ems="10"
+        android:hint="Search"
+        android:drawableStart="@drawable/ic_search_black_24dp"
+        android:paddingLeft="16dp"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="104dp"
         android:background="@color/colorPrimary">
 
         <android.support.v4.widget.SwipeRefreshLayout

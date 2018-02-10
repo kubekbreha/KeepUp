@@ -16,14 +16,19 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,10 +57,16 @@ public class NewsDetailActivity extends AppCompatActivity {
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
 
+    private TextView expandedTitle;
+    private TextView expandedText;
+    private CardView expandCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
+
+
         Toolbar toolbar = findViewById(R.id.news_detail_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,7 +95,32 @@ public class NewsDetailActivity extends AppCompatActivity {
         setProfileImage(getApplicationContext(), mRefProfileImage);
         setProfileName(mRefProfileName);
         mPostDate.setText(dateRun);
+
+        mRunImage.setTransitionName("thumbnailTransition");
         Picasso.with(getApplicationContext()).load(image).into(mRunImage);
+
+        expandedTitle = findViewById(R.id.detail_expanded_title);
+        expandedText = findViewById(R.id.detail_expanded_text);
+        expandCard = findViewById(R.id.detail_expand_card_view);
+        expandCardListener();
+
+    }
+
+
+    /**
+     * Expand cardview.
+     */
+    private void expandCardListener(){
+        expandCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (expandedText.getVisibility() == View.GONE) {
+                    expandedText.setVisibility(View.VISIBLE);
+                } else {
+                    expandedText.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -140,5 +176,11 @@ public class NewsDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

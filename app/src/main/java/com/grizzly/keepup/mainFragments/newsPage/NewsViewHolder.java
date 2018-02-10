@@ -49,11 +49,16 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     private View mView;
     private FirebaseAuth mAuth;
+    private ImageView sharedView;
 
     public NewsViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
         mAuth = FirebaseAuth.getInstance();
+    }
+
+    public ImageView getImageView(){
+        return sharedView;
     }
 
     /**
@@ -79,6 +84,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
      * Set map image.
      */
     public void setImage(Context context, String image) {
+        sharedView = mView.findViewById(R.id.news_post_image);
         ImageView imageView = mView.findViewById(R.id.news_post_image);
         Picasso.with(context).load(image).into(imageView);
     }

@@ -16,12 +16,15 @@
 
 package com.grizzly.keepup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -56,9 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         mRelativeLayout = findViewById(R.id.splash_activity);
-
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
-        mAnimationDrawable.setEnterFadeDuration(4500);
         mAnimationDrawable.setExitFadeDuration(4500);
         mAnimationDrawable.start();
 

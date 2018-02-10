@@ -30,15 +30,20 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -81,8 +86,6 @@ public class MapFragment extends Fragment {
     private Location mLastLocation;
     private Marker mCurrLocationMarker;
     private LocationManager mLocationManager;
-    private TextView mDistanceTextView;
-    private Chronometer mChronometer;
 
     //database vars
     private DatabaseReference mDatabase;
@@ -95,9 +98,23 @@ public class MapFragment extends Fragment {
     private boolean mServiceBound = false;
     private long mTimeWhenStopped;
 
+    private Chronometer expandedChronometer;
+    private TextView expandedDistance;
+    private TextView expandedChronometerText;
+    private TextView expandedDistanceText;
+    private TextView notExpandedText;
+    private CardView expandCard;
+    private FrameLayout notExpandedFrame;
+    private FrameLayout expandedFrame;
+
+    private View mView;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+        mView = view;
 
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -107,22 +124,63 @@ public class MapFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs");
         mStorageImage = FirebaseStorage.getInstance().getReference().child("run_images");
 
-        mDistanceTextView = view.findViewById(R.id.map_meters_traveled);
-
-        mChronometer = view.findViewById(R.id.map_time_traveled);
         mStartButton = view.findViewById(R.id.new_run_button);
+
+        expandCard = view.findViewById(R.id.card_view_map);
+        expandedChronometer = view.findViewById(R.id.map_time_traveled);
+        expandedDistance = view.findViewById(R.id.map_meters_traveled);
+        expandedChronometerText = view.findViewById(R.id.map_time_traveled_text);
+        expandedDistanceText = view.findViewById(R.id.map_meters_traveled_text);
+        notExpandedText = view.findViewById(R.id.map_not_expanded_text);
+        expandedFrame = view.findViewById(R.id.frame_statistic_expanded);
+        notExpandedFrame = view.findViewById(R.id.frame_statistic_not_expanded);
 
         startButtonListener();
         showMap();
+        expandCardListener();
 
         return view;
     }
 
     /**
+     * Expand cardview.
+     */
+    private void expandCardListener() {
+        expandCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (notExpandedText.getVisibility() == View.VISIBLE) {
+                    //ibt_show_more.animate().rotation(0).start();
+                    TransitionManager.beginDelayedTransition(expandCard, new AutoTransition().setDuration(124));
+                    notExpandedText.setVisibility(View.GONE);
+                    expandedFrame.setVisibility(View.VISIBLE);
+                    notExpandedFrame.setVisibility(View.GONE);
+                    expandedChronometer.setVisibility(View.VISIBLE);
+                    expandedChronometerText.setVisibility(View.VISIBLE);
+                    expandedDistance.setVisibility(View.VISIBLE);
+                    expandedDistanceText.setVisibility(View.VISIBLE);
+                } else {
+                    //ibt_show_more.animate().rotation(180).start();
+                    TransitionManager.beginDelayedTransition(expandCard, new AutoTransition().setDuration(124));
+                    notExpandedText.setVisibility(View.VISIBLE);
+                    expandedFrame.setVisibility(View.GONE);
+                    notExpandedFrame.setVisibility(View.VISIBLE);
+                    expandedChronometer.setVisibility(View.GONE);
+                    expandedChronometerText.setVisibility(View.GONE);
+                    expandedDistance.setVisibility(View.GONE);
+                    expandedDistanceText.setVisibility(View.GONE);
+                }
+            }
+        });
+
+    }
+
+
+    /**
      * Show map.
      * Called in onCreateView.
      */
-    private void showMap(){
+    private void showMap() {
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -192,7 +250,7 @@ public class MapFragment extends Fragment {
      * Start run (chronometer).
      * On Stop takeSnapshot().
      */
-    private void startButtonListener(){
+    private void startButtonListener() {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,8 +276,8 @@ public class MapFragment extends Fragment {
         mMapView.onResume();
         if (mButtonStart) {
             mStartButton.setText("stop");
-            mChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
-            mChronometer.start();
+            expandedChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
+            expandedChronometer.start();
         }
     }
 
@@ -227,14 +285,13 @@ public class MapFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        mTimeWhenStopped = mChronometer.getBase() - SystemClock.elapsedRealtime();
+        mTimeWhenStopped = expandedChronometer.getBase() - SystemClock.elapsedRealtime();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-
     }
 
     @Override
@@ -272,15 +329,15 @@ public class MapFragment extends Fragment {
      */
     private void startChronometer() {
         long systemCurrTime = SystemClock.elapsedRealtime();
-        mChronometer.setBase(systemCurrTime);
-        mChronometer.start();
+        expandedChronometer.setBase(systemCurrTime);
+        expandedChronometer.start();
     }
 
     /**
      * Stop chronometer.
      */
     private void stopChronometer() {
-        mChronometer.stop();
+        expandedChronometer.stop();
     }
 
     /**
@@ -322,7 +379,7 @@ public class MapFragment extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    if (checkPermission())  mGoogleMap.setMyLocationEnabled(true);
+                    if (checkPermission()) mGoogleMap.setMyLocationEnabled(true);
                 } else {
                     // Permission denied
                 }
@@ -356,7 +413,7 @@ public class MapFragment extends Fragment {
             mProgress.show();
 
             StorageReference filepath = mStorageImage.child(mRunImageUri.getLastPathSegment());
-            final int elapsedMillis = (int) (SystemClock.elapsedRealtime() - mChronometer.getBase());
+            final int elapsedMillis = (int) (SystemClock.elapsedRealtime() - expandedChronometer.getBase());
 
             filepath.putFile(mRunImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -364,7 +421,7 @@ public class MapFragment extends Fragment {
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
-                            .push().setValue(new NewsFeed(downloadUri, mDistanceTextView.getText().toString(),
+                            .push().setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
                             elapsedMillis));
 
                     mProgress.dismiss();

@@ -16,15 +16,20 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +67,7 @@ public class NewsFeedFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -122,14 +128,13 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Open dialog window in RecyclerView.
      */
-    private void openDialogActivity(NewsViewHolder viewHolder, final NewsFeed model){
+    private void openDialogActivity(final NewsViewHolder viewHolder, final NewsFeed model){
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
-
                 startActivity(intent);
             }
         });

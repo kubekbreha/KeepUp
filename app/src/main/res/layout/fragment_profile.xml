@@ -3,31 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.grizzly.keepup.mainFragments.ProfileFragment">
+    tools:context="com.grizzly.keepup.mainFragments.ProfileFragment"
+    android:background="@color/colorPrimary">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/notification_bar_height"
-        android:background="@color/colorPrimary" />
+        android:layout_height="@dimen/notification_bar_height" />
 
     <FrameLayout
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/status_bar_height"
-        android:background="@color/colorPrimary"
-        />
+        android:layout_height="@dimen/status_bar_height" />
 
-    <FrameLayout
-        android:layout_marginTop="64dp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/notification_bar_height"
-        android:background="@color/colorPrimary" />
+
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="88dp">
+        android:layout_marginTop="40dp">
 
 
         <RelativeLayout
@@ -98,6 +92,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary">
+
+
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/profile_expand_card_view"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/layout_padding"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/corner_radius">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/profile_expanded_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hello World!"
+                        android:textColor="@color/text_dark"
+                        android:textSize="@dimen/middle_text_height"/>
+
+                    <TextView
+                        android:id="@+id/profile_expanded_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="expanded"
+                        android:visibility="gone"
+                        android:textColor="@color/text_dark"
+                        android:textSize="@dimen/middle_text_height"/>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
 
 

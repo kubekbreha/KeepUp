@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.grizzly.keepup.MainActivity">
+    tools:context="com.grizzly.keepup.MainActivity"
+    android:background="@color/colorPrimary">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
@@ -22,6 +23,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/top_nav_bar"
         android:layout_below="@+id/status_bar"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -29,6 +31,7 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"

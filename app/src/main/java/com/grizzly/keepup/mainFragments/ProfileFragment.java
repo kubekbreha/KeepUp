@@ -19,6 +19,7 @@ package com.grizzly.keepup.mainFragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,10 @@ public class ProfileFragment extends Fragment {
     private ImageButton mButtonSignOut;
     private ImageButton mButtonChat;
     private View mView;
+
+    private TextView mExpandedTitle;
+    private TextView mExpandedText;
+    private CardView mExpandCard;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -113,7 +118,28 @@ public class ProfileFragment extends Fragment {
         buttonOpenChat();
         buttonSetUpProfile();
 
+        mExpandedTitle = mView.findViewById(R.id.profile_expanded_title);
+        mExpandedText = mView.findViewById(R.id.profile_expanded_text);
+        mExpandCard = mView.findViewById(R.id.profile_expand_card_view);
+        expandCardListener();
+
         return mView;
+    }
+
+    /**
+     * Expand cardview.
+     */
+    private void expandCardListener(){
+        mExpandCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mExpandedText.getVisibility() == View.GONE) {
+                    mExpandedText.setVisibility(View.VISIBLE);
+                } else {
+                    mExpandedText.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /**
