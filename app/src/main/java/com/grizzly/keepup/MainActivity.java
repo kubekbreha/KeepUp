@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        //fix map reloading
+        viewPager.setOffscreenPageLimit(3);
         adapter.addFragment(new MapFragment(), "RUN");
         adapter.addFragment(new NewsFeedFragment(), "FEED");
         adapter.addFragment(new ProfileFragment(), "PROFILE");

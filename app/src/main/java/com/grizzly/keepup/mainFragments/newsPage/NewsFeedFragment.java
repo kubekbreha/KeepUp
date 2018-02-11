@@ -35,6 +35,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.grizzly.keepup.R;
 
 /**
@@ -54,9 +55,11 @@ public class NewsFeedFragment extends Fragment {
     private DatabaseReference mRefProfileName;
     private SwipeRefreshLayout mRefreshLayout;
     private LinearLayoutManager mLayoutManager;
+    private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
 
     private static int TOTAL_ITEMS_TO_LOAD = 2;
     private int mCurrentPage = 1;
+
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -107,7 +110,7 @@ public class NewsFeedFragment extends Fragment {
      * Populate viewHolder
      */
     private void loadNews() {
-        FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
                 (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
                         mDatabase.limitToFirst(mCurrentPage * TOTAL_ITEMS_TO_LOAD).orderByChild("reversed_timestamp")) {
             @Override
