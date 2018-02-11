@@ -65,7 +65,8 @@ dependencies {
 
     compile 'com.android.support:recyclerview-v7:27.0.2'
 
-
+    compile 'com.applandeo:material-calendar-view:1.0.1'
+    compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
 }
 
 

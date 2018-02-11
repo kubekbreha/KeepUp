@@ -113,7 +113,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
-        android:background="@drawable/button_background_gradient"
+        android:background="@drawable/button_background_gradient_green"
         android:clickable="true"
         android:focusable="true"
         android:text="Start"

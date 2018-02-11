@@ -134,6 +134,30 @@
 
 
 
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/profile_expand_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="@dimen/corner_radius">
+
+                <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/compactcalendar_view"
+                    android:layout_width="fill_parent"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_height="250dp"
+                    app:compactCalendarTargetHeight="250dp"
+                    app:compactCalendarTextSize="12sp"
+                    app:compactCalendarBackgroundColor="#ffe95451"
+                    app:compactCalendarTextColor="#fff"
+                    app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
+                    app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+                    app:compactCalendarMultiEventIndicatorColor="#fff"
+                    />
+            </android.support.v7.widget.CardView>
+
 
 
 

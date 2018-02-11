@@ -17,9 +17,11 @@
 package com.grizzly.keepup.mainFragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,6 +49,9 @@ import com.grizzly.keepup.chat.ChatActivity;
 import com.grizzly.keepup.login.LoginActivity;
 import com.grizzly.keepup.login.SetupActivity;
 import com.squareup.picasso.Picasso;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kubek on 1/31/18.
@@ -70,6 +77,8 @@ public class ProfileFragment extends Fragment {
     private TextView mExpandedTitle;
     private TextView mExpandedText;
     private CardView mExpandCard;
+
+    private CompactCalendarView compactCalendarView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -122,6 +131,39 @@ public class ProfileFragment extends Fragment {
         mExpandedText = mView.findViewById(R.id.profile_expanded_text);
         mExpandCard = mView.findViewById(R.id.profile_expand_card_view);
         expandCardListener();
+
+        compactCalendarView = mView.findViewById(R.id.compactcalendar_view);
+
+
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mAuth.getUid().toString()).child("runs")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Long l = snapshot.child("runDate").getValue(Long.class);
+                            Event ev2 = new Event(Color.BLACK, l , "Can send something.");
+                            compactCalendarView.addEvent(ev2);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                List<Event> events = compactCalendarView.getEvents(dateClicked);
+                Toast.makeText(getContext(), "Day was clicked: " + dateClicked + " with events " + events, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Toast.makeText(getContext(), "Month was scrolled to: " + firstDayOfNewMonth, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return mView;
     }

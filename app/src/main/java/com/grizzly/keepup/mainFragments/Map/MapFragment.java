@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -258,13 +259,14 @@ public class MapFragment extends Fragment {
                     startChronometer();
                     mButtonStart = true;
                     mStartButton.setText("stop");
-
+                    mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_red));
                 } else {
                     takeSnapshot();
                     mTimeWhenStopped = 0;
                     stopChronometer();
                     mButtonStart = false;
                     mStartButton.setText("start");
+                    mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_green));
                 }
             }
         });
@@ -276,6 +278,7 @@ public class MapFragment extends Fragment {
         mMapView.onResume();
         if (mButtonStart) {
             mStartButton.setText("stop");
+            mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_red));
             expandedChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
             expandedChronometer.start();
         }

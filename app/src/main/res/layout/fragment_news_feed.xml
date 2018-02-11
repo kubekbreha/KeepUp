@@ -13,7 +13,7 @@
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
         android:layout_height="104dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary" />
 
 
     <EditText
@@ -26,12 +26,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/rounded_input"
+        android:drawableStart="@drawable/ic_search_black_24dp"
         android:ems="10"
         android:hint="Search"
-        android:drawableStart="@drawable/ic_search_black_24dp"
         android:paddingLeft="16dp"
         android:textColor="@color/text_light"
-        android:textColorHint="@color/text_gray"/>
+        android:textColorHint="@color/text_gray" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,20 +39,15 @@
         android:layout_marginTop="104dp"
         android:background="@color/colorPrimary">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/news_swipe_load">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/news_feed_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:divider="@null"
-                android:dividerHeight="0dp" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_feed_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
 
     </RelativeLayout>
 

@@ -16,26 +16,20 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.grizzly.keepup.R;
 
 /**
@@ -53,12 +47,8 @@ public class NewsFeedFragment extends Fragment {
     private DatabaseReference mDatabase;
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
-    private SwipeRefreshLayout mRefreshLayout;
     private LinearLayoutManager mLayoutManager;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
-
-    private static int TOTAL_ITEMS_TO_LOAD = 2;
-    private int mCurrentPage = 1;
 
 
     public NewsFeedFragment() {
@@ -79,13 +69,13 @@ public class NewsFeedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mNewsList.setLayoutManager(mLayoutManager);
 
-        mRefreshLayout = view.findViewById(R.id.news_swipe_load);
-
         mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
         mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mAuth.getUid().toString()).child("runs");
+
+        loadNews();
 
         return view;
     }
@@ -94,14 +84,6 @@ public class NewsFeedFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        loadNews();
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mCurrentPage++;
-                loadNews();
-            }
-        });
     }
 
 
@@ -112,7 +94,7 @@ public class NewsFeedFragment extends Fragment {
     private void loadNews() {
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
                 (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
-                        mDatabase.limitToFirst(mCurrentPage * TOTAL_ITEMS_TO_LOAD).orderByChild("reversed_timestamp")) {
+                        mDatabase.orderByChild("reversed_timestamp")) {
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
                 viewHolder.setRunDate(model.getRunDate());
@@ -124,7 +106,6 @@ public class NewsFeedFragment extends Fragment {
                 openDialogActivity(viewHolder, model);
             }
         };
-        mRefreshLayout.setRefreshing(false);
         mNewsList.setAdapter(firebaseRecyclerAdapter);
     }
 
