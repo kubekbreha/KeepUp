@@ -73,6 +73,7 @@ import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.service.StopwatchService;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by kubek on 1/21/18.
@@ -117,6 +118,12 @@ public class MapFragment extends Fragment {
     private StopwatchService mStopwatchService;
     private Thread stopwatchThread;
 
+    private static final long INTERVAL = 1000 * 60 * 1; //1 minute
+    private static final long FASTEST_INTERVAL = 1000 * 60 * 1; // 1 minute
+    private static final float SMALLEST_DISPLACEMENT = 0.25F; //quarter of a meter
+    private ArrayList<LatLng> polylinePoints;
+    private Polyline line;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
@@ -142,6 +149,8 @@ public class MapFragment extends Fragment {
         expandedFrame = view.findViewById(R.id.frame_statistic_expanded);
         notExpandedFrame = view.findViewById(R.id.frame_statistic_not_expanded);
 
+
+        polylinePoints = new ArrayList<LatLng>();
 
         startButtonListener();
         showMap();
@@ -263,10 +272,9 @@ public class MapFragment extends Fragment {
                                                      mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
                                                      if (mButtonStart) {
-                                                         LatLng latLngNew = new LatLng(location.getLatitude() + 0.02,
-                                                                 location.getLongitude() + 0.02);
-                                                         addPolyline(latLng, latLngNew);
-                                                         float[] distance = getMeters(latLng, latLngNew);
+                                                         polylinePoints.add(latLng);
+                                                         redrawLine();
+                                                         //float[] distance = getMeters(latLng, latLngNew);
                                                          //mDistanceTextView.setText((int) distance[0]);
                                                      }
                                                  }
@@ -360,18 +368,21 @@ public class MapFragment extends Fragment {
         return results;
     }
 
-    /**
-     * Add polyline to map.
-     */
-    private void addPolyline(LatLng start, LatLng end) {
-        PolylineOptions rectOptions = new PolylineOptions()
-                .add(new LatLng(start.latitude, start.longitude))
-                .add(new LatLng(end.latitude, end.longitude))
-                .width(25)
-                .color(Color.DKGRAY);
 
-        // Get back the mutable Polyline
-        Polyline polyline = mGoogleMap.addPolyline(rectOptions);
+    /**
+     * Add polylines to map from array.
+     */
+    private void redrawLine(){
+
+        mGoogleMap.clear();  //clears all Markers and Polylines
+
+        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        for (int i = 0; i < polylinePoints.size(); i++) {
+            LatLng point = polylinePoints.get(i);
+            options.add(point);
+        }
+        //addMarker(); //add Marker in current position
+        line = mGoogleMap.addPolyline(options); //add Polyline
     }
 
 
