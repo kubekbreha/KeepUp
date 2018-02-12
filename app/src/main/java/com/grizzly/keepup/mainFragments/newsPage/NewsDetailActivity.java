@@ -41,6 +41,10 @@ import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.squareup.picasso.Picasso;
 
+import org.eazegraph.lib.charts.ValueLineChart;
+import org.eazegraph.lib.models.ValueLinePoint;
+import org.eazegraph.lib.models.ValueLineSeries;
+
 /**
  * Created by kubek on 2/8/2018.
  */
@@ -60,6 +64,8 @@ public class NewsDetailActivity extends AppCompatActivity {
     private TextView expandedTitle;
     private TextView expandedText;
     private CardView expandCard;
+
+    private ValueLineChart mCubicValueLineChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +110,34 @@ public class NewsDetailActivity extends AppCompatActivity {
         expandCard = findViewById(R.id.detail_expand_card_view);
         expandCardListener();
 
+        mCubicValueLineChart = findViewById(R.id.cubiclinechart);
+        setLineChart();
+
     }
 
+    /**
+     * Setting up line chart graph.
+     */
+    private void setLineChart(){
+        ValueLineSeries series = new ValueLineSeries();
+        series.setColor(0xFF56B7F1);
+
+        series.addPoint(new ValueLinePoint("Jan", 2.4f));
+        series.addPoint(new ValueLinePoint("Feb", 3.4f));
+        series.addPoint(new ValueLinePoint("Mar", .4f));
+        series.addPoint(new ValueLinePoint("Apr", 1.2f));
+        series.addPoint(new ValueLinePoint("Mai", 2.6f));
+        series.addPoint(new ValueLinePoint("Jun", 1.0f));
+        series.addPoint(new ValueLinePoint("Jul", 3.5f));
+        series.addPoint(new ValueLinePoint("Aug", 2.4f));
+        series.addPoint(new ValueLinePoint("Sep", 2.4f));
+        series.addPoint(new ValueLinePoint("Oct", 3.4f));
+        series.addPoint(new ValueLinePoint("Nov", .4f));
+        series.addPoint(new ValueLinePoint("Dec", 1.3f));
+
+        mCubicValueLineChart.addSeries(series);
+        mCubicValueLineChart.startAnimation();
+    }
 
     /**
      * Expand cardview.

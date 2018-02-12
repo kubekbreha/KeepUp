@@ -50,6 +50,10 @@ import com.grizzly.keepup.login.LoginActivity;
 import com.grizzly.keepup.login.SetupActivity;
 import com.squareup.picasso.Picasso;
 
+import org.eazegraph.lib.charts.ValueLineChart;
+import org.eazegraph.lib.models.ValueLinePoint;
+import org.eazegraph.lib.models.ValueLineSeries;
+
 import java.util.Date;
 import java.util.List;
 
@@ -77,6 +81,7 @@ public class ProfileFragment extends Fragment {
     private TextView mExpandedTitle;
     private TextView mExpandedText;
     private CardView mExpandCard;
+    private ValueLineChart mCubicValueLineChart;
 
     private CompactCalendarView compactCalendarView;
 
@@ -134,8 +139,64 @@ public class ProfileFragment extends Fragment {
 
         compactCalendarView = mView.findViewById(R.id.compactcalendar_view);
 
+        setCalendar();
+        calendarListener();
+
+        mCubicValueLineChart = mView.findViewById(R.id.cubiclinechart);
+        setLineChart();
+
+        return mView;
+    }
+
+    /**
+     * Setting up line chart graph.
+     */
+    private void setLineChart(){
+        ValueLineSeries series = new ValueLineSeries();
+        series.setColor(0xFF56B7F1);
+
+        series.addPoint(new ValueLinePoint("Jan", 2.4f));
+        series.addPoint(new ValueLinePoint("Feb", 3.4f));
+        series.addPoint(new ValueLinePoint("Mar", .4f));
+        series.addPoint(new ValueLinePoint("Apr", 1.2f));
+        series.addPoint(new ValueLinePoint("Mai", 2.6f));
+        series.addPoint(new ValueLinePoint("Jun", 1.0f));
+        series.addPoint(new ValueLinePoint("Jul", 3.5f));
+        series.addPoint(new ValueLinePoint("Aug", 2.4f));
+        series.addPoint(new ValueLinePoint("Sep", 2.4f));
+        series.addPoint(new ValueLinePoint("Oct", 3.4f));
+        series.addPoint(new ValueLinePoint("Nov", .4f));
+        series.addPoint(new ValueLinePoint("Dec", 1.3f));
+
+        mCubicValueLineChart.addSeries(series);
+        mCubicValueLineChart.startAnimation();
+    }
 
 
+    /**
+     * Handle clicks on specific calendar days.
+     */
+    private void calendarListener(){
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                List<Event> events = compactCalendarView.getEvents(dateClicked);
+                Toast.makeText(getContext(), "Day was clicked: " + dateClicked + " with events " + events, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Toast.makeText(getContext(), "Month was scrolled to: " + firstDayOfNewMonth, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    /**
+     * Setting up calendar.
+     */
+    private void setCalendar(){
         FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mAuth.getUid().toString()).child("runs")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -152,20 +213,6 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
-        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
-            @Override
-            public void onDayClick(Date dateClicked) {
-                List<Event> events = compactCalendarView.getEvents(dateClicked);
-                Toast.makeText(getContext(), "Day was clicked: " + dateClicked + " with events " + events, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onMonthScroll(Date firstDayOfNewMonth) {
-                Toast.makeText(getContext(), "Month was scrolled to: " + firstDayOfNewMonth, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return mView;
     }
 
     /**

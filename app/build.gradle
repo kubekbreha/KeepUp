@@ -67,6 +67,11 @@ dependencies {
 
     compile 'com.applandeo:material-calendar-view:1.0.1'
     compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
+
+    //charts
+    compile 'com.github.blackfizz:eazegraph:1.2.2@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+
 }
 
 

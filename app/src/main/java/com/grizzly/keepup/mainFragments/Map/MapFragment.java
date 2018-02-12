@@ -18,7 +18,10 @@ package com.grizzly.keepup.mainFragments.Map;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -28,6 +31,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -66,6 +70,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
+import com.grizzly.keepup.service.StopwatchService;
 
 import java.io.ByteArrayOutputStream;
 
@@ -99,7 +104,7 @@ public class MapFragment extends Fragment {
     private boolean mServiceBound = false;
     private long mTimeWhenStopped;
 
-    private Chronometer expandedChronometer;
+    private TextView expandedChronometer;
     private TextView expandedDistance;
     private TextView expandedChronometerText;
     private TextView expandedDistanceText;
@@ -109,7 +114,8 @@ public class MapFragment extends Fragment {
     private FrameLayout expandedFrame;
 
     private View mView;
-
+    private StopwatchService mStopwatchService;
+    private Thread stopwatchThread;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,11 +142,36 @@ public class MapFragment extends Fragment {
         expandedFrame = view.findViewById(R.id.frame_statistic_expanded);
         notExpandedFrame = view.findViewById(R.id.frame_statistic_not_expanded);
 
+
         startButtonListener();
         showMap();
         expandCardListener();
 
         return view;
+    }
+
+    /**
+     * Start stopwatch threat and refresh time textView every second.
+     */
+    private void startStopwatchThread(){
+        stopwatchThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                expandedChronometer.setText( mStopwatchService.getTimestampString());
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        stopwatchThread.start();
     }
 
     /**
@@ -173,7 +204,6 @@ public class MapFragment extends Fragment {
                 }
             }
         });
-
     }
 
 
@@ -250,21 +280,41 @@ public class MapFragment extends Fragment {
      * Listener on startRun button.
      * Start run (chronometer).
      * On Stop takeSnapshot().
-     */
+     *
+     * Every run time delayed for about 1,5 sec.
+      */
     private void startButtonListener() {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mButtonStart) {
-                    startChronometer();
                     mButtonStart = true;
+
+                    Intent intent = new Intent(getActivity(), StopwatchService.class);
+                    getActivity().startService(intent);
+                    getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+
+
                     mStartButton.setText("stop");
                     mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_red));
+                    startStopwatchThread();
                 } else {
+                    stopwatchThread.interrupt();
+                    Intent intent = new Intent(getActivity(),
+                            StopwatchService.class);
+                    getActivity().stopService(intent);
+
                     takeSnapshot();
+                    if (mServiceBound) {
+                        getActivity().unbindService(mServiceConnection);
+                        mServiceBound = false;
+                    }
+
+
                     mTimeWhenStopped = 0;
-                    stopChronometer();
                     mButtonStart = false;
+
+
                     mStartButton.setText("start");
                     mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_green));
                 }
@@ -279,8 +329,6 @@ public class MapFragment extends Fragment {
         if (mButtonStart) {
             mStartButton.setText("stop");
             mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_red));
-            expandedChronometer.setBase(SystemClock.elapsedRealtime() + mTimeWhenStopped);
-            expandedChronometer.start();
         }
     }
 
@@ -288,7 +336,6 @@ public class MapFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        mTimeWhenStopped = expandedChronometer.getBase() - SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -327,21 +374,6 @@ public class MapFragment extends Fragment {
         Polyline polyline = mGoogleMap.addPolyline(rectOptions);
     }
 
-    /**
-     * Start chronometer.
-     */
-    private void startChronometer() {
-        long systemCurrTime = SystemClock.elapsedRealtime();
-        expandedChronometer.setBase(systemCurrTime);
-        expandedChronometer.start();
-    }
-
-    /**
-     * Stop chronometer.
-     */
-    private void stopChronometer() {
-        expandedChronometer.stop();
-    }
 
     /**
      * Check if permissions granted for Location and Storage.
@@ -416,7 +448,10 @@ public class MapFragment extends Fragment {
             mProgress.show();
 
             StorageReference filepath = mStorageImage.child(mRunImageUri.getLastPathSegment());
-            final int elapsedMillis = (int) (SystemClock.elapsedRealtime() - expandedChronometer.getBase());
+
+
+            final float elapsedMillis = mStopwatchService.getTimestamp();
+
 
             filepath.putFile(mRunImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -425,7 +460,7 @@ public class MapFragment extends Fragment {
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
                             .push().setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
-                            elapsedMillis));
+                            (int) elapsedMillis));
 
                     mProgress.dismiss();
                 }
@@ -442,4 +477,23 @@ public class MapFragment extends Fragment {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+
+    /**
+     * Dont konw yet :D
+     */
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mServiceBound = false;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            StopwatchService.MyBinder myBinder = (StopwatchService.MyBinder) service;
+            mStopwatchService = myBinder.getService();
+            mServiceBound = true;
+        }
+    };
 }

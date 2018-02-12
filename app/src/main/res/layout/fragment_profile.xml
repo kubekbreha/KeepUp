@@ -1,10 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.grizzly.keepup.mainFragments.ProfileFragment"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    tools:context="com.grizzly.keepup.mainFragments.ProfileFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,8 +16,6 @@
         android:layout_height="@dimen/status_bar_height" />
 
 
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,17 +23,17 @@
 
 
         <RelativeLayout
+            android:id="@+id/profile_picture"
             android:layout_width="match_parent"
             android:layout_height="104dp"
-            android:id="@+id/profile_picture"
             android:background="@color/colorPrimary">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="0dp"
-                android:layout_marginLeft="16dp"
                 android:id="@+id/profile_fragment_image"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
                 android:src="@drawable/default_profile" />
 
 
@@ -56,12 +54,12 @@
                 android:id="@+id/profile_fragment_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/small_text_height"
                 android:layout_alignStart="@+id/profile_fragment_name"
                 android:layout_below="@+id/profile_fragment_name"
                 android:layout_marginTop="12dp"
                 android:text="TextView"
-                android:textColor="@color/text_light"/>
+                android:textColor="@color/text_light"
+                android:textSize="@dimen/small_text_height" />
 
 
             <ImageButton
@@ -71,8 +69,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
                 android:background="@null"
-                android:src="@drawable/ic_log_out_24dp"
-                />
+                android:src="@drawable/ic_log_out_24dp" />
 
             <ImageButton
                 android:id="@+id/button2"
@@ -80,89 +77,118 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/button1"
                 android:layout_alignTop="@+id/profile_fragment_mail"
-                android:src="@drawable/ic_message_24dp"
                 android:background="@null"
-                />
+                android:src="@drawable/ic_message_24dp" />
 
         </RelativeLayout>
 
-        
+
         <RelativeLayout
-            android:layout_marginTop="104dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="104dp"
             android:background="@color/colorPrimary">
 
 
-
-            <android.support.v7.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/profile_expand_card_view"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/layout_padding"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/corner_radius">
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:padding="16dp"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/profile_expanded_title"
-                        android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/profile_expand_card_view"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hello World!"
-                        android:textColor="@color/text_dark"
-                        android:textSize="@dimen/middle_text_height"/>
+                        android:layout_margin="@dimen/layout_padding"
+                        app:cardCornerRadius="@dimen/corner_radius">
 
-                    <TextView
-                        android:id="@+id/profile_expanded_text"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
+                            android:orientation="vertical"
+                            android:background="@color/colorPrimaryDark"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:id="@+id/profile_expanded_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hello World!"
+                                android:textColor="@color/text_light"
+                                android:textSize="@dimen/middle_text_height" />
+
+                            <TextView
+                                android:id="@+id/profile_expanded_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="expanded"
+                                android:textColor="@color/text_light"
+                                android:textSize="@dimen/middle_text_height"
+                                android:visibility="gone" />
+
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/calendar_card"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="expanded"
-                        android:visibility="gone"
-                        android:textColor="@color/text_dark"
-                        android:textSize="@dimen/middle_text_height"/>
+                        android:layout_below="@+id/profile_expand_card_view"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/corner_radius">
+
+                        <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/compactcalendar_view"
+                            android:layout_width="fill_parent"
+                            android:layout_height="250dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:compactCalendarBackgroundColor="#ffe95451"
+                            app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+                            app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
+                            app:compactCalendarMultiEventIndicatorColor="#fff"
+                            app:compactCalendarTargetHeight="250dp"
+                            app:compactCalendarTextColor="#fff"
+                            app:compactCalendarTextSize="12sp" />
+                    </android.support.v7.widget.CardView>
 
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/calendar_card"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/corner_radius">
 
+                        <org.eazegraph.lib.charts.ValueLineChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/cubiclinechart"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            app:egCurveSmoothness="0.4"
+                            app:egIndicatorLineColor="#FE6DA8"
+                            app:egLegendHeight="40dp"
+                            app:egShowStandardValue="true"
+                            app:egUseCubic="true"
+                            app:egUseOverlapFill="true" />
 
+                    </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_below="@+id/profile_expand_card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="@dimen/corner_radius">
+                </RelativeLayout>
 
-                <com.github.sundeepk.compactcalendarview.CompactCalendarView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/compactcalendar_view"
-                    android:layout_width="fill_parent"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_height="250dp"
-                    app:compactCalendarTargetHeight="250dp"
-                    app:compactCalendarTextSize="12sp"
-                    app:compactCalendarBackgroundColor="#ffe95451"
-                    app:compactCalendarTextColor="#fff"
-                    app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
-                    app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
-                    app:compactCalendarMultiEventIndicatorColor="#fff"
-                    />
-            </android.support.v7.widget.CardView>
-
-
-
+            </ScrollView>
 
 
         </RelativeLayout>
+
 
     </FrameLayout>
 

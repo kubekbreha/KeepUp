@@ -75,13 +75,13 @@
                 android:textSize="@dimen/big_text_height"
                 android:textStyle="bold" />
 
-            <Chronometer
+            <TextView
                 android:id="@+id/map_time_traveled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="188dp"
-                android:text="00:00"
+                android:text="00:00:00"
                 android:visibility="gone"
                 android:textColor="@color/text_light"
                 android:textSize="@dimen/middle_text_height"

@@ -153,7 +153,8 @@ public class LoginEmailFragment extends Fragment {
      * Called when user is authenticated.
      */
     private void updateUI() {
-        Intent accountIntent = new Intent(getActivity(), MainActivity.class);
+        //TODO: app crash here
+        Intent accountIntent = new Intent(this.getActivity(), MainActivity.class);
         startActivity(accountIntent);
         getActivity().finish();
     }

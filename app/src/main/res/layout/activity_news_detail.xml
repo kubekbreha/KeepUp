@@ -163,6 +163,27 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/calendar_card"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="@dimen/corner_radius">
+
+                <org.eazegraph.lib.charts.ValueLineChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cubiclinechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:egCurveSmoothness="0.4"
+                    app:egIndicatorLineColor="#FE6DA8"
+                    app:egLegendHeight="40dp"
+                    app:egShowStandardValue="true"
+                    app:egUseCubic="true"
+                    app:egUseOverlapFill="true" />
+
+            </android.support.v7.widget.CardView>
+
+
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
