@@ -50,6 +50,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
     private View mView;
     private FirebaseAuth mAuth;
     private ImageView sharedView;
+    private ImageView profileImageView;
 
     public NewsViewHolder(View itemView) {
         super(itemView);
@@ -59,6 +60,10 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView getImageView(){
         return sharedView;
+    }
+
+    public ImageView getProfileImageView() {
+        return profileImageView;
     }
 
     /**
@@ -93,7 +98,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
      * Set user profile image.
      */
     public void setProfileImage(final Context context, DatabaseReference database) {
-        final ImageView profileImageView = mView.findViewById(R.id.news_profile_image);
+         profileImageView = mView.findViewById(R.id.news_profile_image);
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

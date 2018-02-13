@@ -36,6 +36,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.grizzly.keepup.ProfileRuns;
 import com.grizzly.keepup.R;
 
 /**
@@ -108,7 +109,8 @@ public class NewsFeedFragment extends Fragment {
                 viewHolder.setProfileImage(getContext(), mRefProfileImage);
                 viewHolder.setProfileName(mRefProfileName);
 
-                openDialogActivity(viewHolder, model);
+                openDialogActivityRun(viewHolder, model);
+                openDialogActivityUser(viewHolder, model);
             }
         };
         mNewsList.setAdapter(firebaseRecyclerAdapter);
@@ -117,13 +119,29 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Open dialog window in RecyclerView.
      */
-    private void openDialogActivity(final NewsViewHolder viewHolder, final NewsFeed model){
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+    private void openDialogActivityRun(final NewsViewHolder viewHolder, final NewsFeed model){
+        viewHolder.getImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
+
+                startActivity(intent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+            }
+        });
+    }
+
+    /**
+     * Open dialog window in RecyclerView.
+     */
+    private void openDialogActivityUser(final NewsViewHolder viewHolder, final NewsFeed model){
+        viewHolder.getProfileImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProfileRuns.class);
+                //intent.putExtra("RUN_DATE", model.getRunDate());
 
                 startActivity(intent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
