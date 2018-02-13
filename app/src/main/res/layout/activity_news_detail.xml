@@ -33,7 +33,7 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 tools:background=""
-                android:transitionName="to_detail_transaction"/>
+                />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/news_detail_toolbar"

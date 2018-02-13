@@ -25,17 +25,13 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -47,8 +43,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +53,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
@@ -103,26 +100,33 @@ public class MapFragment extends Fragment {
 
     private Boolean mButtonStart = false;
     private boolean mServiceBound = false;
-    private long mTimeWhenStopped;
 
-    private TextView expandedChronometer;
-    private TextView expandedDistance;
-    private TextView expandedChronometerText;
-    private TextView expandedDistanceText;
-    private TextView notExpandedText;
+    private TextView notExpandedDistance;
+    private TextView notExpandedTime;
+    private ImageView notExpandedImageDistance;
+    private ImageView notExpandedImageTime;
+
     private CardView expandCard;
     private FrameLayout notExpandedFrame;
     private FrameLayout expandedFrame;
+
+    private TextView expandedTime;
+    private TextView expandedDistance;
+    private TextView expandedCalories;
+    private TextView expandedTempo;
+    private ImageView expandedTimeImage;
+    private ImageView expandedDistanceImage;
+    private ImageView expandedCaloriesImage;
+    private ImageView expandedTempoImage;
+
 
     private View mView;
     private StopwatchService mStopwatchService;
     private Thread stopwatchThread;
 
-    private static final long INTERVAL = 1000 * 60 * 1; //1 minute
-    private static final long FASTEST_INTERVAL = 1000 * 60 * 1; // 1 minute
-    private static final float SMALLEST_DISPLACEMENT = 0.25F; //quarter of a meter
     private ArrayList<LatLng> polylinePoints;
     private Polyline line;
+    private LatLngBounds.Builder builder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,15 +144,25 @@ public class MapFragment extends Fragment {
 
         mStartButton = view.findViewById(R.id.new_run_button);
 
+        //clickable card
         expandCard = view.findViewById(R.id.card_view_map);
-        expandedChronometer = view.findViewById(R.id.map_time_traveled);
-        expandedDistance = view.findViewById(R.id.map_meters_traveled);
-        expandedChronometerText = view.findViewById(R.id.map_time_traveled_text);
-        expandedDistanceText = view.findViewById(R.id.map_meters_traveled_text);
-        notExpandedText = view.findViewById(R.id.map_not_expanded_text);
+        //not expanded items
+        notExpandedDistance = view.findViewById(R.id.map_not_expanded_distance);
+        notExpandedTime = view.findViewById(R.id.map_not_expanded_time);
+        notExpandedImageDistance = view.findViewById(R.id.map_not_expanded_distance_icon);
+        notExpandedImageTime = view.findViewById(R.id.map_not_expanded_time_icon);
+        //frame visibility
         expandedFrame = view.findViewById(R.id.frame_statistic_expanded);
         notExpandedFrame = view.findViewById(R.id.frame_statistic_not_expanded);
-
+        //expanded items
+        expandedTime = view.findViewById(R.id.map_expanded_time);
+        expandedDistance = view.findViewById(R.id.map_expanded_distance);
+        expandedCalories = view.findViewById(R.id.map_expanded_calories);
+        expandedTempo = view.findViewById(R.id.map_expanded_tempo);
+        expandedTimeImage = view.findViewById(R.id.map_expanded_time_icon);
+        expandedDistanceImage = view.findViewById(R.id.map_expanded_distance_icon);
+        expandedCaloriesImage = view.findViewById(R.id.map_expanded_calories_icon);
+        expandedTempoImage = view.findViewById(R.id.map_expanded_tempo_icon);
 
         polylinePoints = new ArrayList<LatLng>();
 
@@ -172,7 +186,8 @@ public class MapFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                expandedChronometer.setText( mStopwatchService.getTimestampString());
+                                expandedTime.setText( mStopwatchService.getTimestampString());
+                                notExpandedTime.setText( mStopwatchService.getTimestampString());
                             }
                         });
                     }
@@ -190,26 +205,45 @@ public class MapFragment extends Fragment {
         expandCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (notExpandedText.getVisibility() == View.VISIBLE) {
+                if (notExpandedDistance.getVisibility() == View.VISIBLE) {
                     //ibt_show_more.animate().rotation(0).start();
                     TransitionManager.beginDelayedTransition(expandCard, new AutoTransition().setDuration(124));
-                    notExpandedText.setVisibility(View.GONE);
                     expandedFrame.setVisibility(View.VISIBLE);
                     notExpandedFrame.setVisibility(View.GONE);
-                    expandedChronometer.setVisibility(View.VISIBLE);
-                    expandedChronometerText.setVisibility(View.VISIBLE);
+
+                    notExpandedDistance.setVisibility(View.GONE);
+                    notExpandedTime.setVisibility(View.GONE);
+                    notExpandedImageDistance.setVisibility(View.GONE);
+                    notExpandedImageTime.setVisibility(View.GONE);
+
+                    expandedTime.setVisibility(View.VISIBLE);
                     expandedDistance.setVisibility(View.VISIBLE);
-                    expandedDistanceText.setVisibility(View.VISIBLE);
+                    expandedCalories.setVisibility(View.VISIBLE);
+                    expandedTempo.setVisibility(View.VISIBLE);
+                    expandedTimeImage.setVisibility(View.VISIBLE);
+                    expandedDistanceImage.setVisibility(View.VISIBLE);
+                    expandedCaloriesImage.setVisibility(View.VISIBLE);
+                    expandedTempoImage.setVisibility(View.VISIBLE);
+
                 } else {
                     //ibt_show_more.animate().rotation(180).start();
                     TransitionManager.beginDelayedTransition(expandCard, new AutoTransition().setDuration(124));
-                    notExpandedText.setVisibility(View.VISIBLE);
                     expandedFrame.setVisibility(View.GONE);
                     notExpandedFrame.setVisibility(View.VISIBLE);
-                    expandedChronometer.setVisibility(View.GONE);
-                    expandedChronometerText.setVisibility(View.GONE);
+
+                    notExpandedDistance.setVisibility(View.VISIBLE);
+                    notExpandedTime.setVisibility(View.VISIBLE);
+                    notExpandedImageDistance.setVisibility(View.VISIBLE);
+                    notExpandedImageTime.setVisibility(View.VISIBLE);
+
+                    expandedTime.setVisibility(View.GONE);
                     expandedDistance.setVisibility(View.GONE);
-                    expandedDistanceText.setVisibility(View.GONE);
+                    expandedCalories.setVisibility(View.GONE);
+                    expandedTempo.setVisibility(View.GONE);
+                    expandedTimeImage.setVisibility(View.GONE);
+                    expandedDistanceImage.setVisibility(View.GONE);
+                    expandedCaloriesImage.setVisibility(View.GONE);
+                    expandedTempoImage.setVisibility(View.GONE);
                 }
             }
         });
@@ -268,14 +302,24 @@ public class MapFragment extends Fragment {
                                                          mCurrLocationMarker.remove();
                                                      }
 
+                                                     //TODO: Test this.
+                                                     builder = new LatLngBounds.Builder();
+                                                     for (int i = 0; i < polylinePoints.size(); i++) {
+                                                         builder.include(polylinePoints.get(i));
+                                                     }
+
+
                                                      LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                                      mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
                                                      if (mButtonStart) {
                                                          polylinePoints.add(latLng);
                                                          redrawLine();
-                                                         //float[] distance = getMeters(latLng, latLngNew);
-                                                         //mDistanceTextView.setText((int) distance[0]);
+                                                         if(polylinePoints.size()!=0) {
+                                                             int meters = (int) getMeters();
+                                                             expandedDistance.setText(""+meters);
+                                                             notExpandedDistance.setText(""+meters);
+                                                         }
                                                      }
                                                  }
 
@@ -287,7 +331,7 @@ public class MapFragment extends Fragment {
     /**
      * Listener on startRun button.
      * Start run (chronometer).
-     * On Stop takeSnapshot().
+     * On Stop takeSnapshot().`
      *
      * Every run time delayed for about 1,5 sec.
       */
@@ -319,7 +363,6 @@ public class MapFragment extends Fragment {
                     }
 
 
-                    mTimeWhenStopped = 0;
                     mButtonStart = false;
 
 
@@ -361,11 +404,16 @@ public class MapFragment extends Fragment {
     /**
      * Get meters from start and end LatLng.
      */
-    private float[] getMeters(LatLng start, LatLng end) {
+    private float getMeters() {
         float[] results = new float[1];
-        Location.distanceBetween(start.latitude, start.longitude,
-                end.latitude, end.longitude, results);
-        return results;
+
+        float returned = 0;
+        for (int i = 0; i < polylinePoints.size(); i++) {
+            Location.distanceBetween(polylinePoints.get(i).latitude, polylinePoints.get(i).longitude,
+                    polylinePoints.get(i).latitude, polylinePoints.get(i).longitude, results);
+            returned += results[0];
+        }
+        return returned;
     }
 
 
@@ -376,7 +424,7 @@ public class MapFragment extends Fragment {
 
         mGoogleMap.clear();  //clears all Markers and Polylines
 
-        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        PolylineOptions options = new PolylineOptions().width(8).color(R.color.colorAccent).geodesic(true);
         for (int i = 0; i < polylinePoints.size(); i++) {
             LatLng point = polylinePoints.get(i);
             options.add(point);
@@ -507,4 +555,7 @@ public class MapFragment extends Fragment {
             mServiceBound = true;
         }
     };
+
+
+
 }

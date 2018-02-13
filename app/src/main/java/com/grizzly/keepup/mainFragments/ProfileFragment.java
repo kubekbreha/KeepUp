@@ -290,6 +290,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent setupIntent = new Intent(getActivity(), SetupActivity.class);
                 startActivity(setupIntent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -304,6 +305,7 @@ public class ProfileFragment extends Fragment {
                 openChat();
             }
         });
+
     }
 
     /**
@@ -313,6 +315,7 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getActivity(), "You have been logged out", Toast.LENGTH_SHORT).show();
         Intent accountIntent = new Intent(getActivity(), LoginActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 
@@ -322,6 +325,7 @@ public class ProfileFragment extends Fragment {
     private void openChat() {
         Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
         startActivity(chatIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     /**

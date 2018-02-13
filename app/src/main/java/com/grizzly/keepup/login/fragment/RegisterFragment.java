@@ -158,6 +158,7 @@ public class RegisterFragment extends Fragment {
 
         Intent accountIntent = new Intent(getActivity(), MainActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 

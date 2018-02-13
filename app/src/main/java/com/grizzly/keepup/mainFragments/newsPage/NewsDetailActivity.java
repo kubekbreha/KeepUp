@@ -163,6 +163,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
                 return true;
 
             default:
@@ -214,5 +215,6 @@ public class NewsDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

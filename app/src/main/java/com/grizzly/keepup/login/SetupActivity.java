@@ -195,12 +195,18 @@ public class SetupActivity extends AppCompatActivity {
 
                     mProgress.dismiss();
 
-                    Intent accountIntent = new Intent(SetupActivity.this, MainActivity.class);
-                    startActivity(accountIntent);
                     finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
 
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

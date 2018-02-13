@@ -156,6 +156,7 @@ public class LoginEmailFragment extends Fragment {
         //TODO: app crash here
         Intent accountIntent = new Intent(this.getActivity(), MainActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 
@@ -166,6 +167,7 @@ public class LoginEmailFragment extends Fragment {
     private void goToSetupActivity() {
         Intent accountIntent = new Intent(getActivity(), SetupActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,9 +164,11 @@ public class LoginFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 LoginEmailFragment fragment = new LoginEmailFragment();
                 fm.beginTransaction()
+                        //.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
                         .replace(R.id.login_to_be_replaced, fragment)
                         .addToBackStack(null)
                         .commit();
+
             }
         });
     }
@@ -181,6 +184,7 @@ public class LoginFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 RegisterFragment fragment = new RegisterFragment();
                 fm.beginTransaction()
+                        //.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
                         .replace(R.id.login_to_be_replaced, fragment)
                         .addToBackStack(null)   // add to manager " will remember this fragment  - for navigation purpose"
                         .commit();
@@ -403,6 +407,7 @@ public class LoginFragment extends Fragment {
     private void updateUI() {
         Intent accountIntent = new Intent(getActivity(), MainActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 
@@ -413,6 +418,7 @@ public class LoginFragment extends Fragment {
     private void goToSetupActivity() {
         Intent accountIntent = new Intent(getActivity(), SetupActivity.class);
         startActivity(accountIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
     }
 

@@ -16,10 +16,16 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,7 +66,6 @@ public class NewsFeedFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -119,8 +124,11 @@ public class NewsFeedFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
+
                 startActivity(intent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
             }
         });
     }
+
 }

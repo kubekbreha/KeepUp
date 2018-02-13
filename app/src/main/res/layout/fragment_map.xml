@@ -2,26 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/map_fragment"
     android:layout_width="match_parent"
-    android:background="@color/colorPrimary"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.google.android.gms.maps.MapView>
+        android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
         android:id="@+id/card_view_map"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/layout_padding"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/layout_padding"
+        android:clickable="true"
         app:cardCornerRadius="@dimen/corner_radius">
 
         <RelativeLayout
@@ -29,77 +28,158 @@
             android:layout_height="match_parent"
             android:background="@color/mapTab">
 
-            <TextView
-                android:id="@+id/map_not_expanded_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Statistic"
-                android:visibility="visible"
-                android:layout_margin="8dp"
-                android:textColor="@color/text_light"
-                android:textSize="@dimen/big_text_height"
-                android:textStyle="bold" />
+
+            <ImageView
+            android:id="@+id/map_not_expanded_distance_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="24dp"
+            android:src="@drawable/ic_access_alarm_black_24dp"
+            android:textColor="@color/text_light"
+            android:visibility="visible" />
+
 
             <TextView
-                android:id="@+id/map_meters_traveled_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Distance"
-                android:visibility="gone"
-                android:layout_margin="8dp"
-                android:textColor="@color/text_light"
-                android:textSize="@dimen/big_text_height"
-                android:textStyle="bold" />
+            android:id="@+id/map_not_expanded_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="24dp"
+            android:text="0"
+            android:textColor="@color/text_light"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+
+            <ImageView
+            android:id="@+id/map_not_expanded_time_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="196dp"
+            android:src="@drawable/ic_location_on_black_24dp"
+            android:visibility="visible" />
 
             <TextView
-                android:id="@+id/map_meters_traveled"
+            android:id="@+id/map_not_expanded_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="236dp"
+            android:layout_marginTop="24dp"
+            android:text="00:00:00"
+            android:textColor="@color/text_light"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+
+            <!-- //////////////////////////////////////////////////////////////////////////// -->
+
+
+            <ImageView
+                android:id="@+id/map_expanded_distance_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_access_alarm_black_24dp"
+                android:textColor="@color/text_light"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/map_expanded_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="24dp"
                 android:text="0"
-                android:visibility="gone"
                 android:textColor="@color/text_light"
-                android:textSize="@dimen/middle_text_height"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/map_expanded_time_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="196dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_location_on_black_24dp"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/map_time_traveled_text"
+                android:id="@+id/map_expanded_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
-                android:visibility="gone"
-                android:layout_marginLeft="188dp"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/text_light"
-                android:textSize="@dimen/big_text_height"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/map_time_traveled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginStart="188dp"
+                android:layout_marginLeft="236dp"
+                android:layout_marginTop="24dp"
                 android:text="00:00:00"
-                android:visibility="gone"
                 android:textColor="@color/text_light"
-                android:textSize="@dimen/middle_text_height"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
 
+            <ImageView
+                android:id="@+id/map_expanded_calories_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="112dp"
+                android:src="@drawable/ic_stars_black_24dp"
+                android:textColor="@color/text_light"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/map_expanded_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="112dp"
+                android:text="0"
+                android:textColor="@color/text_light"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/map_expanded_tempo_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="196dp"
+                android:layout_marginTop="112dp"
+                android:src="@drawable/ic_av_timer_black_24dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/map_expanded_tempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="236dp"
+                android:layout_marginTop="112dp"
+                android:text="00:00"
+                android:textColor="@color/text_light"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <FrameLayout
                 android:id="@+id/frame_statistic_not_expanded"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <FrameLayout
                 android:id="@+id/frame_statistic_expanded"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="240dp"/>
+                android:layout_height="240dp"
+                android:visibility="gone" />
 
 
         </RelativeLayout>

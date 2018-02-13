@@ -49,8 +49,7 @@
                 android:layout_below="@+id/news_profile_image"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_profile"
-                android:transitionName="to_detail_transaction"/>
+                android:src="@drawable/default_profile" />
 
 
             <TextView

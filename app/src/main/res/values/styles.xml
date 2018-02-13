@@ -5,8 +5,7 @@
         <item name="colorPrimary">#2F3045</item>
         <item name="colorPrimaryDark">#232534</item>
         <item name="colorAccent">#000000</item>
-        
-        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">

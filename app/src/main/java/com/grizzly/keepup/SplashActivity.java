@@ -116,6 +116,7 @@ public class SplashActivity extends AppCompatActivity {
     private void updateUI() {
         Intent accountIntent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(accountIntent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
         finish();
     }
 
@@ -125,6 +126,7 @@ public class SplashActivity extends AppCompatActivity {
     private void goToLogin() {
         Intent accountIntent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(accountIntent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
         finish();
     }
 
@@ -134,6 +136,7 @@ public class SplashActivity extends AppCompatActivity {
     private void goToSetupActivity() {
         Intent accountIntent = new Intent(SplashActivity.this, SetupActivity.class);
         startActivity(accountIntent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
         finish();
     }
 }
