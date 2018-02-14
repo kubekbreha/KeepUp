@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profile_search"
+    android:layout_width="match_parent"
+    android:layout_height="104dp"
+    android:background="@color/colorPrimary">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/search_user_image"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/default_profile" />
+
+    <TextView
+        android:id="@+id/search_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/search_user_image"
+        android:text="TextView"
+        android:textColor="@color/text_light"
+        android:textSize="@dimen/middle_text_height"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/search_user_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/search_user_name"
+        android:layout_below="@+id/search_user_name"
+        android:layout_marginTop="12dp"
+        android:text="TextView"
+        android:textColor="@color/text_light"
+        android:textSize="@dimen/small_text_height" />
+
+</RelativeLayout>

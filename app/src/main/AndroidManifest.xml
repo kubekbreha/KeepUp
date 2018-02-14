@@ -73,7 +73,7 @@
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.Base" />
 
-        <service android:name=".service.StopwatchService"></service>
+        <service android:name=".service.StopwatchService" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -87,7 +87,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ProfileRuns"></activity>
+        <activity android:name=".search.ProfileRuns" />
+        <activity android:name=".search.SearchActivity"/>
     </application>
 
 </manifest>

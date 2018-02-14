@@ -16,28 +16,24 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.grizzly.keepup.ProfileRuns;
+import com.grizzly.keepup.search.ProfileRuns;
 import com.grizzly.keepup.R;
+import com.grizzly.keepup.search.SearchActivity;
+import com.grizzly.keepup.chat.ChatActivity;
 
 /**
  * Created by kubek on 1/31/18.
@@ -55,6 +51,8 @@ public class NewsFeedFragment extends Fragment {
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
     private LinearLayoutManager mLayoutManager;
+    private ImageButton mButtonChat;
+    private ImageButton mButtonSearch;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
 
 
@@ -70,6 +68,9 @@ public class NewsFeedFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
+        mButtonChat = view.findViewById(R.id.chat_button_news_feed);
+        mButtonSearch = view.findViewById(R.id.search_button_news_feed);
+
         mNewsList = view.findViewById(R.id.news_feed_list);
         mNewsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -81,16 +82,13 @@ public class NewsFeedFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mAuth.getUid().toString()).child("runs");
 
+        buttonOpenChat();
+        buttonOpenSearch();
         loadNews();
 
         return view;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
 
 
     /**
@@ -141,12 +139,46 @@ public class NewsFeedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfileRuns.class);
-                //intent.putExtra("RUN_DATE", model.getRunDate());
 
                 startActivity(intent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
             }
         });
     }
+
+
+    /**
+     * Set listener on chat.
+     */
+    private void buttonOpenChat(){
+        mButtonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChat();
+            }
+        });
+
+    }
+
+    /**
+     * Open chat activity.
+     */
+    private void openChat() {
+        Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
+        startActivity(chatIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+
+    private void buttonOpenSearch() {
+        mButtonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(searchIntent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+        }
 
 }

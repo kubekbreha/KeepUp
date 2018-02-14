@@ -71,14 +71,6 @@
                 android:background="@null"
                 android:src="@drawable/ic_log_out_24dp" />
 
-            <ImageButton
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/button1"
-                android:layout_alignTop="@+id/profile_fragment_mail"
-                android:background="@null"
-                android:src="@drawable/ic_message_24dp" />
 
         </RelativeLayout>
 

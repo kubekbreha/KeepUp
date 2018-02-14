@@ -75,7 +75,6 @@ public class ProfileFragment extends Fragment {
     private TextView mUserEmail;
     private ImageView mUserPhoto;
     private ImageButton mButtonSignOut;
-    private ImageButton mButtonChat;
     private View mView;
 
     private TextView mExpandedTitle;
@@ -120,7 +119,6 @@ public class ProfileFragment extends Fragment {
         mUserName = mView.findViewById(R.id.profile_fragment_name);
         mUserEmail = mView.findViewById(R.id.profile_fragment_mail);
         mUserEmail.setText(mAuth.getCurrentUser().getEmail());
-        mButtonChat = mView.findViewById(R.id.button2);
         mButtonSignOut = mView.findViewById(R.id.button1);
 
         DatabaseReference refImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
@@ -129,7 +127,6 @@ public class ProfileFragment extends Fragment {
         getNameRef(refName);
 
         buttonSignOut();
-        buttonOpenChat();
         buttonSetUpProfile();
 
         mExpandedTitle = mView.findViewById(R.id.profile_expanded_title);
@@ -295,18 +292,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    /**
-     * Set listener on chat.
-     */
-    private void buttonOpenChat(){
-        mButtonChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openChat();
-            }
-        });
-
-    }
 
     /**
      * Send user form MainActivity to MainActivity.
@@ -319,14 +304,6 @@ public class ProfileFragment extends Fragment {
         getActivity().finish();
     }
 
-    /**
-     * Open chat activity.
-     */
-    private void openChat() {
-        Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
-        startActivity(chatIntent);
-        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
 
     /**
      * Log out googleUser.

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grizzly.keepup.search.SearchActivity"
+    android:background="@color/colorPrimary">
+
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_above="@+id/confirm_register_button"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/rounded_input"
+        android:drawableStart="@drawable/ic_search_black_24dp"
+        android:ems="10"
+        android:hint="Search"
+        android:paddingLeft="16dp"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray" />
+
+    <ImageButton
+        android:id="@+id/search_confirm_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="24dp"
+        android:background="@drawable/background_transparent"
+        android:src="@drawable/ic_check_black_24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_result_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/search_bar">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_bar"
+        android:text="No result found"
+        android:id="@+id/no_result_search"
+        android:textSize="@dimen/middle_text_height"
+        android:textColor="@color/text_light"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+
+
+
+</RelativeLayout>

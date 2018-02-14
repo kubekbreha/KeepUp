@@ -192,6 +192,7 @@ public class SetupActivity extends AppCompatActivity {
 
                     mDatabase.child(userId).child("name").setValue(name);
                     mDatabase.child(userId).child("image").setValue(downloadUri);
+                    mDatabase.child(userId).child("mail").setValue(mAuth.getCurrentUser().getEmail());
 
                     mProgress.dismiss();
 

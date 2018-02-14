@@ -154,7 +154,7 @@ public class LoginEmailFragment extends Fragment {
      */
     private void updateUI() {
         //TODO: app crash here
-        Intent accountIntent = new Intent(this.getActivity(), MainActivity.class);
+        Intent accountIntent = new Intent(getActivity(), MainActivity.class);
         startActivity(accountIntent);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();

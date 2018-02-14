@@ -5,6 +5,7 @@
     tools:context="com.grizzly.keepup.mainFragments.newsPage.NewsFeedFragment">
 
     <FrameLayout
+        android:id="@+id/dividavle_frame_news"
         android:layout_width="match_parent"
         android:layout_height="@dimen/notification_bar_height"
         android:background="@color/colorPrimary" />
@@ -12,33 +13,52 @@
     <FrameLayout
         android:id="@+id/tab_bar_news"
         android:layout_width="match_parent"
-        android:layout_height="104dp"
+        android:layout_height="84dp"
         android:background="@color/colorPrimary" />
 
-
-    <EditText
-        android:id="@+id/edit_password"
+    <RelativeLayout
+        android:layout_below="@+id/dividavle_frame_news"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:layout_above="@+id/confirm_register_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_input"
-        android:drawableStart="@drawable/ic_search_black_24dp"
-        android:ems="10"
-        android:hint="Search"
-        android:paddingLeft="16dp"
-        android:textColor="@color/text_light"
-        android:textColorHint="@color/text_gray" />
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="8dp"
+            android:text="KeepUp"
+            android:textColor="@color/text_light"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/chat_button_news_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/background_transparent"
+            android:src="@drawable/ic_message_24dp" />
+
+
+        <ImageButton
+            android:id="@+id/search_button_news_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/background_transparent"
+            android:src="@drawable/ic_search_black_24dp" />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="104dp"
-        android:background="@color/colorPrimary"
-        >
+        android:layout_marginTop="84dp"
+        android:background="@color/colorPrimary">
 
 
         <android.support.v7.widget.RecyclerView

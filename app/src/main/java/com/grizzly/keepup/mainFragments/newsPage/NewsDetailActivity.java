@@ -159,9 +159,9 @@ public class NewsDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(NewsDetailActivity.this, MainActivity.class);
+                /*Intent intent = new Intent(NewsDetailActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                startActivity(intent);*/
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
                 return true;
