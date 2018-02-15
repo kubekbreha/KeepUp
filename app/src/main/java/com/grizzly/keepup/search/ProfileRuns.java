@@ -23,15 +23,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.mainFragments.newsPage.NewsDetailActivity;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.mainFragments.newsPage.NewsViewHolder;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by kubek on 2/14/18.
@@ -44,30 +50,95 @@ public class ProfileRuns extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
+    private DatabaseReference mRefProfileMail;
     private LinearLayoutManager mLayoutManager;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
+
+    private ImageView profileImage;
+    private TextView profileName;
+    private TextView profileMail;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //TODO: Change becouse circleview in xml is crashing often.
         setContentView(R.layout.activity_profile_runs);
         mAuth = FirebaseAuth.getInstance();
+
+        Intent i = this.getIntent();
+        String userId = i.getExtras().getString("USER");
+
+        profileImage = findViewById(R.id.profile_activity_image);
+        profileName  = findViewById(R.id.profile_activity_name);
+        profileMail  = findViewById(R.id.profile_activity_mail);
 
         mNewsList = findViewById(R.id.profile_activity_list);
         mNewsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mNewsList.setLayoutManager(mLayoutManager);
 
-        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
-        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
+        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("image");
+        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name");
+        mRefProfileMail = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("mail");
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth.getUid().toString()).child("runs");
+                .child("users").child(userId).child("runs");
+
+        setProfileImage(mRefProfileImage);
+        setProfileName(mRefProfileName);
+        setProfileMail(mRefProfileMail);
 
         loadNews();
     }
 
+    private void setProfileImage(DatabaseReference reference){
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String uri = dataSnapshot.getValue(String.class);
+                Picasso.with(getApplicationContext()).load(uri).into(profileImage);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void setProfileName(DatabaseReference reference){
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                profileName.setText(name);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void setProfileMail(DatabaseReference reference){
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String mail = dataSnapshot.getValue(String.class);
+                profileMail.setText(mail);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     /**
      * Load news feeds form database.

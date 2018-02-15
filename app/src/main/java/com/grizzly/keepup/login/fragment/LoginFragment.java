@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +59,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
-import com.grizzly.keepup.login.SetupActivity;
+import com.grizzly.keepup.login.setup.SetupActivity;
 
 /**
  * Created by kubek on 1/21/18.

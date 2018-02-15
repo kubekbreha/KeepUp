@@ -31,16 +31,18 @@ public class NewsFeed {
     private Long reversedTimestamp;
     private String specificRunImage;
     private String distance;
+    private String userId;
     private int time;
 
 
     /**
      * Constructor for setting.
      */
-    public NewsFeed(String specificRunImage, String distance, int time) {
+    public NewsFeed(String specificRunImage, String distance, int time, String userId) {
         this.specificRunImage = specificRunImage;
         this.distance = distance;
         this.time = time;
+        this.userId = userId;
         runDate = new Date().getTime();
         reversedTimestamp = - new Date().getTime();
     }
@@ -57,6 +59,14 @@ public class NewsFeed {
      */
     public Long getReversedTimestamp() {
         return reversedTimestamp;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setReversedTimestamp(Long reversedTimestamp) {

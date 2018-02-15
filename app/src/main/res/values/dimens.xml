@@ -17,7 +17,7 @@
 
     <dimen name="button_padding">16dp</dimen>
     <dimen name="button_margin">48dp</dimen>
-    <dimen name="button_height">54dp</dimen>\
+    <dimen name="button_height">56dp</dimen>\
     <dimen name="big_logo">120dp</dimen>
 
     <integer name="slide_animation_duration">300</integer>

@@ -62,7 +62,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.SetupActivity" />
+        <activity android:name=".login.setup.SetupActivity" />
         <activity android:name=".mainFragments.newsPage.NewsDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

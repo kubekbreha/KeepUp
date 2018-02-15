@@ -15,6 +15,7 @@
 */
 package com.grizzly.keepup.search;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.grizzly.keepup.R;
+import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
+import com.grizzly.keepup.mainFragments.newsPage.NewsViewHolder;
 
 /**
  * Created by kubek on 2/14/18.
@@ -67,7 +70,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void firebaseUserSearch(String searchText){
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        final Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
         FirebaseRecyclerAdapter<User, UserViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(
                 User.class,
@@ -80,12 +83,30 @@ public class SearchActivity extends AppCompatActivity {
             protected void populateViewHolder(UserViewHolder viewHolder, User model, int position) {
                 noResult.setVisibility(View.GONE);
                 viewHolder.setDetails(getApplicationContext() ,model.getName(), model.getImage(), model.getMail());
+
+                openDialogActivityUser(viewHolder, model.getUserId());
             }
         };
         mResultList.setAdapter(firebaseRecyclerAdapter);
         if(firebaseRecyclerAdapter.getItemCount()==0){
             noResult.setVisibility(View.VISIBLE);
         }
+    }
+
+
+    /**
+     * Open dialog window in RecyclerView.
+     */
+    private void openDialogActivityUser(final UserViewHolder viewHolder, final String userId){
+        viewHolder.getUserImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchActivity.this, ProfileRuns.class);
+                intent.putExtra("USER", userId);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+            }
+        });
     }
 
     @Override

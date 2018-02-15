@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.grizzly.keepup.mainFragments.Map.MapFragment;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeedFragment;
-import com.grizzly.keepup.mainFragments.ProfileFragment;
+import com.grizzly.keepup.mainFragments.MyProfileFragment;
 
 /**
  * Created by kubek on 1/31/18.
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(3);
         adapter.addFragment(new MapFragment(), "RUN");
         adapter.addFragment(new NewsFeedFragment(), "FEED");
-        adapter.addFragment(new ProfileFragment(), "PROFILE");
+        adapter.addFragment(new MyProfileFragment(), "PROFILE");
         viewPager.setAdapter(adapter);
     }
 

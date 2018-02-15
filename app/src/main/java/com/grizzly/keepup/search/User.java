@@ -24,15 +24,24 @@ public class User {
     private String image;
     private String name;
     private String mail;
+    private String userId;
 
-
-    public User(String image, String name, String mail) {
+    public User(String image, String name, String mail, String userId) {
         this.image = image;
         this.name = name;
         this.mail = mail;
+        this.userId = userId;
     }
 
     public User() {
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getMail() {

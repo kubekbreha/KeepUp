@@ -16,15 +16,12 @@
 
 package com.grizzly.keepup;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -36,7 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.login.LoginActivity;
-import com.grizzly.keepup.login.SetupActivity;
+import com.grizzly.keepup.login.setup.SetupActivity;
 
 /**
  * Created by kubek on 1/30/18.

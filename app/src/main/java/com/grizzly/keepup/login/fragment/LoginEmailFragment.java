@@ -42,7 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
-import com.grizzly.keepup.login.SetupActivity;
+import com.grizzly.keepup.login.setup.SetupActivity;
 
 /**
  * Created by kubek on 1/21/18.

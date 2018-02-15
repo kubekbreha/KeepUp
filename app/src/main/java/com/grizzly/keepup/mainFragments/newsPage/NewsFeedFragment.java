@@ -108,7 +108,7 @@ public class NewsFeedFragment extends Fragment {
                 viewHolder.setProfileName(mRefProfileName);
 
                 openDialogActivityRun(viewHolder, model);
-                openDialogActivityUser(viewHolder, model);
+                openDialogActivityUser(viewHolder, model.getUserId());
             }
         };
         mNewsList.setAdapter(firebaseRecyclerAdapter);
@@ -134,11 +134,12 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Open dialog window in RecyclerView.
      */
-    private void openDialogActivityUser(final NewsViewHolder viewHolder, final NewsFeed model){
+    private void openDialogActivityUser(final NewsViewHolder viewHolder,final String userId){
         viewHolder.getProfileImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfileRuns.class);
+                intent.putExtra("USER", userId);
 
                 startActivity(intent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );

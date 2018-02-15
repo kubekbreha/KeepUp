@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +44,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.R;
-import com.grizzly.keepup.chat.ChatActivity;
 import com.grizzly.keepup.login.LoginActivity;
-import com.grizzly.keepup.login.SetupActivity;
+import com.grizzly.keepup.login.setup.SetupActivity;
 import com.squareup.picasso.Picasso;
 
 import org.eazegraph.lib.charts.ValueLineChart;
@@ -64,7 +62,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class MyProfileFragment extends Fragment {
 
     private final static String TAG = "Profile fragment";
 
@@ -84,7 +82,7 @@ public class ProfileFragment extends Fragment {
 
     private CompactCalendarView compactCalendarView;
 
-    public ProfileFragment() {
+    public MyProfileFragment() {
         // Required empty public constructor
     }
 

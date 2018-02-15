@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +40,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
+import com.grizzly.keepup.login.setup.SetupActivity;
 
 /**
  * Created by kubek on 1/21/18.
@@ -53,7 +52,6 @@ import com.grizzly.keepup.R;
  */
 public class RegisterFragment extends Fragment {
 
-    private EditText mNameField;
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button mRegisterButton;
@@ -75,7 +73,6 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         mRelativeLayout = view.findViewById(R.id.register_gradient);
-        mNameField = view.findViewById(R.id.edit_name);
         mEmailField = view.findViewById(R.id.edit_email);
         mPasswordField = view.findViewById(R.id.edit_password);
         mRegisterButton = view.findViewById(R.id.confirm_register_button);
@@ -119,11 +116,10 @@ public class RegisterFragment extends Fragment {
      * Register new user using email.
      */
     private void doRegister() {
-        final String name = mNameField.getText().toString().trim();
         String email = mEmailField.getText().toString().trim();
         String password = mPasswordField.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
             mProgress.setMessage("Singin Up");
             mProgress.show();
@@ -135,7 +131,6 @@ public class RegisterFragment extends Fragment {
                         String user_id = mAuth.getCurrentUser().getUid();
                         DatabaseReference current_user_db = mDatabase.child(user_id);
 
-                        current_user_db.child("name").setValue(name);
                         current_user_db.child("image").setValue("default");
 
                         mProgress.dismiss();
@@ -156,7 +151,7 @@ public class RegisterFragment extends Fragment {
     private void updateUI() {
         Toast.makeText(getActivity(), "registered", Toast.LENGTH_SHORT).show();
 
-        Intent accountIntent = new Intent(getActivity(), MainActivity.class);
+        Intent accountIntent = new Intent(getActivity(), SetupActivity.class);
         startActivity(accountIntent);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getActivity().finish();
