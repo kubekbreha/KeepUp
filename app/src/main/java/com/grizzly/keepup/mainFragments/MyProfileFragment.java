@@ -46,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.login.LoginActivity;
 import com.grizzly.keepup.login.setup.SetupActivity;
+import com.grizzly.keepup.login.setup.SetupRunnerActivity;
 import com.squareup.picasso.Picasso;
 
 import org.eazegraph.lib.charts.ValueLineChart;
@@ -73,6 +74,7 @@ public class MyProfileFragment extends Fragment {
     private TextView mUserEmail;
     private ImageView mUserPhoto;
     private ImageButton mButtonSignOut;
+    private ImageButton mSettings;
     private View mView;
 
     private TextView mExpandedTitle;
@@ -117,7 +119,8 @@ public class MyProfileFragment extends Fragment {
         mUserName = mView.findViewById(R.id.profile_fragment_name);
         mUserEmail = mView.findViewById(R.id.profile_fragment_mail);
         mUserEmail.setText(mAuth.getCurrentUser().getEmail());
-        mButtonSignOut = mView.findViewById(R.id.button1);
+        mButtonSignOut = mView.findViewById(R.id.button_sign_out);
+        mSettings = mView.findViewById(R.id.button_settings);
 
         DatabaseReference refImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
         DatabaseReference refName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
@@ -136,12 +139,26 @@ public class MyProfileFragment extends Fragment {
 
         setCalendar();
         calendarListener();
+        settingsListener();
 
         mCubicValueLineChart = mView.findViewById(R.id.cubiclinechart);
         setLineChart();
 
         return mView;
     }
+
+    private void settingsListener() {
+        mSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settingsIntent = new Intent(getActivity(), SetupRunnerActivity.class);
+                startActivity(settingsIntent);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+    }
+
 
     /**
      * Setting up line chart graph.

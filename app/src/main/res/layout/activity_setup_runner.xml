@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_runner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_anim"
+    tools:context="com.grizzly.keepup.login.setup.SetupRunnerActivity">
+
+    <ImageButton
+        android:id="@+id/setup_male"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/background_transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/male" />
+
+
+    <ImageButton
+        android:id="@+id/setup_female"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/background_transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/female" />
+
+    <EditText
+        android:id="@+id/runner_setup_age"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/setup_male"
+        android:layout_marginLeft="@dimen/button_margin"
+        android:layout_marginRight="@dimen/button_margin"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/rounded_input"
+        android:hint="Enter your age"
+        android:paddingStart="@dimen/button_padding"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray"
+        android:textSize="@dimen/button_text_height"
+        tools:ignore="RtlSymmetry,TextFields" />
+
+    <EditText
+        android:id="@+id/runner_setup_weight"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_alignTop="@id/runner_setup_age"
+        android:layout_marginLeft="@dimen/button_margin"
+        android:layout_marginRight="@dimen/button_margin"
+        android:layout_marginTop="104dp"
+        android:background="@drawable/rounded_input"
+        android:hint="Enter your weight (Kg)"
+        android:paddingStart="@dimen/button_padding"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray"
+        android:textSize="@dimen/button_text_height"
+        tools:ignore="TextFields" />
+
+    <Button
+        android:id="@+id/runner_setup_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_alignTop="@id/runner_setup_weight"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="@dimen/button_margin"
+        android:layout_marginStart="@dimen/button_margin"
+        android:layout_marginTop="104dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:text="Submit"
+        android:textSize="@dimen/button_text_height" />
+
+
+</RelativeLayout>
+
+
+    <!--//Calories Burned = [(Age x 0.2017) — (Weight x 0.09036) + (Heart Rate x 0.6309) — 55.0969] x Time / 4.184.--><!--//Calories Burned = [(Age x 0.074) — (Weight x 0.05741) + (Heart Rate x 0.4472) — 20.4022] x Time / 4.184.-->

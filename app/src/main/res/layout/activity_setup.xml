@@ -8,18 +8,48 @@
     android:id="@+id/setup_gradient"
     android:background="@drawable/background_gradient_anim">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/setup_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
-    <LinearLayout
-        android:id="@+id/setup_dot_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:orientation="horizontal"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_button"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_above="@+id/setup_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="116dp"
+        android:src="@drawable/default_profile" />
+
+
+
+    <EditText
+        android:id="@+id/setup_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:background="@drawable/rounded_input"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="165dp"
+        android:textSize="@dimen/button_text_height"
+        android:layout_marginLeft="@dimen/button_margin"
+        android:layout_marginRight="@dimen/button_margin"
+        android:hint="Enter your name"
+        tools:ignore="TextFields"
+        android:paddingLeft="@dimen/button_padding"
+        android:textColor="@color/text_light"
+        android:textColorHint="@color/text_gray"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/submit_setup"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="@dimen/button_margin"
+        android:layout_marginRight="@dimen/button_margin"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_background"
+        android:text="submit"
+        android:textColor="@color/text_dark"
+        android:textSize="@dimen/button_text_height"/>
 
 </RelativeLayout>
