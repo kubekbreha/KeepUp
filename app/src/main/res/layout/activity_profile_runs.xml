@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.grizzly.keepup.search.ProfileRuns">
-
+    tools:context="com.grizzly.keepup.following.ProfileActivity">
 
 
     <RelativeLayout
@@ -27,9 +26,9 @@
             android:id="@+id/profile_activity_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/profile_activity_image"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:layout_toEndOf="@+id/profile_activity_image"
             android:text="TextView"
             android:textColor="@color/text_light"
@@ -47,16 +46,29 @@
             android:textColor="@color/text_light"
             android:textSize="@dimen/small_text_height" />
 
-            </RelativeLayout>
+        <Button
+            android:id="@+id/follow_button"
+            android:layout_width="112dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/profile_activity_image"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/button_background"
+            android:drawableStart="@drawable/ic_add_black_24dp"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:text="FOllOW" />
+
+
+
+    </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="128dp"
-        android:background="@color/colorPrimary"
-        >
-
+        android:layout_marginTop="120dp"
+        android:background="@color/colorPrimary">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/profile_activity_list"

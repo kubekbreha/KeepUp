@@ -86,7 +86,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".search.ProfileRuns" />
+        <activity android:name=".following.ProfileActivity" />
         <activity android:name=".search.SearchActivity" />
         <activity android:name=".login.setup.SetupActivity"/>
         <activity android:name=".login.setup.SetupRunnerActivity"/>

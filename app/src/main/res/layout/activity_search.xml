@@ -31,7 +31,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="24dp"
         android:background="@drawable/background_transparent"
-        android:src="@drawable/ic_check_black_24dp" />
+        android:src="@drawable/ic_check_white_24dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_list"

@@ -30,7 +30,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.grizzly.keepup.search.ProfileRuns;
+import com.grizzly.keepup.following.ProfileActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.search.SearchActivity;
 import com.grizzly.keepup.chat.ChatActivity;
@@ -138,7 +138,7 @@ public class NewsFeedFragment extends Fragment {
         viewHolder.getProfileImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileRuns.class);
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra("USER", userId);
 
                 startActivity(intent);
