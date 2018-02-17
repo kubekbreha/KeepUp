@@ -22,11 +22,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.R;
+import com.grizzly.keepup.login.setup.SetupActivity;
 import com.grizzly.keepup.mainFragments.newsPage.NewsDetailActivity;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.mainFragments.newsPage.NewsViewHolder;
@@ -57,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
     private DatabaseReference mRefProfileMail;
-    private DatabaseReference mRefPrfileFollowing;
+    private DatabaseReference mRefPrfileUser;
     private LinearLayoutManager mLayoutManager;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
 
@@ -65,8 +68,9 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileName;
     private TextView profileMail;
     private Button mFollowButton;
-    private List followingUsers;
+    private ArrayList<String> followingUsers;
 
+    private String userId;
     private boolean following;
 
     @Override
@@ -78,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Intent i = this.getIntent();
-        String userId = i.getExtras().getString("USER");
+        userId = i.getExtras().getString("USER");
 
         profileImage = findViewById(R.id.profile_activity_image);
         profileName = findViewById(R.id.profile_activity_name);
@@ -93,61 +97,89 @@ public class ProfileActivity extends AppCompatActivity {
         mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("image");
         mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name");
         mRefProfileMail = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("mail");
-        mRefPrfileFollowing = FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("followingUsers");
+        mRefPrfileUser = FirebaseDatabase.getInstance().getReference().child("users");
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(userId).child("runs");
+
+        followingUsers = new ArrayList<>();
 
         setProfileImage(mRefProfileImage);
         setProfileName(mRefProfileName);
         setProfileMail(mRefProfileMail);
 
-        if(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("followingUsers")==null) {
-            followingUsers = new ArrayList();
-        }else{
-            mRefPrfileFollowing.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
-                    followingUsers = dataSnapshot.getValue(t);
-                    /*if( followingUsers == null ) {
-                        System.out.println("No messages");
-                    }
-                    else {
-                        System.out.println("The first message is: " + followingUsers.get(0) );
-                    }*/
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
+        setUpArray();
 
         followButton();
         loadNews();
 
     }
 
+    private void followingButtonState() {
+        mRefPrfileUser.child(mAuth.getUid()).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                ArrayList<String> yourStringArray = dataSnapshot.getValue(t);
+                for(String val : yourStringArray){
+                    if(val.equals(userId)){
+                        mFollowButton.setText("FOLLOWING");
+                        Drawable img = getResources().getDrawable(R.drawable.ic_check_black_24dp);
+                        img.setBounds(0, 0, 80, 80);
+                        mFollowButton.setCompoundDrawables(img, null, null, null);
+                        following = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void setUpArray() {
+        mRefPrfileUser.child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("followingUsers")) {
+                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                    followingUsers = dataSnapshot.child("followingUsers").getValue(t);
+                    followingButtonState();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     private void followButton() {
         mFollowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!following) {
+                if (!following) {
+                    followingUsers.add(userId);
                     mFollowButton.setText("FOLLOWING");
                     Drawable img = getResources().getDrawable(R.drawable.ic_check_black_24dp);
                     img.setBounds(0, 0, 80, 80);
                     mFollowButton.setCompoundDrawables(img, null, null, null);
-                    following=true;
-                }else{
+                    following = true;
+                } else {
+                    followingUsers.remove(userId);
                     mFollowButton.setText("FOLLOW");
                     Drawable img = getResources().getDrawable(R.drawable.ic_add_black_24dp);
                     img.setBounds(0, 0, 80, 80);
                     mFollowButton.setCompoundDrawables(img, null, null, null);
-                    following=false;
+                    following = false;
                 }
+                mRefPrfileUser.child(mAuth.getUid()).child("followingUsers").setValue(followingUsers);
             }
         });
     }
