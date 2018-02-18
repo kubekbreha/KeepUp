@@ -71,6 +71,7 @@ public class NewsFeedFragment extends Fragment {
         mButtonChat = view.findViewById(R.id.chat_button_news_feed);
         mButtonSearch = view.findViewById(R.id.search_button_news_feed);
 
+
         mNewsList = view.findViewById(R.id.news_feed_list);
         mNewsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -82,13 +83,13 @@ public class NewsFeedFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mAuth.getUid().toString()).child("runs");
 
+
         buttonOpenChat();
         buttonOpenSearch();
         loadNews();
 
         return view;
     }
-
 
 
     /**
@@ -98,7 +99,7 @@ public class NewsFeedFragment extends Fragment {
     private void loadNews() {
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
                 (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
-                        mDatabase.orderByChild("reversed_timestamp")) {
+                        mDatabase.orderByChild("reversedTimestamp")) {
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
                 viewHolder.setRunDate(model.getRunDate());
@@ -117,7 +118,7 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Open dialog window in RecyclerView.
      */
-    private void openDialogActivityRun(final NewsViewHolder viewHolder, final NewsFeed model){
+    private void openDialogActivityRun(final NewsViewHolder viewHolder, final NewsFeed model) {
         viewHolder.getImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +127,7 @@ public class NewsFeedFragment extends Fragment {
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
 
                 startActivity(intent);
-                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -134,7 +135,7 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Open dialog window in RecyclerView.
      */
-    private void openDialogActivityUser(final NewsViewHolder viewHolder,final String userId){
+    private void openDialogActivityUser(final NewsViewHolder viewHolder, final String userId) {
         viewHolder.getProfileImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +143,7 @@ public class NewsFeedFragment extends Fragment {
                 intent.putExtra("USER", userId);
 
                 startActivity(intent);
-                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -151,7 +152,7 @@ public class NewsFeedFragment extends Fragment {
     /**
      * Set listener on chat.
      */
-    private void buttonOpenChat(){
+    private void buttonOpenChat() {
         mButtonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +181,6 @@ public class NewsFeedFragment extends Fragment {
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-        }
+    }
 
 }

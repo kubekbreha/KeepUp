@@ -381,7 +381,7 @@ public class LoginFragment extends Fragment {
     private void checkUserExist() {
         if (mAuth.getCurrentUser() != null) {
             final String userId = mAuth.getCurrentUser().getUid();
-            mDatabase.addValueEventListener(new ValueEventListener() {
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChild(userId)) {

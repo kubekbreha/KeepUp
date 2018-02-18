@@ -177,7 +177,7 @@ public class NewsDetailActivity extends AppCompatActivity {
      */
     public void setProfileImage(final Context context, DatabaseReference database){
         final ImageView profileImageView = findViewById(R.id.news_detail_profile_image);
-        database.addValueEventListener(new ValueEventListener() {
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String uri = dataSnapshot.getValue(String.class);
@@ -197,7 +197,7 @@ public class NewsDetailActivity extends AppCompatActivity {
      */
     public void setProfileName(DatabaseReference database){
         final TextView profileName = findViewById(R.id.news_detail_profile_name);
-        database.addValueEventListener(new ValueEventListener() {
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);

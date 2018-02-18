@@ -92,7 +92,6 @@ public class MapFragment extends Fragment {
     private LocationManager mLocationManager;
 
     //database vars
-    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private StorageReference mStorageImage;
 
@@ -139,7 +138,6 @@ public class MapFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         mProgress = new ProgressDialog(getContext());
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs");
         mStorageImage = FirebaseStorage.getInstance().getReference().child("run_images");
 
         mStartButton = view.findViewById(R.id.new_run_button);

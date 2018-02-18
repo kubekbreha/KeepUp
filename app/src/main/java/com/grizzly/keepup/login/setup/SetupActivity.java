@@ -1,40 +1,54 @@
+/*
+* Copyright 2018 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package com.grizzly.keepup.login.setup;
 
-        import android.app.ProgressDialog;
-        import android.content.Intent;
-        import android.graphics.drawable.AnimationDrawable;
-        import android.net.Uri;
-        import android.os.Build;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.text.TextUtils;
-        import android.view.View;
-        import android.view.Window;
-        import android.view.WindowManager;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.RelativeLayout;
-        import android.widget.Toast;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-        import com.google.android.gms.tasks.OnSuccessListener;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.database.DataSnapshot;
-        import com.google.firebase.database.DatabaseError;
-        import com.google.firebase.database.DatabaseReference;
-        import com.google.firebase.database.FirebaseDatabase;
-        import com.google.firebase.database.ValueEventListener;
-        import com.google.firebase.storage.FirebaseStorage;
-        import com.google.firebase.storage.StorageReference;
-        import com.google.firebase.storage.UploadTask;
-        import com.grizzly.keepup.R;
-        import com.squareup.picasso.Picasso;
-        import com.theartofdev.edmodo.cropper.CropImage;
-        import com.theartofdev.edmodo.cropper.CropImageView;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.grizzly.keepup.MainActivity;
+import com.grizzly.keepup.R;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
-        import butterknife.BindView;
-        import butterknife.ButterKnife;
-        import de.hdodenhof.circleimageview.CircleImageView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by kubek on 1/21/18.
@@ -62,7 +76,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private AnimationDrawable mAnimationDrawable;
     private RelativeLayout mRelativeLayout;
-    private boolean photoLoaded = true;
 
     public SetupActivity() {
     }
@@ -89,24 +102,7 @@ public class SetupActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mStorageImage = FirebaseStorage.getInstance().getReference().child("profile_images");
 
-        if (mDatabase.child(mAuth.getUid()).child("image") != null) {
-            photoLoaded = false;
-            mDatabase.child(mAuth.getUid()).child("image").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String uri = dataSnapshot.getValue(String.class);
-                    mImageUri = Uri.parse(dataSnapshot.getValue(String.class));
-                    Picasso.with(getApplicationContext()).load(uri).into(mSetupImageButton);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        submitButton();
+        setUpName();
         setUpImage();
     }
 
@@ -114,7 +110,7 @@ public class SetupActivity extends AppCompatActivity {
      * Listener on mSubmitButton.
      * Confirm setup onClick.
      */
-    private void submitButton() {
+    private void setUpName() {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +177,7 @@ public class SetupActivity extends AppCompatActivity {
         final String name = mNameField.getText().toString().trim();
         final String userId = mAuth.getCurrentUser().getUid();
 
-        if (!TextUtils.isEmpty(name) && mImageUri != null && photoLoaded) {
+        if (!TextUtils.isEmpty(name) && mImageUri != null) {
 
             mProgress.setMessage("Setting up");
             mProgress.show();
@@ -191,31 +187,23 @@ public class SetupActivity extends AppCompatActivity {
             filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
                     mDatabase.child(userId).child("name").setValue(name);
                     mDatabase.child(userId).child("image").setValue(downloadUri);
-                    mDatabase.child(userId).child("mail").setValue(mAuth.getCurrentUser().getEmail());
-                    mDatabase.child(userId).child("userId").setValue(mAuth.getCurrentUser().getUid());
 
                     mProgress.dismiss();
+
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+
                 }
             });
-        } else if (!TextUtils.isEmpty(name) && mImageUri != null && !photoLoaded) {
-            mProgress.setMessage("Setting up");
-            mProgress.show();
-
-            mDatabase.child(userId).child("name").setValue(name);
-            mDatabase.child(userId).child("mail").setValue(mAuth.getCurrentUser().getEmail());
-            mDatabase.child(userId).child("userId").setValue(mAuth.getCurrentUser().getUid());
-
-            mProgress.dismiss();
-            finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
         }
     }
+
+
 
     @Override
     public void onBackPressed() {
