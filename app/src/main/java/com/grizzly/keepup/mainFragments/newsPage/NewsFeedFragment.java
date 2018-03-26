@@ -18,6 +18,7 @@ package com.grizzly.keepup.mainFragments.newsPage;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.sundeepk.compactcalendarview.domain.Event;
@@ -36,6 +38,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.following.ProfileActivity;
 import com.grizzly.keepup.R;
@@ -64,7 +68,7 @@ public class NewsFeedFragment extends Fragment {
     private ImageButton mButtonChat;
     private ImageButton mButtonSearch;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
-
+    private List<String> followedUsers = new ArrayList<>();
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -87,32 +91,27 @@ public class NewsFeedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mNewsList.setLayoutManager(mLayoutManager);
 
-        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
-        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
+        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("image");
+        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("name");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("runs");
 
 
         //list of following people
+        FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getUid()).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
+                followedUsers = dataSnapshot.getValue(t);
+                Toast.makeText(getActivity(), "size: " + followedUsers.size(), Toast.LENGTH_SHORT).show();
+            }
 
-        final List<String> commentKeys = new ArrayList<>();
-        FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth.getUid().toString()).child("followingUsers")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            commentKeys.add(snapshot.getValue().toString());
-                        }
-                    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+            }
+        });
 
-        Log.e("COUNT", String.valueOf(commentKeys.size()));
-
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth.getUid().toString()).child("runs");
 
 
         buttonOpenChat();
@@ -121,6 +120,8 @@ public class NewsFeedFragment extends Fragment {
 
         return view;
     }
+
+
 
 
     /**
