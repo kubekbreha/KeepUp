@@ -195,8 +195,16 @@ public class SetupActivity extends AppCompatActivity {
 
                     mProgress.dismiss();
 
-                    finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+
+                    if (MainActivity.isActive()){
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
+                    }else{
+                        Intent accountIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(accountIntent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
+                    }
 
                 }
             });
@@ -208,7 +216,14 @@ public class SetupActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        if (MainActivity.isActive()){
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }else{
+            Intent accountIntent = new Intent(this, MainActivity.class);
+            startActivity(accountIntent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }
     }
 }

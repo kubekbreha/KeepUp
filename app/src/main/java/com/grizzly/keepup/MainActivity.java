@@ -41,6 +41,8 @@ import com.grizzly.keepup.mainFragments.MyProfileFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static boolean active = false;
+
     private static final String TAG = "Main Location";
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -131,5 +133,21 @@ public class MainActivity extends AppCompatActivity {
                     });
             alertDialog.show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        active = false;
+    }
+
+    public static boolean isActive() {
+        return active;
     }
 }
