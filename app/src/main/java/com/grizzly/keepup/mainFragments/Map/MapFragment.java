@@ -131,7 +131,8 @@ public class MapFragment extends Fragment {
     private ArrayList<LatLng> polylinePoints;
     private Polyline line;
     private LatLngBounds.Builder builder;
-    private boolean checked;
+    private boolean checkedMap;
+    private boolean checkedGPS;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -178,31 +179,6 @@ public class MapFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Ask to turn on Location Services if turned off.
-     */
-    private void enableGPS() {
-        String provider = Settings.Secure.getString(getActivity().getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (!provider.equals("")) {
-            //GPS Enabled
-            Toast.makeText(getActivity(), "GPS Enabled: " + provider,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-            alertDialog.setTitle("Turn on location");
-            alertDialog.setMessage("In order to use this app properly you need to turn on Location");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "TURN ON",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
-                        }
-                    });
-            alertDialog.show();
-        }
-    }
 
     /**
      * Start stopwatch threat and refresh time textView every second.
@@ -297,19 +273,19 @@ public class MapFragment extends Fragment {
                                          @Override
                                          public void onMapReady(GoogleMap mMap) {
                                              //googleMap = mMap;
-                                             enableGPS();
                                              MapsInitializer.initialize(getContext());
                                              mGoogleMap = mMap;
+                                             if (!checkedGPS) {
+                                                 enableGPS();
+                                                 checkedGPS = true;
+                                             }
+
                                              if (checkPermission()) {
-
+                                                 loadMap();
                                                  mGoogleMap.setMyLocationEnabled(true);
-                                                 loadMap();
-
                                              } else {
-
                                                  askPermission();
-                                                 loadMap();
-
+                                                 showMap();
                                              }
 
                                              mGoogleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
@@ -346,6 +322,32 @@ public class MapFragment extends Fragment {
                                          }
                                      });
 
+    }
+
+    /**
+     * Ask to turn on Location Services if turned off.
+     */
+    private void enableGPS() {
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (!provider.equals("")) {
+            //GPS Enabled
+            Toast.makeText(getActivity(), "GPS Enabled: " + provider,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Turn on location");
+            alertDialog.setMessage("In order to use this app properly you need to turn on Location");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "TURN ON",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
     /**
@@ -488,6 +490,7 @@ public class MapFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED);
+
     }
 
 
@@ -503,7 +506,6 @@ public class MapFragment extends Fragment {
                         , Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 REQ_PERMISSION
         );
-        enableGPS();
     }
 
     @Override
