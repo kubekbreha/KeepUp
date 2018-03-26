@@ -65,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String userId;
     private boolean following;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +74,11 @@ public class ProfileActivity extends AppCompatActivity {
         //TODO: Change becouse circleview in xml is crashing often.
         setContentView(R.layout.activity_profile_runs);
 
+
+
         Intent i = this.getIntent();
-        userId = i.getExtras().getString("USER");
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getUid();
 
         profileImage = findViewById(R.id.profile_activity_image);
         profileName = findViewById(R.id.profile_activity_name);

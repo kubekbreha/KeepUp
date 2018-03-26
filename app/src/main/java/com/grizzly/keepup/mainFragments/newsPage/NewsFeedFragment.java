@@ -48,6 +48,7 @@ import com.grizzly.keepup.chat.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by kubek on 1/31/18.
@@ -59,6 +60,7 @@ import java.util.List;
 public class NewsFeedFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+    private String userId;
 
     private RecyclerView mNewsList;
     private DatabaseReference mDatabase;
@@ -81,6 +83,7 @@ public class NewsFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
         mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getUid();
 
         mButtonChat = view.findViewById(R.id.chat_button_news_feed);
         mButtonSearch = view.findViewById(R.id.search_button_news_feed);
@@ -93,17 +96,20 @@ public class NewsFeedFragment extends Fragment {
 
         mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("image");
         mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("name");
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("runs");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("runs");
 
 
         //list of following people
         FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getUid()).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(userId).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                followedUsers = dataSnapshot.getValue(t);
-                Toast.makeText(getActivity(), "size: " + followedUsers.size(), Toast.LENGTH_SHORT).show();
+                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {
+                };
+                if (dataSnapshot.getValue(t) != null) {
+                    followedUsers = dataSnapshot.getValue(t);
+                    Toast.makeText(getActivity(), "size: " + followedUsers.size(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -113,15 +119,12 @@ public class NewsFeedFragment extends Fragment {
         });
 
 
-
         buttonOpenChat();
         buttonOpenSearch();
         loadNews();
 
         return view;
     }
-
-
 
 
     /**
@@ -134,14 +137,27 @@ public class NewsFeedFragment extends Fragment {
                         mDatabase.orderByChild("reversedTimestamp")) {
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
-                viewHolder.setRunDate(model.getRunDate());
-                viewHolder.setImage(getContext(), model.getSpecificRunImage());
-                viewHolder.setRunStats(model.getTime(), model.getDistance());
-                viewHolder.setProfileImage(getContext(), mRefProfileImage);
-                viewHolder.setProfileName(mRefProfileName);
+                Log.e("Position" ,":  "+position);
+                if(followedUsers != null) {
+                    for (String number : followedUsers) {
+                        if (Objects.equals(model.getUserId(), number)) {
+                            viewHolder.setRunDate(model.getRunDate());
+                            viewHolder.setImage(getContext(), model.getSpecificRunImage());
+                            viewHolder.setRunStats(model.getTime(), model.getDistance());
+                            viewHolder.setProfileImage(getContext(), mRefProfileImage);
+                            viewHolder.setProfileName(mRefProfileName);
 
-                openDialogActivityRun(viewHolder, model);
-                openDialogActivityUser(viewHolder, model.getUserId());
+                            openDialogActivityRun(viewHolder, model);
+                            openDialogActivityUser(viewHolder, model.getUserId());
+                        }else{
+                            Toast.makeText(getActivity(), "NotMatch", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "list is null", Toast.LENGTH_SHORT).show();
+
+                }
             }
         };
         mNewsList.setAdapter(firebaseRecyclerAdapter);
