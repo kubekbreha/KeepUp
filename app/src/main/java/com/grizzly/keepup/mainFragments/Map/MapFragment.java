@@ -269,27 +269,16 @@ public class MapFragment extends Fragment {
                                              if (checkPermission()) {
 
                                                  mGoogleMap.setMyLocationEnabled(true);
-                                                 try {
-                                                     // Customise the styling of the base map using a JSON object defined
-                                                     // in a raw resource file.
-                                                     boolean success = mGoogleMap.setMapStyle(
-                                                             MapStyleOptions.loadRawResourceStyle(
-                                                                     getActivity(), R.raw.map_style_json));
+                                                 loadMap();
+                                                 showMap();
 
-                                                     if (!success) {
-                                                         Log.e(TAG, "Style parsing failed.");
-                                                     }
-                                                 } catch (Resources.NotFoundException e) {
-                                                     Log.e(TAG, "Can't find style. Error: ", e);
-                                                 }
+                                             } else {
 
-                                                 //map changes
-                                                 //mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
-                                                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                                                 mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+                                                 askPermission();
+                                                 loadMap();
+                                                 showMap();
 
-
-                                             } else askPermission();
+                                             }
 
                                              mGoogleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                                                  @Override
@@ -399,6 +388,28 @@ public class MapFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
+    private void loadMap(){
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = mGoogleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.map_style_json));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
+
+        //map changes
+        //mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+    }
+
+
     /**
      * Get meters from start and end LatLng.
      */
@@ -478,6 +489,7 @@ public class MapFragment extends Fragment {
                 break;
             }
         }
+        loadMap();
     }
 
     /**
@@ -553,4 +565,6 @@ public class MapFragment extends Fragment {
             mServiceBound = true;
         }
     };
+
+
 }

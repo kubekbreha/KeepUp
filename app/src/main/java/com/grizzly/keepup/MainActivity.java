@@ -41,7 +41,7 @@ import com.grizzly.keepup.mainFragments.MyProfileFragment;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static boolean active = false;
+    static boolean active = false;
 
     private static final String TAG = "Main Location";
     private TabLayout mTabLayout;
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         active = false;
     }
+
 
     public static boolean isActive() {
         return active;
