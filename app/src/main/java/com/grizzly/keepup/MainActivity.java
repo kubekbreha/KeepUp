@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         //ask to turn on location
-        enableGPS();
         setupTabLayout();
     }
 
@@ -109,31 +108,7 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(false);
     }
 
-    /**
-     * Ask to turn on Location Services if turned off.
-     */
-    private void enableGPS() {
-        String provider = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (!provider.equals("")) {
-            //GPS Enabled
-            Toast.makeText(MainActivity.this, "GPS Enabled: " + provider,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-            alertDialog.setTitle("Turn on location");
-            alertDialog.setMessage("In order to use this app properly you need to turn on Location");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "TURN ON",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
-                        }
-                    });
-            alertDialog.show();
-        }
-    }
+
 
     @Override
     protected void onStart() {

@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -31,10 +32,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
@@ -46,6 +49,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,6 +69,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.service.StopwatchService;
@@ -126,6 +131,7 @@ public class MapFragment extends Fragment {
     private ArrayList<LatLng> polylinePoints;
     private Polyline line;
     private LatLngBounds.Builder builder;
+    private boolean checked;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -164,17 +170,44 @@ public class MapFragment extends Fragment {
 
         polylinePoints = new ArrayList<LatLng>();
 
+
         startButtonListener();
-        showMap();
         expandCardListener();
+        showMap();
 
         return view;
     }
 
     /**
+     * Ask to turn on Location Services if turned off.
+     */
+    private void enableGPS() {
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (!provider.equals("")) {
+            //GPS Enabled
+            Toast.makeText(getActivity(), "GPS Enabled: " + provider,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Turn on location");
+            alertDialog.setMessage("In order to use this app properly you need to turn on Location");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "TURN ON",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    });
+            alertDialog.show();
+        }
+    }
+
+    /**
      * Start stopwatch threat and refresh time textView every second.
      */
-    private void startStopwatchThread(){
+    private void startStopwatchThread() {
         stopwatchThread = new Thread() {
             @Override
             public void run() {
@@ -184,8 +217,8 @@ public class MapFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                expandedTime.setText( mStopwatchService.getTimestampString());
-                                notExpandedTime.setText( mStopwatchService.getTimestampString());
+                                expandedTime.setText(mStopwatchService.getTimestampString());
+                                notExpandedTime.setText(mStopwatchService.getTimestampString());
                             }
                         });
                     }
@@ -264,19 +297,18 @@ public class MapFragment extends Fragment {
                                          @Override
                                          public void onMapReady(GoogleMap mMap) {
                                              //googleMap = mMap;
+                                             enableGPS();
                                              MapsInitializer.initialize(getContext());
                                              mGoogleMap = mMap;
                                              if (checkPermission()) {
 
                                                  mGoogleMap.setMyLocationEnabled(true);
                                                  loadMap();
-                                                 showMap();
 
                                              } else {
 
                                                  askPermission();
                                                  loadMap();
-                                                 showMap();
 
                                              }
 
@@ -302,10 +334,10 @@ public class MapFragment extends Fragment {
                                                      if (mButtonStart) {
                                                          polylinePoints.add(latLng);
                                                          redrawLine();
-                                                         if(polylinePoints.size()!=0) {
+                                                         if (polylinePoints.size() != 0) {
                                                              int meters = (int) getMeters();
-                                                             expandedDistance.setText(""+meters);
-                                                             notExpandedDistance.setText(""+meters);
+                                                             expandedDistance.setText("" + meters);
+                                                             notExpandedDistance.setText("" + meters);
                                                          }
                                                      }
                                                  }
@@ -313,15 +345,16 @@ public class MapFragment extends Fragment {
                                              });
                                          }
                                      });
+
     }
 
     /**
      * Listener on startRun button.
      * Start run (chronometer).
      * On Stop takeSnapshot().`
-     *
+     * <p>
      * Every run time delayed for about 1,5 sec.
-      */
+     */
     private void startButtonListener() {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -388,7 +421,7 @@ public class MapFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    private void loadMap(){
+    private void loadMap() {
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -429,7 +462,7 @@ public class MapFragment extends Fragment {
     /**
      * Add polylines to map from array.
      */
-    private void redrawLine(){
+    private void redrawLine() {
 
         mGoogleMap.clear();  //clears all Markers and Polylines
 
@@ -470,6 +503,7 @@ public class MapFragment extends Fragment {
                         , Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 REQ_PERMISSION
         );
+        enableGPS();
     }
 
     @Override
