@@ -47,6 +47,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by kubek on 2/14/18.
@@ -89,6 +90,10 @@ public class ProfileActivity extends AppCompatActivity {
         profileName = findViewById(R.id.profile_activity_name);
         profileMail = findViewById(R.id.profile_activity_mail);
         mFollowButton = findViewById(R.id.follow_button);
+
+        if(Objects.equals(userIdMe, mAuth.getUid())){
+            mFollowButton.setVisibility(View.GONE);
+        }
 
         mNewsList = findViewById(R.id.profile_activity_list);
         mNewsList.setHasFixedSize(true);
