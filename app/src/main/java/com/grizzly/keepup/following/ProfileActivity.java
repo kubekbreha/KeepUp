@@ -42,6 +42,7 @@ import com.grizzly.keepup.R;
 import com.grizzly.keepup.mainFragments.newsPage.NewsDetailActivity;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.mainFragments.newsPage.NewsViewHolder;
+import com.grizzly.keepup.search.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -62,9 +63,15 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileMail;
     private Button mFollowButton;
     private ArrayList<String> followingUsers;
+    private ArrayList<ArrayList<String>> followingList;
 
+    private FirebaseAuth mAuth;
     private String userId;
+    private String userIdMe;
     private boolean following;
+    private DatabaseReference mDatabase;
+
+    private String image, name, mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +79,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         //TODO: Change becouse circleview in xml is crashing often.
         setContentView(R.layout.activity_profile_runs);
+        mAuth = FirebaseAuth.getInstance();
+
 
         Intent i = this.getIntent();
         userId = i.getExtras().getString("USER");
+        userIdMe = mAuth.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userIdMe);
 
         profileImage = findViewById(R.id.profile_activity_image);
         profileName = findViewById(R.id.profile_activity_name);
@@ -86,13 +97,13 @@ public class ProfileActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mNewsList.setLayoutManager(mLayoutManager);
 
-
         followingUsers = new ArrayList<>();
+        followingList = new ArrayList<>();
+
 
         setProfileImage(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("image"));
         setProfileName(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name"));
         setProfileMail(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("mail"));
-
 
         setUpArray();
 
@@ -102,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void followingButtonState() {
-        FirebaseDatabase.getInstance().getReference().child("users")
+        /*FirebaseDatabase.getInstance().getReference().child("users")
                 .child(FirebaseAuth.getInstance().getUid()).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,12 +134,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
 
     private void setUpArray() {
-        FirebaseDatabase.getInstance().getReference().child("users")
+        /*FirebaseDatabase.getInstance().getReference().child("users")
                 .child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -143,7 +154,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -162,6 +173,7 @@ public class ProfileActivity extends AppCompatActivity {
                     img.setBounds(0, 0, 80, 80);
                     mFollowButton.setCompoundDrawables(img, null, null, null);
                     following = true;
+                    addDataToUser();
                 } else {
                     followingUsers.remove(userId);
                     mFollowButton.setText("FOLLOW");
@@ -170,15 +182,16 @@ public class ProfileActivity extends AppCompatActivity {
                     mFollowButton.setCompoundDrawables(img, null, null, null);
                     following = false;
                 }
-                FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("followingUsers")
+               /* FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("followingUsers")
                         .setValue(followingUsers, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError error, DatabaseReference reference) {
                         if (error != null) {
                             Log.e("Profile Activity", "Failed to write message", error.toException());
+                        }else{
                         }
                     }
-                });
+                });*/
             }
         });
     }
@@ -188,6 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                image = dataSnapshot.getValue(String.class);
                 String uri = dataSnapshot.getValue(String.class);
                 Picasso.with(getApplicationContext()).load(uri).into(profileImage);
             }
@@ -204,6 +218,7 @@ public class ProfileActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                name = dataSnapshot.getValue(String.class);
                 String name = dataSnapshot.getValue(String.class);
                 profileName.setText(name);
             }
@@ -220,6 +235,7 @@ public class ProfileActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mail = dataSnapshot.getValue(String.class);
                 String mail = dataSnapshot.getValue(String.class);
                 profileMail.setText(mail);
             }
@@ -280,5 +296,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+
+    private void addDataToUser(){
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("followingUsers").child(userId)
+                .setValue(new User(image, name, mail, userId));
     }
 }
