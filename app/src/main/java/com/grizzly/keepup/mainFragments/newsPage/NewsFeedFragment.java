@@ -17,8 +17,6 @@
 package com.grizzly.keepup.mainFragments.newsPage;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,19 +26,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.database.ValueEventListener;
+import com.grizzly.keepup.following.FollowedUsersList;
 import com.grizzly.keepup.following.ProfileActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.search.SearchActivity;
@@ -48,7 +42,6 @@ import com.grizzly.keepup.chat.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by kubek on 1/31/18.
@@ -60,17 +53,16 @@ import java.util.Objects;
 public class NewsFeedFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private String userId;
 
     private RecyclerView mNewsList;
     private DatabaseReference mDatabase;
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
     private LinearLayoutManager mLayoutManager;
-    private ImageButton mButtonChat;
+    private ImageButton mButtonFollowed;
     private ImageButton mButtonSearch;
     private FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder> firebaseRecyclerAdapter;
-    private List<String> followedUsers = new ArrayList<>();
+
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -83,9 +75,8 @@ public class NewsFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        userId = mAuth.getUid();
 
-        mButtonChat = view.findViewById(R.id.chat_button_news_feed);
+        mButtonFollowed = view.findViewById(R.id.followed_button_news_feed);
         mButtonSearch = view.findViewById(R.id.search_button_news_feed);
 
 
@@ -94,32 +85,35 @@ public class NewsFeedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mNewsList.setLayoutManager(mLayoutManager);
 
-        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("image");
-        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("name");
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("runs");
+        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
+        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
 
 
         //list of following people
-        FirebaseDatabase.getInstance().getReference().child("users")
-                .child(userId).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {
-                };
-                if (dataSnapshot.getValue(t) != null) {
-                    followedUsers = dataSnapshot.getValue(t);
-                    Toast.makeText(getActivity(), "size: " + followedUsers.size(), Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        final List<String> commentKeys = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mAuth.getUid().toString()).child("followingUsers")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            commentKeys.add(snapshot.getValue().toString());
+                        }
+                    }
 
-            }
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+        Log.e("COUNT", String.valueOf(commentKeys.size()));
+
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mAuth.getUid().toString()).child("runs");
 
 
-        buttonOpenChat();
+        buttonOpenFollowed();
         buttonOpenSearch();
         loadNews();
 
@@ -137,27 +131,14 @@ public class NewsFeedFragment extends Fragment {
                         mDatabase.orderByChild("reversedTimestamp")) {
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
-                Log.e("Position" ,":  "+position);
-                if(followedUsers != null) {
-                    for (String number : followedUsers) {
-                        if (Objects.equals(model.getUserId(), number)) {
-                            viewHolder.setRunDate(model.getRunDate());
-                            viewHolder.setImage(getContext(), model.getSpecificRunImage());
-                            viewHolder.setRunStats(model.getTime(), model.getDistance());
-                            viewHolder.setProfileImage(getContext(), mRefProfileImage);
-                            viewHolder.setProfileName(mRefProfileName);
+                viewHolder.setRunDate(model.getRunDate());
+                viewHolder.setImage(getContext(), model.getSpecificRunImage());
+                viewHolder.setRunStats(model.getTime(), model.getDistance());
+                viewHolder.setProfileImage(getContext(), mRefProfileImage);
+                viewHolder.setProfileName(mRefProfileName);
 
-                            openDialogActivityRun(viewHolder, model);
-                            openDialogActivityUser(viewHolder, model.getUserId());
-                        }else{
-                            Toast.makeText(getActivity(), "NotMatch", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "list is null", Toast.LENGTH_SHORT).show();
-
-                }
+                openDialogActivityRun(viewHolder, model);
+                openDialogActivityUser(viewHolder, model.getUserId());
             }
         };
         mNewsList.setAdapter(firebaseRecyclerAdapter);
@@ -198,17 +179,31 @@ public class NewsFeedFragment extends Fragment {
 
 
     /**
+     * Set listener on followed friends.
+     */
+    private void buttonOpenFollowed() {
+        mButtonFollowed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFollowed();
+            }
+        });
+    }
+
+
+    /**
      * Set listener on chat.
      */
     private void buttonOpenChat() {
-        mButtonChat.setOnClickListener(new View.OnClickListener() {
+        mButtonFollowed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openChat();
             }
         });
-
     }
+
+
 
     /**
      * Open chat activity.
@@ -219,6 +214,14 @@ public class NewsFeedFragment extends Fragment {
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
+    /**
+     * Open followed activity.
+     */
+    private void openFollowed() {
+        Intent followedIntent = new Intent(getActivity(), FollowedUsersList.class);
+        startActivity(followedIntent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
     private void buttonOpenSearch() {
         mButtonSearch.setOnClickListener(new View.OnClickListener() {

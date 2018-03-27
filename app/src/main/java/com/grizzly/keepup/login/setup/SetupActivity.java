@@ -86,6 +86,7 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
         ButterKnife.bind(this);
 
+
         mRelativeLayout = findViewById(R.id.setup_gradient);
         mAnimationDrawable = (AnimationDrawable) mRelativeLayout.getBackground();
         mAnimationDrawable.setExitFadeDuration(4500);
@@ -175,7 +176,7 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void startSetupAccount() {
         final String name = mNameField.getText().toString().trim();
-        final String userId = mAuth.getCurrentUser().getUid();
+        final String userId = mAuth.getUid();
 
         if (!TextUtils.isEmpty(name) && mImageUri != null) {
 
@@ -192,6 +193,8 @@ public class SetupActivity extends AppCompatActivity {
 
                     mDatabase.child(userId).child("name").setValue(name);
                     mDatabase.child(userId).child("image").setValue(downloadUri);
+                    mDatabase.child(userId).child("userId").setValue(userId);
+
 
                     mProgress.dismiss();
 
@@ -205,7 +208,6 @@ public class SetupActivity extends AppCompatActivity {
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     }
-
                 }
             });
         }

@@ -94,6 +94,7 @@
             android:launchMode="singleInstance" />
         <activity android:name=".login.setup.SetupActivity" />
         <activity android:name=".login.setup.SetupRunnerActivity" />
+        <activity android:name=".following.FollowedUsersList"></activity>
     </application>
 
 </manifest>

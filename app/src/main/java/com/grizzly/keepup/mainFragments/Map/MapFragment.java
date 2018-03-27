@@ -332,6 +332,8 @@ public class MapFragment extends Fragment {
                 Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         if (!provider.equals("")) {
             //GPS Enabled
+            Toast.makeText(getActivity(), "GPS Enabled: " + provider,
+                    Toast.LENGTH_LONG).show();
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle("Turn on location");
@@ -561,7 +563,7 @@ public class MapFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
-                    FirebaseDatabase.getInstance().getReference().child("runs")
+                    FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
                             .push().setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
                             (int) elapsedMillis, mAuth.getUid()));
 
