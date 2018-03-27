@@ -62,8 +62,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileName;
     private TextView profileMail;
     private Button mFollowButton;
-    private ArrayList<String> followingUsers;
-    private ArrayList<ArrayList<String>> followingList;
 
     private FirebaseAuth mAuth;
     private String userId;
@@ -97,36 +95,33 @@ public class ProfileActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mNewsList.setLayoutManager(mLayoutManager);
 
-        followingUsers = new ArrayList<>();
-        followingList = new ArrayList<>();
-
-
         setProfileImage(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("image"));
         setProfileName(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("name"));
         setProfileMail(FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("mail"));
 
-        setUpArray();
-
+        followingButtonState();
         followButton();
         loadNews();
 
     }
 
     private void followingButtonState() {
-        /*FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getUid()).child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid())
+                .child("followingUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                ArrayList<String> yourStringArray = dataSnapshot.getValue(t);
-                for(String val : yourStringArray){
-                    if(val.equals(userId)){
-                        mFollowButton.setText("FOLLOWING");
-                        Drawable img = getResources().getDrawable(R.drawable.ic_check_black_24dp);
-                        img.setBounds(0, 0, 80, 80);
-                        mFollowButton.setCompoundDrawables(img, null, null, null);
-                        following = true;
-                    }
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(userId)) {
+                    following = true;
+                    mFollowButton.setText("FOLLOWING");
+                    Drawable img = getResources().getDrawable(R.drawable.ic_check_black_24dp);
+                    img.setBounds(0, 0, 80, 80);
+                    mFollowButton.setCompoundDrawables(img, null, null, null);
+                } else {
+                    following = false;
+                    mFollowButton.setText("FOLLOW");
+                    Drawable img = getResources().getDrawable(R.drawable.ic_add_black_24dp);
+                    img.setBounds(0, 0, 80, 80);
+                    mFollowButton.setCompoundDrawables(img, null, null, null);
                 }
             }
 
@@ -134,28 +129,9 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
     }
 
-
-    private void setUpArray() {
-        /*FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("followingUsers")) {
-                    GenericTypeIndicator<ArrayList<String>> t = new GenericTypeIndicator<ArrayList<String>>() {};
-                    followingUsers = dataSnapshot.child("followingUsers").getValue(t);
-                    followingButtonState();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -167,7 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!following) {
-                    followingUsers.add(userId);
                     mFollowButton.setText("FOLLOWING");
                     Drawable img = getResources().getDrawable(R.drawable.ic_check_black_24dp);
                     img.setBounds(0, 0, 80, 80);
@@ -175,23 +150,14 @@ public class ProfileActivity extends AppCompatActivity {
                     following = true;
                     addDataToUser();
                 } else {
-                    followingUsers.remove(userId);
+                    FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).
+                            child("followingUsers").child(userId).removeValue();
                     mFollowButton.setText("FOLLOW");
                     Drawable img = getResources().getDrawable(R.drawable.ic_add_black_24dp);
                     img.setBounds(0, 0, 80, 80);
                     mFollowButton.setCompoundDrawables(img, null, null, null);
                     following = false;
                 }
-               /* FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("followingUsers")
-                        .setValue(followingUsers, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError error, DatabaseReference reference) {
-                        if (error != null) {
-                            Log.e("Profile Activity", "Failed to write message", error.toException());
-                        }else{
-                        }
-                    }
-                });*/
             }
         });
     }
@@ -255,7 +221,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsFeed, NewsViewHolder>
                 (NewsFeed.class, R.layout.news_row, NewsViewHolder.class,
                         FirebaseDatabase.getInstance().getReference()
-                .child("users").child(userId).child("runs").orderByChild("reversed_timestamp")) {
+                                .child("users").child(userId).child("runs").orderByChild("reversed_timestamp")) {
 
             @Override
             protected void populateViewHolder(NewsViewHolder viewHolder, final NewsFeed model, int position) {
@@ -299,7 +265,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void addDataToUser(){
+    private void addDataToUser() {
         FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("followingUsers").child(userId)
                 .setValue(new User(image, name, mail, userId));
     }
