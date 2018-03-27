@@ -2,6 +2,7 @@ package com.grizzly.keepup.login.setup;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 
 /**
@@ -33,6 +35,8 @@ public class SetupRunnerActivity extends AppCompatActivity {
     private EditText mUserAge;
     private EditText mUserWeight;
     private Button mConfirmButton;
+    private Button sublineMale;
+    private Button sublineFemale;
 
     private ProgressDialog mProgress;
     private DatabaseReference mDatabase;
@@ -55,6 +59,9 @@ public class SetupRunnerActivity extends AppCompatActivity {
         mAnimationDrawable.setExitFadeDuration(4500);
         mAnimationDrawable.start();
 
+        sublineFemale = findViewById(R.id.female_subline);
+        sublineMale = findViewById(R.id.male_subline);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -69,23 +76,27 @@ public class SetupRunnerActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mProgress = new ProgressDialog(this);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("personal");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
 
         pickGender();
         setUpName();
     }
 
 
-    private void pickGender(){
+    private void pickGender() {
         mFemaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sublineFemale.setVisibility(View.VISIBLE);
+                sublineMale.setVisibility(View.GONE);
                 gender = false;
             }
         });
         mMaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sublineFemale.setVisibility(View.GONE);
+                sublineMale.setVisibility(View.VISIBLE);
                 gender = true;
             }
         });
@@ -110,10 +121,27 @@ public class SetupRunnerActivity extends AppCompatActivity {
             mProgress.setMessage("Setting up");
             mProgress.show();
 
-            mDatabase.push().setValue(age);
-            mDatabase.push().setValue(weight);
-            mDatabase.push().setValue(gender);
+            mDatabase.child("personal").child("age").setValue(age);
+            mDatabase.child("personal").child("weight").setValue(weight);
+            mDatabase.child("personal").child("gender").setValue(gender);
         }
+        mProgress.dismiss();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        this.finish();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (MainActivity.isActive()) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        } else {
+            Intent accountIntent = new Intent(this, MainActivity.class);
+            startActivity(accountIntent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }
+    }
 }
