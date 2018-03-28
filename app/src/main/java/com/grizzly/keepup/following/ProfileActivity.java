@@ -254,6 +254,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), NewsDetailActivity.class);
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
+                intent.putExtra("PUSH_ID", model.getPushID());
 
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
