@@ -91,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileMail = findViewById(R.id.profile_activity_mail);
         mFollowButton = findViewById(R.id.follow_button);
 
-        if(Objects.equals(userIdMe, mAuth.getUid())){
+        if(Objects.equals(userId, mAuth.getUid())){
             mFollowButton.setVisibility(View.GONE);
         }
 
