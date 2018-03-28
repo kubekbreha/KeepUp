@@ -17,6 +17,7 @@
 package com.grizzly.keepup.mainFragments.newsPage;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kubek on 1/27/2018.
@@ -33,18 +34,20 @@ public class NewsFeed {
     private String distance;
     private String userId;
     private int time;
+    private List<Integer> minuteTimes;
 
 
     /**
      * Constructor for setting.
      */
-    public NewsFeed(String specificRunImage, String distance, int time, String userId) {
+    public NewsFeed(String specificRunImage, String distance, int time, String userId, List<Integer> times) {
         this.specificRunImage = specificRunImage;
         this.distance = distance;
         this.time = time;
         this.userId = userId;
         runDate = new Date().getTime();
         reversedTimestamp = - new Date().getTime();
+        this.minuteTimes = times;
     }
 
     /**
@@ -103,5 +106,13 @@ public class NewsFeed {
 
     public void setSpecificRunImage(String specificRunImage) {
         this.specificRunImage = specificRunImage;
+    }
+
+    public List<Integer> getMinuteTimes() {
+        return minuteTimes;
+    }
+
+    public void setMinuteTimes(List<Integer> minuteTimes) {
+        this.minuteTimes = minuteTimes;
     }
 }

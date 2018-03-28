@@ -64,18 +64,17 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
 import com.grizzly.keepup.service.StopwatchService;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 /**
@@ -131,11 +130,14 @@ public class MapFragment extends Fragment {
     private ArrayList<LatLng> polylinePoints;
     private Polyline line;
     private LatLngBounds.Builder builder;
-    private boolean checkedMap;
     private boolean checkedGPS;
 
     private Timer timer;
+    private String tempFirebaseRoute;
+    private List<Integer> minuteDistance = new ArrayList<>();
 
+    public static int minutes = 0;
+    private int minutesPolicy = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -170,7 +172,7 @@ public class MapFragment extends Fragment {
         expandedCaloriesImage = view.findViewById(R.id.map_expanded_calories_icon);
         expandedTempoImage = view.findViewById(R.id.map_expanded_tempo_icon);
 
-        polylinePoints = new ArrayList<LatLng>();
+        polylinePoints = new ArrayList<>();
 
 
         startButtonListener();
@@ -196,7 +198,7 @@ public class MapFragment extends Fragment {
                             public void run() {
                                 expandedTime.setText(mStopwatchService.getTimestampString());
                                 notExpandedTime.setText(mStopwatchService.getTimestampString());
-                                                            }
+                            }
                         });
                     }
                 } catch (InterruptedException e) {
@@ -205,9 +207,8 @@ public class MapFragment extends Fragment {
         };
         timer = new Timer();
         stopwatchThread.start();
-        timer.schedule(new SendMinuteData(), 0, 5000);
+        timer.schedule(new SendMinuteData(), 0, 60000);
     }
-
 
 
     /**
@@ -319,7 +320,15 @@ public class MapFragment extends Fragment {
                                                              int meters = (int) getMeters();
                                                              expandedDistance.setText("" + meters);
                                                              notExpandedDistance.setText("" + meters);
+
+
                                                          }
+                                                     }
+
+                                                     if (minutes == minutesPolicy) {
+                                                         minuteDistance.add((int)getMeters());
+                                                         minutesPolicy++;
+                                                         System.out.println("added");
                                                      }
                                                  }
 
@@ -367,6 +376,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!mButtonStart) {
+                    tempFirebaseRoute = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
+                            .push().getKey();
                     mButtonStart = true;
 
                     Intent intent = new Intent(getActivity(), StopwatchService.class);
@@ -391,9 +402,7 @@ public class MapFragment extends Fragment {
                         mServiceBound = false;
                     }
 
-
                     mButtonStart = false;
-
 
                     mStartButton.setText("start");
                     mStartButton.setBackground(getResources().getDrawable(R.drawable.button_background_gradient_green));
@@ -422,6 +431,8 @@ public class MapFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+        timer.cancel();
+        timer.purge();
     }
 
     @Override
@@ -570,9 +581,10 @@ public class MapFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
 
+
                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
-                            .push().setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
-                            (int) elapsedMillis, mAuth.getUid()));
+                            .child(tempFirebaseRoute).setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
+                            (int) elapsedMillis, mAuth.getUid(), minuteDistance));
 
                     mProgress.dismiss();
                 }

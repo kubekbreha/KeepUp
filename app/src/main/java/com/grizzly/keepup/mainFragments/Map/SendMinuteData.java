@@ -1,5 +1,7 @@
 package com.grizzly.keepup.mainFragments.Map;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.TimerTask;
 
 /**
@@ -7,8 +9,14 @@ import java.util.TimerTask;
  */
 
 public class SendMinuteData  extends TimerTask {
-    public void run() {
-        System.out.println("second");
 
+    public SendMinuteData(){
     }
+
+    public void run() {
+        MapFragment.minutes++;
+        //System.out.println("second");
+    }
+
+
 }
