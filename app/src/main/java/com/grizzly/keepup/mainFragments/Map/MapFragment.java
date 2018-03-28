@@ -76,6 +76,7 @@ import com.grizzly.keepup.service.StopwatchService;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  * Created by kubek on 1/21/18.
@@ -124,7 +125,6 @@ public class MapFragment extends Fragment {
     private ImageView expandedTempoImage;
 
 
-    private View mView;
     private StopwatchService mStopwatchService;
     private Thread stopwatchThread;
 
@@ -134,11 +134,12 @@ public class MapFragment extends Fragment {
     private boolean checkedMap;
     private boolean checkedGPS;
 
+    private Timer timer;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-
-        mView = view;
 
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -195,15 +196,19 @@ public class MapFragment extends Fragment {
                             public void run() {
                                 expandedTime.setText(mStopwatchService.getTimestampString());
                                 notExpandedTime.setText(mStopwatchService.getTimestampString());
-                            }
+                                                            }
                         });
                     }
                 } catch (InterruptedException e) {
                 }
             }
         };
+        timer = new Timer();
         stopwatchThread.start();
+        timer.schedule(new SendMinuteData(), 0, 5000);
     }
+
+
 
     /**
      * Expand cardview.
@@ -374,6 +379,8 @@ public class MapFragment extends Fragment {
                     startStopwatchThread();
                 } else {
                     stopwatchThread.interrupt();
+                    timer.cancel();
+                    timer.purge();
                     Intent intent = new Intent(getActivity(),
                             StopwatchService.class);
                     getActivity().stopService(intent);
