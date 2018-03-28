@@ -150,6 +150,7 @@ public class MapFragment extends Fragment {
         mMapView.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
+
         mProgress = new ProgressDialog(getContext());
         mStorageImage = FirebaseStorage.getInstance().getReference().child("run_images");
 

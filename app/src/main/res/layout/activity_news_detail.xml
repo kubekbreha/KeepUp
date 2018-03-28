@@ -90,7 +90,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignTop="@+id/news_profile_image"
                         android:layout_marginStart="60dp"
-                        android:layout_marginTop="@dimen/layout_padding"
+                        android:layout_marginTop="16dp"
                         android:text="@string/profile_name"
                         android:textColor="@color/text_light"
                         android:textSize="@dimen/middle_text_height" />
@@ -102,23 +102,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/news_profile_name"
                         android:layout_alignBottom="@+id/news_profile_name"
+                        android:layout_marginTop="16dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/layout_padding"
                         android:textColor="@color/text_light"
-                        android:paddingTop="@dimen/layout_padding"
                         android:text="@string/profile_date"
                         android:textSize="@dimen/middle_text_height" />
 
-                    <TextView
-                        android:id="@+id/news_detail_post_run_time_and_distance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginTop="80dp"
-                        android:textColor="@color/text_light"
-                        android:padding="@dimen/layout_padding"
-                        android:text="@string/profile_date"
-                        android:textSize="@dimen/middle_text_height" />
+
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -144,7 +135,6 @@
                         android:id="@+id/detail_expanded_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hello World!"
                         android:textColor="@color/text_dark"
                         android:textSize="@dimen/middle_text_height"/>
 
@@ -152,9 +142,6 @@
                         android:id="@+id/detail_expanded_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="expanded
-                            adfafafafasfa
-                             afasfsafsafsafsafd"
                         android:visibility="gone"
                         android:textColor="@color/text_dark"
                         android:textSize="@dimen/middle_text_height"/>

@@ -17,6 +17,7 @@
 package com.grizzly.keepup.mainFragments.newsPage;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import org.eazegraph.lib.models.ValueLinePoint;
 import org.eazegraph.lib.models.ValueLineSeries;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -65,6 +67,8 @@ public class NewsDetailActivity extends AppCompatActivity {
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
     private DatabaseReference mRefProfileMinutes;
+    private DatabaseReference mRefProfileExpandable;
+    private DatabaseReference mRefProfileDate;
 
     private TextView expandedTitle;
     private TextView expandedText;
@@ -122,6 +126,12 @@ public class NewsDetailActivity extends AppCompatActivity {
         mRefProfileMinutes = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID).child("minuteTimes");
         setLineChart(mRefProfileMinutes);
 
+        mRefProfileExpandable = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID);
+        setExpandableTitle(mRefProfileExpandable);
+        setExpandableText(mRefProfileExpandable);
+
+        mRefProfileDate = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID).child("runDate");
+        setRunDate(mRefProfileDate);
     }
 
     /**
@@ -191,6 +201,26 @@ public class NewsDetailActivity extends AppCompatActivity {
     }
 
 
+    private void setRunDate(DatabaseReference reference) {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long date = dataSnapshot.getValue(Long.class);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(date);
+                int mYear = calendar.get(Calendar.YEAR);
+                int mMonth = calendar.get(Calendar.MONTH);
+                int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                mPostDate.setText(mDay+"."+mMonth+"."+mYear);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /**
      * Set profile image in detail activity.
      */
@@ -220,7 +250,53 @@ public class NewsDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
-                profileName.setText(name);
+                profileName.setText(name + " was out running.");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    /**
+     * Set title in expandable card.
+     *
+     * @param database reference.
+     */
+    private void setExpandableTitle(DatabaseReference database){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String distance = dataSnapshot.child("distance").getValue(String.class);
+                Long time = dataSnapshot.child("time").getValue(Long.class);
+                expandedTitle.setText("I runned "+distance+ " in " + time);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * Set text in expandable card.
+     *
+     * @param database reference.
+     */
+    private void setExpandableText(DatabaseReference database){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String distance = dataSnapshot.child("distance").getValue(String.class);
+                Long time = dataSnapshot.child("time").getValue(Long.class);
+                expandedText.setText("I burned " + 10 + " calories. \n" + "My average time for" +
+                        " one kilometer is " + 10 + "\nBest time for one kilometer is " + 10 );
             }
 
             @Override

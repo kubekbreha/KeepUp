@@ -24,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -79,7 +80,6 @@ public class ProfileActivity extends AppCompatActivity {
         //TODO: Change becouse circleview in xml is crashing often.
         setContentView(R.layout.activity_profile_runs);
         mAuth = FirebaseAuth.getInstance();
-
 
         Intent i = this.getIntent();
         userId = i.getExtras().getString("USER");
