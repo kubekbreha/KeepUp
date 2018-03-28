@@ -127,13 +127,26 @@ public class NewsDetailActivity extends AppCompatActivity {
     /**
      * Setting up line chart graph.
      */
-    private void setLineChart(DatabaseReference database){
+    private void setLineChart(DatabaseReference database) {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<Long>> t = new GenericTypeIndicator<ArrayList<Long>>() {};
-                ArrayList<Long> yourStringArray = dataSnapshot.getValue(t);
-                System.out.println(yourStringArray.size());
+                GenericTypeIndicator<ArrayList<Long>> t = new GenericTypeIndicator<ArrayList<Long>>() {
+                };
+                ArrayList<Long> distancesList = dataSnapshot.getValue(t);
+                System.out.println(distancesList.size());
+
+                ValueLineSeries series = new ValueLineSeries();
+                series.setColor(0xFF56B7F1);
+
+                int i = 0;
+                for (Long number : distancesList) {
+                    series.addPoint(new ValueLinePoint(i + "km", number));
+                    i++;
+                }
+
+                mCubicValueLineChart.addSeries(series);
+                mCubicValueLineChart.startAnimation();
             }
 
             @Override
@@ -143,30 +156,12 @@ public class NewsDetailActivity extends AppCompatActivity {
         });
 
 
-        ValueLineSeries series = new ValueLineSeries();
-        series.setColor(0xFF56B7F1);
-
-        series.addPoint(new ValueLinePoint("Jan", 2.4f));
-        series.addPoint(new ValueLinePoint("Feb", 3.4f));
-        series.addPoint(new ValueLinePoint("Mar", .4f));
-        series.addPoint(new ValueLinePoint("Apr", 1.2f));
-        series.addPoint(new ValueLinePoint("Mai", 2.6f));
-        series.addPoint(new ValueLinePoint("Jun", 1.0f));
-        series.addPoint(new ValueLinePoint("Jul", 3.5f));
-        series.addPoint(new ValueLinePoint("Aug", 2.4f));
-        series.addPoint(new ValueLinePoint("Sep", 2.4f));
-        series.addPoint(new ValueLinePoint("Oct", 3.4f));
-        series.addPoint(new ValueLinePoint("Nov", .4f));
-        series.addPoint(new ValueLinePoint("Dec", 1.3f));
-
-        mCubicValueLineChart.addSeries(series);
-        mCubicValueLineChart.startAnimation();
     }
 
     /**
      * Expand cardview.
      */
-    private void expandCardListener(){
+    private void expandCardListener() {
         expandCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,7 +182,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);*/
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out );
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
 
             default:
@@ -199,7 +194,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     /**
      * Set profile image in detail activity.
      */
-    public void setProfileImage(final Context context, DatabaseReference database){
+    public void setProfileImage(final Context context, DatabaseReference database) {
         final ImageView profileImageView = findViewById(R.id.news_detail_profile_image);
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -219,7 +214,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     /**
      * Set profile name in detail activity.
      */
-    public void setProfileName(DatabaseReference database){
+    public void setProfileName(DatabaseReference database) {
         final TextView profileName = findViewById(R.id.news_detail_profile_name);
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

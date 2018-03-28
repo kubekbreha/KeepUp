@@ -75,6 +75,7 @@ import com.grizzly.keepup.service.StopwatchService;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 
 /**
@@ -137,7 +138,9 @@ public class MapFragment extends Fragment {
     private List<Integer> minuteDistance = new ArrayList<>();
 
     public static int minutes = 0;
-    private int minutesPolicy = 1;
+    private int minutesPolicy = 0;
+
+    private Random rand = new Random();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -207,7 +210,7 @@ public class MapFragment extends Fragment {
         };
         timer = new Timer();
         stopwatchThread.start();
-        timer.schedule(new SendMinuteData(), 0, 60000);
+        timer.schedule(new SendMinuteData(), 0, 5000);
     }
 
 
@@ -326,7 +329,8 @@ public class MapFragment extends Fragment {
                                                      }
 
                                                      if (minutes == minutesPolicy) {
-                                                         minuteDistance.add((int)getMeters());
+                                                         //minuteDistance.add((int)getMeters());
+                                                         minuteDistance.add(rand.nextInt(10) + 1);
                                                          minutesPolicy++;
                                                          System.out.println("added");
                                                      }
