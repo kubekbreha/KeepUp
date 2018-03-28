@@ -154,6 +154,7 @@ public class NewsFeedFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
+                intent.putExtra("PUSH_ID", model.getPushID());
 
                 startActivity(intent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

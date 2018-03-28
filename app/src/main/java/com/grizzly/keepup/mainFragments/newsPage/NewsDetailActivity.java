@@ -36,6 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
@@ -44,6 +45,9 @@ import com.squareup.picasso.Picasso;
 import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.ValueLinePoint;
 import org.eazegraph.lib.models.ValueLineSeries;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kubek on 2/8/2018.
@@ -60,6 +64,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     private TextView mPostDate;
     private DatabaseReference mRefProfileImage;
     private DatabaseReference mRefProfileName;
+    private DatabaseReference mRefProfileMinutes;
 
     private TextView expandedTitle;
     private TextView expandedText;
@@ -96,6 +101,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         //RECEIVE DATA
         String dateRun = i.getExtras().getString("RUN_DATE");
         String image = i.getExtras().getString("RUN_STATS_IMAGE");
+        String pushID = i.getExtras().getString("PUSH_ID");
+        System.out.println(pushID);
 
         //BIND DATA
         setProfileImage(getApplicationContext(), mRefProfileImage);
@@ -111,14 +118,31 @@ public class NewsDetailActivity extends AppCompatActivity {
         expandCardListener();
 
         mCubicValueLineChart = findViewById(R.id.cubiclinechart);
-        setLineChart();
+
+        mRefProfileMinutes = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID).child("minuteTimes");
+        setLineChart(mRefProfileMinutes);
 
     }
 
     /**
      * Setting up line chart graph.
      */
-    private void setLineChart(){
+    private void setLineChart(DatabaseReference database){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<Long>> t = new GenericTypeIndicator<ArrayList<Long>>() {};
+                ArrayList<Long> yourStringArray = dataSnapshot.getValue(t);
+                System.out.println(yourStringArray.size());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         ValueLineSeries series = new ValueLineSeries();
         series.setColor(0xFF56B7F1);
 

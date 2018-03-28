@@ -584,7 +584,7 @@ public class MapFragment extends Fragment {
 
                     FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
                             .child(tempFirebaseRoute).setValue(new NewsFeed(downloadUri, expandedDistance.getText().toString(),
-                            (int) elapsedMillis, mAuth.getUid(), minuteDistance));
+                            (int) elapsedMillis, mAuth.getUid(), minuteDistance, tempFirebaseRoute));
 
                     mProgress.dismiss();
                 }

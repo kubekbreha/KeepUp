@@ -35,12 +35,13 @@ public class NewsFeed {
     private String userId;
     private int time;
     private List<Integer> minuteTimes;
+    private String pushID;
 
 
     /**
      * Constructor for setting.
      */
-    public NewsFeed(String specificRunImage, String distance, int time, String userId, List<Integer> times) {
+    public NewsFeed(String specificRunImage, String distance, int time, String userId, List<Integer> times, String pushID) {
         this.specificRunImage = specificRunImage;
         this.distance = distance;
         this.time = time;
@@ -48,6 +49,7 @@ public class NewsFeed {
         runDate = new Date().getTime();
         reversedTimestamp = - new Date().getTime();
         this.minuteTimes = times;
+        this.pushID = pushID;
     }
 
     /**
@@ -114,5 +116,13 @@ public class NewsFeed {
 
     public void setMinuteTimes(List<Integer> minuteTimes) {
         this.minuteTimes = minuteTimes;
+    }
+
+    public String getPushID() {
+        return pushID;
+    }
+
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
     }
 }
