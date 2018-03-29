@@ -16,6 +16,7 @@
 
 package com.grizzly.keepup.mainFragments.newsPage;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -68,6 +69,7 @@ public class NewsFeedFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -155,6 +157,7 @@ public class NewsFeedFragment extends Fragment {
                 intent.putExtra("RUN_DATE", model.getRunDate());
                 intent.putExtra("RUN_STATS_IMAGE", model.getSpecificRunImage());
                 intent.putExtra("PUSH_ID", model.getPushID());
+                intent.putExtra("USER_ID", model.getUserId());
 
                 startActivity(intent);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
