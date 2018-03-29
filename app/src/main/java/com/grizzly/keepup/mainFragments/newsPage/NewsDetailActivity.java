@@ -81,6 +81,16 @@ public class NewsDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
 
+        //GET INTENT
+        Intent i = this.getIntent();
+
+        //RECEIVE DATA
+        String dateRun = i.getExtras().getString("RUN_DATE");
+        String image = i.getExtras().getString("RUN_STATS_IMAGE");
+        String pushID = i.getExtras().getString("PUSH_ID");
+        String userID = i.getExtras().getString("USER_ID");
+        System.out.println(pushID);
+
 
         Toolbar toolbar = findViewById(R.id.news_detail_toolbar);
         setSupportActionBar(toolbar);
@@ -89,8 +99,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
-        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("image");
-        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("name");
+        mRefProfileImage = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("image");
+        mRefProfileName = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("name");
 
         //set full screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -99,14 +109,6 @@ public class NewsDetailActivity extends AppCompatActivity {
         mPostDate = findViewById(R.id.news_detail_post_date);
         mRunImage = findViewById(R.id.image_news_detail);
 
-        //GET INTENT
-        Intent i = this.getIntent();
-
-        //RECEIVE DATA
-        String dateRun = i.getExtras().getString("RUN_DATE");
-        String image = i.getExtras().getString("RUN_STATS_IMAGE");
-        String pushID = i.getExtras().getString("PUSH_ID");
-        System.out.println(pushID);
 
         //BIND DATA
         setProfileImage(getApplicationContext(), mRefProfileImage);
@@ -123,14 +125,14 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         mCubicValueLineChart = findViewById(R.id.cubiclinechart);
 
-        mRefProfileMinutes = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID).child("minuteTimes");
+        mRefProfileMinutes = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("runs").child(pushID).child("minuteTimes");
         setLineChart(mRefProfileMinutes);
 
-        mRefProfileExpandable = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID);
+        mRefProfileExpandable = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("runs").child(pushID);
         setExpandableTitle(mRefProfileExpandable);
         setExpandableText(mRefProfileExpandable);
 
-        mRefProfileDate = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs").child(pushID).child("runDate");
+        mRefProfileDate = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("runs").child(pushID).child("runDate");
         setRunDate(mRefProfileDate);
     }
 
