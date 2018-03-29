@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,18 +43,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.grizzly.keepup.MainActivity;
 import com.grizzly.keepup.R;
 import com.grizzly.keepup.login.LoginActivity;
 import com.grizzly.keepup.login.setup.SetupActivity;
 import com.grizzly.keepup.login.setup.SetupRunnerActivity;
+import com.grizzly.keepup.mainFragments.newsPage.NewsFeed;
+import com.grizzly.keepup.search.User;
 import com.squareup.picasso.Picasso;
 
 import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.ValueLinePoint;
 import org.eazegraph.lib.models.ValueLineSeries;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -164,24 +172,55 @@ public class MyProfileFragment extends Fragment {
      * Setting up line chart graph.
      */
     private void setLineChart(){
-        ValueLineSeries series = new ValueLineSeries();
+        final ValueLineSeries series = new ValueLineSeries();
         series.setColor(0xFF56B7F1);
 
-        series.addPoint(new ValueLinePoint("Jan", 2.4f));
-        series.addPoint(new ValueLinePoint("Feb", 3.4f));
-        series.addPoint(new ValueLinePoint("Mar", .4f));
-        series.addPoint(new ValueLinePoint("Apr", 1.2f));
-        series.addPoint(new ValueLinePoint("Mai", 2.6f));
-        series.addPoint(new ValueLinePoint("Jun", 1.0f));
-        series.addPoint(new ValueLinePoint("Jul", 3.5f));
-        series.addPoint(new ValueLinePoint("Aug", 2.4f));
-        series.addPoint(new ValueLinePoint("Sep", 2.4f));
-        series.addPoint(new ValueLinePoint("Oct", 3.4f));
-        series.addPoint(new ValueLinePoint("Nov", .4f));
-        series.addPoint(new ValueLinePoint("Dec", 1.3f));
+        FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid().toString()).child("runs")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int totalDistance = 0;
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            NewsFeed user = snapshot.getValue(NewsFeed.class);
+                            Long date = user.getRunDate();
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis(date);
+                            int mYear = calendar.get(Calendar.YEAR);
+                            int mMonth = calendar.get(Calendar.MONTH);
+                            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        mCubicValueLineChart.addSeries(series);
-        mCubicValueLineChart.startAnimation();
+                            Log.e("graph", Integer.toString(mDay));
+
+                            series.addPoint(new ValueLinePoint(Integer.toString(mDay)+"s", Integer.parseInt(user.getDistance())));
+                            totalDistance += Long.valueOf(user.getDistance());
+                        }
+                        mCubicValueLineChart.addSeries(series);
+                        mCubicValueLineChart.startAnimation();
+                        mExpandedTitle.setText("Tatoal distance for last month is " + totalDistance);
+                        mExpandedText.setText("Totally burned " + totalDistance+ " calories.");
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+
+//
+//        series.addPoint(new ValueLinePoint("Feb", 3.4f));
+//        series.addPoint(new ValueLinePoint("Mar", .4f));
+//        series.addPoint(new ValueLinePoint("Apr", 1.2f));
+//        series.addPoint(new ValueLinePoint("Mai", 2.6f));
+//        series.addPoint(new ValueLinePoint("Jun", 1.0f));
+//        series.addPoint(new ValueLinePoint("Jul", 3.5f));
+//        series.addPoint(new ValueLinePoint("Aug", 2.4f));
+//        series.addPoint(new ValueLinePoint("Sep", 2.4f));
+//        series.addPoint(new ValueLinePoint("Oct", 3.4f));
+//        series.addPoint(new ValueLinePoint("Nov", .4f));
+//        series.addPoint(new ValueLinePoint("Dec", 1.3f));
+//
+
     }
 
 

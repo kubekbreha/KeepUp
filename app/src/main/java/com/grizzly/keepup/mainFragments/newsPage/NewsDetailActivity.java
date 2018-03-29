@@ -144,19 +144,20 @@ public class NewsDetailActivity extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<Long>> t = new GenericTypeIndicator<ArrayList<Long>>() {
                 };
                 ArrayList<Long> distancesList = dataSnapshot.getValue(t);
-                System.out.println(distancesList.size());
 
-                ValueLineSeries series = new ValueLineSeries();
-                series.setColor(0xFF56B7F1);
+                if(distancesList != null) {
+                    ValueLineSeries series = new ValueLineSeries();
+                    series.setColor(0xFF56B7F1);
 
-                int i = 0;
-                for (Long number : distancesList) {
-                    series.addPoint(new ValueLinePoint(i + "km", number));
-                    i++;
+                    int i = 0;
+                    for (Long number : distancesList) {
+                        series.addPoint(new ValueLinePoint(i + "km", number));
+                        i++;
+                    }
+
+                    mCubicValueLineChart.addSeries(series);
+                    mCubicValueLineChart.startAnimation();
                 }
-
-                mCubicValueLineChart.addSeries(series);
-                mCubicValueLineChart.startAnimation();
             }
 
             @Override
