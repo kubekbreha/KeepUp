@@ -5,7 +5,6 @@
         android:id="@+id/half_overlay"
         android:drawable="@drawable/fb_logo"
         android:width="50dp"
-        android:height="50dp"
-        />
+        android:height="50dp" />
 
 </layer-list>
