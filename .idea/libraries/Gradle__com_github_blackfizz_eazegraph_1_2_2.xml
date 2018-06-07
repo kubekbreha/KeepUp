@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.blackfizz:eazegraph-1.2.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/eazegraph-1.2.2.aar/77d7b82e9a2ef6edf7f93daa1167983e/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/eazegraph-1.2.2.aar/77d7b82e9a2ef6edf7f93daa1167983e/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/eazegraph-1.2.2.aar/ccc764c5aa3b95481320c36dd96d0e9d/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/eazegraph-1.2.2.aar/ccc764c5aa3b95481320c36dd96d0e9d/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
