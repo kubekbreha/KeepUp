@@ -13,7 +13,7 @@ Planned comeback is in october 2018.
 ## Using
 
 * [Firebase](https://tympanus.net/codrops/) - Firebase login
-* [materializecss](https://materializecss.com/) - Frontend framework
+* [Google Maps](https://cloud.google.com/maps-platform/) - Google maps API
 
 ## License
 
